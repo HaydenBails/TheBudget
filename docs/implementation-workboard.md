@@ -130,8 +130,8 @@ the explicitly named integration tasks.
 
 | ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
-| FE-01 | Extract Meridian design tokens without changing prototype behavior. | S1-01 | `apps/web/src/styles/`, Meridian CSS, frontend tests | Colors, spacing, typography, radii, shadows, and light/dark tokens are centralized; build and visual smoke check pass. | `NEEDS REVIEW` | Codex / fe01_meridian_tokens |
-| FE-02 | Create production application shell and routes separate from the comparison harness. | FE-01 | `apps/web/src/app/`, `apps/web/src/main.tsx`, reusable components | Production routes render Meridian navigation and theme; prototype routes remain accessible for reference; keyboard navigation works. | `BLOCKED` | — |
+| FE-01 | Extract Meridian design tokens without changing prototype behavior. | S1-01 | `apps/web/src/styles/`, Meridian CSS, frontend tests | Colors, spacing, typography, radii, shadows, and light/dark tokens are centralized; build and visual smoke check pass. | `DONE` | Codex / fe01_meridian_tokens; acceptance by Claude Opus 4.8 |
+| FE-02 | Create production application shell and routes separate from the comparison harness. | FE-01 | `apps/web/src/app/`, `apps/web/src/main.tsx`, reusable components | Production routes render Meridian navigation and theme; prototype routes remain accessible for reference; keyboard navigation works. | `READY` | — |
 | FE-03 | Install/configure TanStack Query and define the typed local API client/error model. | FE-02 | `apps/web/package*.json`, `apps/web/src/api/`, query client | Lockfile is consistent; health request works; loading/error states are tested; API base defaults to loopback/local configuration. | `BLOCKED` | — |
 | FE-04 | Build profile switcher and profile management UI. | FE-03, BE-05 | `apps/web/src/features/profiles/` | List/create/select/delete flows work against API; destructive action confirms; loading, empty, and error states exist. | `BLOCKED` | — |
 | FE-05 | Build account management UI for the active profile. | FE-04, BE-05 | `apps/web/src/features/accounts/` | Account list/create/edit/delete stays scoped to active profile; form validation and empty/error states are covered. | `BLOCKED` | — |
@@ -588,3 +588,33 @@ the board has been expanded with equivalent acceptance detail.
 - Exception: This direct product-owner governance request was not represented by
   a pre-existing `READY` task, so it was completed and recorded without claiming
   an implementation task.
+
+### 2026-07-15 20:20 UTC — FE-01 acceptance — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: acceptance verification only of `apps/web/src/styles/meridian-tokens.css`,
+  `apps/web/src/directions/meridian/meridian.css`,
+  `apps/web/src/directions/meridian/index.tsx`; workboard status update; added
+  `CLAUDE.md`.
+- Work: Ran the FE-01 build and light/dark visual smoke checks that the prior
+  Codex environment could not (no Node there). Meridian renders unchanged with
+  the extracted tokens. Marked FE-01 `DONE`, unblocking FE-02 (now `READY`).
+- Verification: `npm run typecheck` — clean (exit 0); `npm run build` — success
+  (vite built, 2.7s); Meridian `/meridian/dashboard` smoke-checked in dark and
+  light via headless Chromium (1440×960) — layout, hero, donut, dense tables,
+  and tabular numbers render correctly and match the pre-extraction look.
+  Backend regression sanity: `python -m pytest -q` in `apps/api` — 69 passed.
+- Decisions: Token extraction is visually behavior-preserving; no prototype
+  changes needed.
+- Blockers/risks: none for FE-01.
+- Handoff: FE-02 is `READY` — build the production app shell under
+  `apps/web/src/app/` mounted from `main.tsx`, keeping the prototype comparison
+  harness accessible.
+- Exceptions (environment): (1) The `graphify` CLI is not installed in this
+  environment (only `graphify-out/graph.json` is present), so graph queries could
+  not be run; navigation used the mandatory full workboard read plus targeted
+  search. (2) The `ui-ux-pro-max` skill is not installed here; per AGENTS.md the
+  user's direct "continue building" instruction is followed and this exception is
+  recorded — the skill's equivalent checks (semantic markup, labelled inputs,
+  visible focus, WCAG-AA contrast, colour-not-alone, keyboard nav, light/dark,
+  reduced-motion) are applied and reported manually on UI tasks.
