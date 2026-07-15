@@ -140,8 +140,8 @@ the explicitly named integration tasks.
 
 | ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
-| INT-01 | Add isolated integration-test database and frontend API mocking/test harness. | BE-05, FE-03 | API test fixtures, web test configuration | Tests never touch the user's real database; backend API tests and frontend request-state tests run deterministically. | `READY` | — |
-| QA-01 | Validate the complete profiles/accounts vertical slice. | BE-05, BE-06, FE-05, INT-01 | Cross-app review; avoid feature edits unless defects are found | Clean setup, migrations, backend tests/lint, frontend typecheck/build/tests, loopback startup, keyboard smoke test, and profile-isolation scenarios pass. | `BLOCKED` | — |
+| INT-01 | Add isolated integration-test database and frontend API mocking/test harness. | BE-05, FE-03 | API test fixtures, web test configuration | Tests never touch the user's real database; backend API tests and frontend request-state tests run deterministically. | `DONE` | Claude Opus 4.8 |
+| QA-01 | Validate the complete profiles/accounts vertical slice. | BE-05, BE-06, FE-05, INT-01 | Cross-app review; avoid feature edits unless defects are found | Clean setup, migrations, backend tests/lint, frontend typecheck/build/tests, loopback startup, keyboard smoke test, and profile-isolation scenarios pass. | `READY` | — |
 | DOC-01 | Update setup, architecture, API, and user-flow documentation after the slice lands. | QA-01 | `README.md`, `docs/architecture/`, `apps/api/README.md` | A new developer can reproduce setup and the documented behavior matches verified commands. | `BLOCKED` | — |
 
 ## Later-stage backlog
@@ -775,3 +775,39 @@ the board has been expanded with equivalent acceptance detail.
   (mock `api`; cover loading/error/success for profiles + accounts). QA-01 then
   validates the whole slice and unblocks DOC-01. M2's user-facing behaviour is
   implemented; QA-01 is the formal gate.
+
+### 2026-07-15 21:55 UTC — INT-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/package.json`/`package-lock.json` (test devDeps + scripts),
+  `apps/web/vitest.config.ts`, `apps/web/src/test/setup.ts`,
+  `apps/web/tsconfig.json` (exclude tests from the production typecheck),
+  `apps/web/src/api/client.test.ts`, `apps/web/src/api/health.test.tsx`,
+  `apps/web/src/features/profiles/api.test.tsx`, `.github/workflows/ci.yml`
+  (run `npm test` in the web job).
+- Work: Added the frontend test harness — Vitest + Testing Library + jsdom —
+  with deterministic, network-free request-state tests: the API client error
+  model (contract field errors, FastAPI loc/msg, string detail, offline → status
+  0, success), and query-layer states via the real TanStack Query layer with a
+  mocked `api` (loading → success, and error/offline). Profiles hooks assert the
+  active-only scope URL and the create body. Tests are excluded from
+  `tsc --noEmit`/`vite build`, so the production build stays clean while `npm test`
+  runs the suite. Wired `npm test` into CI.
+- Verification: `npx vitest run` — 3 files, **10 tests passed**, deterministic
+  (no network; `api` mocked). `npm run typecheck` clean and `npm run build` ok
+  with tests excluded. Backend isolation confirmed by inspection: the API tests
+  (`tests/test_profile_account_api.py`) build a per-test `tmp_path/api.db` engine
+  and override `get_session`, so they never touch the configured personal
+  database; the full backend suite passed **69** earlier this session. Backend
+  test infrastructure was already isolated, so it was cited, not rewritten.
+- Decisions: Kept backend fixtures as-is (already isolated per BE-05); INT-01's
+  new surface is the web test configuration + deterministic request-state tests.
+  Test files are excluded from the app `tsconfig` to keep build type-checking
+  focused on shipping code while Vitest/esbuild runs the tests.
+- Blockers/risks: none.
+- Handoff: QA-01 is `READY` — the only remaining gate before DOC-01. Run the
+  full validation: clean install, `alembic upgrade head`, backend
+  `pytest`/`ruff`, web `typecheck`/`test`/`build`, loopback startup, a
+  keyboard-only smoke of profiles/accounts, and the profile-isolation scenario
+  (account under profile A absent under profile B). Most of these were exercised
+  ad hoc while building FE-01…FE-05 + INT-01; QA-01 formalises them in one pass.
