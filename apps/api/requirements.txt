@@ -1,0 +1,12 @@
+# Spending Tracker API — runtime dependencies (Stage 0 placeholder)
+# Pin to reasonable recent versions. Keep this minimal until later stages.
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.5
+pydantic-settings==2.7.1
+
+# --- Future stages (do NOT install yet; uncomment as each stage lands) ---
+# SQLAlchemy==2.0.36          # Stage 2: ORM / domain models
+# alembic==1.14.0             # Stage 2: schema migrations
+# pdfplumber==0.11.5          # Stage 3: text-based statement parsing
