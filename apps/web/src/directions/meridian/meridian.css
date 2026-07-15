@@ -6,54 +6,18 @@
    ============================================================ */
 
 .mrd {
-  --mrd-accent: #4f6bff;
-  --mrd-accent-2: #7c5cff;
-  --mrd-warm: #ff8a4c;
-  --mrd-bg: #f5f6fb;
-  --mrd-panel: #ffffff;
-  --mrd-panel-2: #f8f9fe;
-  --mrd-text: #1c2030;
-  --mrd-muted: #666d82;
-  --mrd-faint: #99a0b4;
-  --mrd-border: #e8ebf4;
-  --mrd-border-2: #eef0f7;
-  --mrd-pos: #15a34a;
-  --mrd-neg: #ef4444;
-  --mrd-nav: #ffffff;
-  --mrd-chip: #f1f3fa;
-  --mrd-shadow: 0 14px 34px -22px rgba(38, 48, 92, 0.42);
-  --mrd-shadow-sm: 0 6px 16px -12px rgba(38, 48, 92, 0.5);
-  --mrd-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace;
-  --mrd-r: 16px;
-  --mrd-r-sm: 11px;
-
   min-height: 100vh;
   background:
     radial-gradient(900px 380px at 88% -12%, rgba(79, 107, 255, 0.08), transparent 60%),
     radial-gradient(760px 360px at 2% -8%, rgba(255, 138, 76, 0.06), transparent 58%),
     var(--mrd-bg);
   color: var(--mrd-text);
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
+  font-family: var(--mrd-font-sans);
+  font-size: var(--mrd-font-size-md);
   -webkit-font-smoothing: antialiased;
 }
 
 :root[data-theme='dark'] .mrd {
-  --mrd-accent: #6d84ff;
-  --mrd-accent-2: #9a7cff;
-  --mrd-warm: #ff9a5c;
-  --mrd-bg: #0d1017;
-  --mrd-panel: #161b28;
-  --mrd-panel-2: #1a2030;
-  --mrd-text: #eef1f8;
-  --mrd-muted: #99a1b6;
-  --mrd-faint: #6b7389;
-  --mrd-border: #262d3e;
-  --mrd-border-2: #222838;
-  --mrd-nav: #10141d;
-  --mrd-chip: #1e2434;
-  --mrd-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.7);
-  --mrd-shadow-sm: 0 8px 20px -14px rgba(0, 0, 0, 0.6);
   background:
     radial-gradient(900px 380px at 88% -12%, rgba(109, 132, 255, 0.12), transparent 60%),
     radial-gradient(760px 360px at 2% -8%, rgba(255, 154, 92, 0.07), transparent 58%),
@@ -71,7 +35,7 @@
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--mrd-space-6);
   padding: 0 26px;
   height: 62px;
   background: color-mix(in srgb, var(--mrd-nav) 88%, transparent);
@@ -175,14 +139,14 @@
 .mrd-body {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 24px 26px 80px;
+  padding: var(--mrd-space-6) 26px 80px;
 }
 .mrd-sub {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: var(--mrd-space-4);
+  margin-bottom: var(--mrd-space-5);
 }
 .mrd-sub-titles h1 {
   margin: 0;
@@ -229,8 +193,8 @@
 .mrd-hero-row {
   display: grid;
   grid-template-columns: 1.15fr 2fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--mrd-space-4);
+  margin-bottom: var(--mrd-space-4);
 }
 .mrd-hero {
   border-radius: var(--mrd-r);
@@ -306,7 +270,7 @@
   background: var(--mrd-panel);
   border: 1px solid var(--mrd-border);
   border-radius: var(--mrd-r);
-  padding: 16px;
+  padding: var(--mrd-space-4);
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -354,14 +318,14 @@
 .mrd-grid-2 {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--mrd-space-4);
+  margin-bottom: var(--mrd-space-4);
 }
 .mrd-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--mrd-space-4);
+  margin-bottom: var(--mrd-space-4);
 }
 .mrd-card {
   background: var(--mrd-panel);

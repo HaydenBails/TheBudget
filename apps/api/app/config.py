@@ -9,6 +9,8 @@ exposed beyond the local machine unless the operator deliberately overrides it.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -28,6 +30,9 @@ class Settings(BaseSettings):
     # Local-first: bind to loopback by default.
     host: str = "127.0.0.1"
     port: int = 8787
+
+    # Persistent application data stays in a local, configurable SQLite file.
+    database_path: Path = Path("data/spending_tracker.db")
 
     # Origins allowed to call the API from the browser (Vite dev server).
     cors_origins: list[str] = [

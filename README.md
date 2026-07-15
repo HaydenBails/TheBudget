@@ -1,5 +1,10 @@
 # Spending Tracker (working title)
 
+> **Contributors and AI agents:** read
+> [`docs/implementation-workboard.md`](docs/implementation-workboard.md) before
+> making changes. It is the source of truth for task ownership, dependencies,
+> progress, and handoffs.
+
 A polished, desktop-first, **local-first** personal spending tracker. It imports
 text-based credit-card statements, normalizes them into transactions, suggests
 categories, learns from your corrections, detects recurring charges, and turns

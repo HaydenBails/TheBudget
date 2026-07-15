@@ -1,4 +1,4 @@
-"""FastAPI application entrypoint (Stage 0 placeholder).
+"""FastAPI application entrypoint.
 
 Run locally with::
 
@@ -15,18 +15,21 @@ import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.config import settings
-from app.routers import health
+from app.db import dispose_database
+from app.routers import accounts, health, profiles
+from app.services import InvalidUpdateError, ResourceNotFoundError
 
 logger = logging.getLogger("spending_tracker.api")
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
-    """Startup/shutdown hook. Logs a startup line; wire DB setup here later."""
+    """Log startup and dispose lazily initialized database resources on exit."""
     logger.info(
         "%s v%s ready (local-first, bind %s:%s)",
         settings.app_name,
@@ -34,13 +37,16 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         settings.host,
         settings.port,
     )
-    yield
+    try:
+        yield
+    finally:
+        dispose_database()
 
 
 app = FastAPI(
     title="Spending Tracker API",
     version=settings.version,
-    summary="Local-first personal spending tracker backend (Stage 0 placeholder).",
+    summary="Local-first personal spending tracker backend.",
     lifespan=lifespan,
 )
 
@@ -53,9 +59,35 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Future routers (profiles, accounts, imports, ...) are included alongside this
-# one as later stages land.
 app.include_router(health.router)
+app.include_router(profiles.router)
+app.include_router(accounts.router)
+
+
+@app.exception_handler(ResourceNotFoundError)
+async def resource_not_found_handler(
+    _request: Request,
+    exc: ResourceNotFoundError,
+) -> JSONResponse:
+    """Map absent and out-of-scope resources to the same response shape."""
+
+    return JSONResponse(
+        status_code=status.HTTP_404_NOT_FOUND,
+        content={"detail": str(exc)},
+    )
+
+
+@app.exception_handler(InvalidUpdateError)
+async def invalid_update_handler(
+    _request: Request,
+    exc: InvalidUpdateError,
+) -> JSONResponse:
+    """Return readable validation feedback for explicit null updates."""
+
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": str(exc)},
+    )
 
 
 @app.get("/", tags=["meta"], summary="Service metadata")

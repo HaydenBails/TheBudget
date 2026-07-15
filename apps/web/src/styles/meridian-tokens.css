@@ -1,0 +1,79 @@
+/* Meridian design-system primitives and semantic theme tokens.
+   Components consume the --mrd-* aliases so production UI and the retained
+   prototype can share one theme contract. */
+
+.mrd {
+  /* Typography */
+  --mrd-font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mrd-font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace;
+  --mrd-font-size-xs: 11px;
+  --mrd-font-size-sm: 12px;
+  --mrd-font-size-md: 14px;
+  --mrd-font-size-lg: 17px;
+  --mrd-font-weight-medium: 600;
+  --mrd-font-weight-semibold: 700;
+  --mrd-font-weight-bold: 800;
+
+  /* Spacing scale */
+  --mrd-space-1: 4px;
+  --mrd-space-2: 8px;
+  --mrd-space-3: 12px;
+  --mrd-space-4: 16px;
+  --mrd-space-5: 20px;
+  --mrd-space-6: 24px;
+  --mrd-space-7: 32px;
+  --mrd-space-8: 40px;
+
+  /* Shape and elevation */
+  --mrd-radius-xs: 6px;
+  --mrd-radius-sm: 11px;
+  --mrd-radius-md: 12px;
+  --mrd-radius-lg: 16px;
+  --mrd-radius-pill: 999px;
+  --mrd-shadow-card: 0 14px 34px -22px rgba(38, 48, 92, 0.42);
+  --mrd-shadow-control: 0 6px 16px -12px rgba(38, 48, 92, 0.5);
+
+  /* Light theme */
+  --mrd-accent: #4f6bff;
+  --mrd-accent-2: #7c5cff;
+  --mrd-warm: #ff8a4c;
+  --mrd-bg: #f5f6fb;
+  --mrd-panel: #ffffff;
+  --mrd-panel-2: #f8f9fe;
+  --mrd-text: #1c2030;
+  --mrd-muted: #666d82;
+  --mrd-faint: #99a0b4;
+  --mrd-border: #e8ebf4;
+  --mrd-border-2: #eef0f7;
+  --mrd-positive: #15a34a;
+  --mrd-negative: #ef4444;
+  --mrd-nav: #ffffff;
+  --mrd-chip: #f1f3fa;
+
+  /* Backwards-compatible semantic aliases used by the prototype. */
+  --mrd-pos: var(--mrd-positive);
+  --mrd-neg: var(--mrd-negative);
+  --mrd-shadow: var(--mrd-shadow-card);
+  --mrd-shadow-sm: var(--mrd-shadow-control);
+  --mrd-mono: var(--mrd-font-mono);
+  --mrd-r: var(--mrd-radius-lg);
+  --mrd-r-sm: var(--mrd-radius-sm);
+}
+
+:root[data-theme='dark'] .mrd {
+  --mrd-accent: #6d84ff;
+  --mrd-accent-2: #9a7cff;
+  --mrd-warm: #ff9a5c;
+  --mrd-bg: #0d1017;
+  --mrd-panel: #161b28;
+  --mrd-panel-2: #1a2030;
+  --mrd-text: #eef1f8;
+  --mrd-muted: #99a1b6;
+  --mrd-faint: #6b7389;
+  --mrd-border: #262d3e;
+  --mrd-border-2: #222838;
+  --mrd-nav: #10141d;
+  --mrd-chip: #1e2434;
+  --mrd-shadow-card: 0 18px 40px -24px rgba(0, 0, 0, 0.7);
+  --mrd-shadow-control: 0 8px 20px -14px rgba(0, 0, 0, 0.6);
+}

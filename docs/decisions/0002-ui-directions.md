@@ -1,6 +1,6 @@
 # 2. Stage-1 UI directions
 
-- **Status:** Accepted (pending final sign-off)
+- **Status:** Accepted
 - **Date:** 2026-07-15
 
 ## Context
@@ -36,8 +36,9 @@ Horizon**, implemented as a fourth direction:
   buttons with a Ledger-style queue rail.
 
 The three originals (Aurora, Ledger, Horizon) are retained in the repo for
-reference/comparison but are **not** the production direction. Final visual
-sign-off from the product owner is still pending; Stage 2 builds on Meridian.
+reference/comparison but are **not** the production direction. The product owner
+approved Meridian as the production direction on 2026-07-15; Stage 2 builds on
+Meridian.
 
 ### Prototype variables being compared
 

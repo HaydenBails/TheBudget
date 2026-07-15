@@ -45,6 +45,7 @@ import {
   formatShortDate,
   formatSignedPct,
 } from '../../lib/format';
+import '../../styles/meridian-tokens.css';
 import './meridian.css';
 
 const MONTH_LABEL = formatMonthLabel(CURRENT_YM + '-01');

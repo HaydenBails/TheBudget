@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-07-15T20:02:04.432031+00:00",
+  "nodes": {
+    "docs_implementation_workboard_dependency_ordered_execution": {
+      "code_fingerprint": "1efe7f5c3ebc76d98e839127b88a99263322998d549b3b0cd8bab00122fb96fb",
+      "label": "Dependency-Ordered Execution",
+      "last": "2026-07-15T20:00:19.047731+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-15T20:00:19.047731+00:00",
+          "outcome": "useful",
+          "q": "how can we use this for better token usage"
+        }
+      ],
+      "score": 0.999971819,
+      "source_file": "docs/implementation-workboard.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "docs_implementation_workboard_implementation_workboard": {
+      "code_fingerprint": "1efe7f5c3ebc76d98e839127b88a99263322998d549b3b0cd8bab00122fb96fb",
+      "label": "Implementation Workboard",
+      "last": "2026-07-15T20:00:19.047731+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-15T20:00:19.047731+00:00",
+          "outcome": "useful",
+          "q": "how can we use this for better token usage"
+        }
+      ],
+      "score": 0.999971819,
+      "source_file": "docs/implementation-workboard.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "spending_tracker_product_plan_agent_delegation": {
+      "code_fingerprint": "29e09a5ce843f9f645906dbc14420bda82bc91362448139d51baf4bf8121d79a",
+      "label": "Bounded Agent Delegation",
+      "last": "2026-07-15T20:00:19.047731+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-15T20:00:19.047731+00:00",
+          "outcome": "useful",
+          "q": "how can we use this for better token usage"
+        }
+      ],
+      "score": 0.999971819,
+      "source_file": "SPENDING_TRACKER_PRODUCT_PLAN.md",
+      "status": "tentative",
+      "uses": 1
+    }
+  },
+  "version": 1
+}

@@ -47,6 +47,44 @@ file (copy `.env.example` → `.env`). See [`app/config.py`](app/config.py).
 | ---------- | ------------- | ------------------------------------ |
 | `ST_HOST`  | `127.0.0.1`   | Bind address (keep on loopback).     |
 | `ST_PORT`  | `8787`        | Bind port.                           |
+| `ST_DATABASE_PATH` | `data/spending_tracker.db` | Local SQLite database file. |
+
+## Database migrations
+
+Run migrations from `apps/api` with the virtual environment active. Alembic
+uses `ST_DATABASE_PATH`, so the same commands work for the default local store
+or an explicitly selected database:
+
+```bash
+# Apply every migration
+python -m alembic upgrade head
+
+# Show the current and available revisions
+python -m alembic current
+python -m alembic history
+
+# Roll back one revision, then reapply it
+python -m alembic downgrade -1
+python -m alembic upgrade head
+```
+
+For a temporary or test database, set the path before running Alembic:
+
+```bash
+ST_DATABASE_PATH=/tmp/spending-tracker-test.db python -m alembic upgrade head
+```
+
+```powershell
+$env:ST_DATABASE_PATH = "$env:TEMP\spending-tracker-test.db"
+python -m alembic upgrade head
+```
+
+Create future revisions only after importing the relevant ORM metadata in
+`alembic/env.py`:
+
+```bash
+python -m alembic revision --autogenerate -m "describe schema change"
+```
 
 ## Test & lint
 
