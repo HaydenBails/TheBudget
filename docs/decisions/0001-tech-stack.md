@@ -29,8 +29,9 @@ TanStack Table (transaction grids), Recharts (charts), React Router (routing).
 mode (single-file local store), pdfplumber (text extraction from text-based
 statement PDFs).
 
-**Structure** — a monorepo with `apps/web`, `apps/api`, shared `packages/*`
-(future), `fixtures/`, `docs/`, `scripts/`, and `tests/e2e`.
+**Structure** — a monorepo with independently managed `apps/web` and `apps/api`,
+plus `fixtures/`, `docs/`, `scripts/`, and `tests/e2e`. Shared `packages/*` are
+deferred until a concrete cross-application contract or UI package is needed.
 
 ### Why these choices
 
@@ -59,3 +60,13 @@ statement PDFs).
   for local development (mitigated by `scripts/start-local.*`).
 - Stage 0 ships only a FastAPI placeholder (`/`, `/health`); ORM, migrations,
   and parsing arrive in later stages.
+- Node and Python dependencies remain app-local (`apps/web/package-lock.json`
+  and `apps/api/requirements*.txt`). A root JavaScript workspace is intentionally
+  deferred while there are no shared packages to coordinate.
+- `scripts/start-local.sh` and `scripts/start-local.ps1` are development
+  orchestration only: they preflight installed dependencies, bind both services
+  to loopback by default, enable backend reload, and stop the pair when either
+  child exits. They do not install dependencies or provide production packaging.
+- CI is the Stage 0 acceptance gate: a clean checkout must pass frontend
+  typechecking/build plus backend Ruff checks/tests. These checks are
+  fail-closed; missing dependencies, tests, or lint failures are not tolerated.

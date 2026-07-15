@@ -37,12 +37,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # requirements files are created by the backend scaffold; tolerate absence early.
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-          pip install ruff
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
       - name: Lint
-        run: ruff check . || true
+        run: ruff check .
       - name: Tests
-        run: |
-          if [ -d tests ]; then python -m pytest -q; else echo "no tests yet"; fi
+        run: python -m pytest -q

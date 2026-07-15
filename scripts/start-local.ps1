@@ -17,30 +17,43 @@ $RootDir = Resolve-Path (Join-Path $ScriptDir "..")
 
 $ApiHost = if ($env:ST_HOST) { $env:ST_HOST } else { "127.0.0.1" }
 $ApiPort = if ($env:ST_PORT) { $env:ST_PORT } else { "8787" }
+$WebHost = if ($env:ST_WEB_HOST) { $env:ST_WEB_HOST } else { "127.0.0.1" }
+$WebPort = if ($env:ST_WEB_PORT) { $env:ST_WEB_PORT } else { "5173" }
 
-# Prefer the API virtualenv's python if present; fall back to 'python' on PATH.
+# Require the documented API virtualenv so frontend/backend startup is atomic.
 $ApiPy = Join-Path $RootDir "apps\api\.venv\Scripts\python.exe"
 if (-not (Test-Path $ApiPy)) {
-    Write-Warning "$ApiPy not found; falling back to 'python' on PATH."
-    Write-Host "  Create it with: cd apps\api; python -m venv .venv; .\.venv\Scripts\pip install -r requirements.txt"
-    $ApiPy = "python"
+    throw "API virtualenv not found at $ApiPy. See apps\api\README.md for setup instructions."
+}
+
+$Npm = Get-Command "npm.cmd" -ErrorAction SilentlyContinue
+if (-not $Npm) { $Npm = Get-Command "npm" -ErrorAction SilentlyContinue }
+if (-not $Npm) { throw "npm is not on PATH (Node.js 20+ is required)." }
+if (-not (Test-Path (Join-Path $RootDir "apps\web\node_modules"))) {
+    throw "Frontend dependencies are not installed. Run: cd apps\web; npm install"
+}
+& $ApiPy -c "import uvicorn" 2>$null
+if ($LASTEXITCODE -ne 0) {
+    throw "API dependencies are not installed in apps\api\.venv. See apps\api\README.md."
 }
 
 $procs = @()
 try {
     Write-Host "Starting API on http://${ApiHost}:${ApiPort} ..."
     $procs += Start-Process -PassThru -NoNewWindow -FilePath $ApiPy `
-        -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", $ApiHost, "--port", $ApiPort) `
+        -ArgumentList @("-m", "uvicorn", "app.main:app", "--reload", "--host", $ApiHost, "--port", $ApiPort) `
         -WorkingDirectory (Join-Path $RootDir "apps\api")
 
-    Write-Host "Starting web dev server (apps\web) ..."
-    $procs += Start-Process -PassThru -NoNewWindow -FilePath "npm" `
-        -ArgumentList @("run", "dev") `
+    Write-Host "Starting web dev server on http://${WebHost}:${WebPort} ..."
+    $procs += Start-Process -PassThru -NoNewWindow -FilePath $Npm.Source `
+        -ArgumentList @("run", "dev", "--", "--host", $WebHost, "--port", $WebPort, "--strictPort") `
         -WorkingDirectory (Join-Path $RootDir "apps\web")
 
     Write-Host "Both processes started. Press Ctrl+C to stop."
-    # Block until either process exits.
-    Wait-Process -Id ($procs | ForEach-Object { $_.Id })
+    # Stop the pair if either service exits.
+    while (-not ($procs | Where-Object { $_.HasExited })) {
+        Start-Sleep -Milliseconds 500
+    }
 }
 finally {
     Write-Host "`nStopping Spending Tracker..."

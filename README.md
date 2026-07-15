@@ -21,9 +21,7 @@ TheBudget/
   apps/
     web/          React + TypeScript + Vite frontend (UI directions live here)
     api/          FastAPI backend (Stage 0 placeholder)
-  packages/
-    ui/           Shared design-system tokens/components (future)
-    contracts/    Shared API types/schema (future)
+  packages/       Shared UI/contracts packages (planned; not created yet)
   fixtures/
     statements/   Redacted/synthetic parser fixtures (never real statements)
   docs/
@@ -59,6 +57,22 @@ To produce a static build:
 ```bash
 npm run build && npm run preview
 ```
+
+## Run the full local development stack
+
+After installing both frontend and backend dependencies, start the API and web
+development servers together from any directory:
+
+```bash
+./scripts/start-local.sh          # macOS / Linux
+```
+
+```powershell
+./scripts/start-local.ps1         # Windows PowerShell
+```
+
+Both services bind to loopback by default. See [`scripts/README.md`](scripts/README.md)
+for setup checks, ports, and optional environment overrides.
 
 ## Backend placeholder
 
