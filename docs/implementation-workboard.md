@@ -86,8 +86,8 @@ Read before implementation:
 | Milestone | Exit condition | Status |
 | --- | --- | --- |
 | M0 — Stage 1 closure | Meridian is signed off and ADR 0002 records the final decision. | `DONE` |
-| M1 — Development foundation | Database, migrations, app shell, API client, and test foundations work. | `IN PROGRESS` |
-| M2 — Profiles and accounts | A user can create/switch profiles and manage isolated accounts. | `IN PROGRESS` (FE-04/FE-05 done; awaiting INT-01 + QA-01) |
+| M1 — Development foundation | Database, migrations, app shell, API client, and test foundations work. | `DONE` |
+| M2 — Profiles and accounts | A user can create/switch profiles and manage isolated accounts. | `DONE` (validated by QA-01; DOC-01 remains) |
 | M3 — Core ledger schema | Categories and transactions persist with exact money semantics. | `BLOCKED` |
 | M4 — First production workspace | Meridian shell displays API-backed profile/account data reliably. | `BLOCKED` |
 
@@ -141,8 +141,8 @@ the explicitly named integration tasks.
 | ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
 | INT-01 | Add isolated integration-test database and frontend API mocking/test harness. | BE-05, FE-03 | API test fixtures, web test configuration | Tests never touch the user's real database; backend API tests and frontend request-state tests run deterministically. | `DONE` | Claude Opus 4.8 |
-| QA-01 | Validate the complete profiles/accounts vertical slice. | BE-05, BE-06, FE-05, INT-01 | Cross-app review; avoid feature edits unless defects are found | Clean setup, migrations, backend tests/lint, frontend typecheck/build/tests, loopback startup, keyboard smoke test, and profile-isolation scenarios pass. | `READY` | — |
-| DOC-01 | Update setup, architecture, API, and user-flow documentation after the slice lands. | QA-01 | `README.md`, `docs/architecture/`, `apps/api/README.md` | A new developer can reproduce setup and the documented behavior matches verified commands. | `BLOCKED` | — |
+| QA-01 | Validate the complete profiles/accounts vertical slice. | BE-05, BE-06, FE-05, INT-01 | Cross-app review; avoid feature edits unless defects are found | Clean setup, migrations, backend tests/lint, frontend typecheck/build/tests, loopback startup, keyboard smoke test, and profile-isolation scenarios pass. | `DONE` | Claude Opus 4.8 |
+| DOC-01 | Update setup, architecture, API, and user-flow documentation after the slice lands. | QA-01 | `README.md`, `docs/architecture/`, `apps/api/README.md` | A new developer can reproduce setup and the documented behavior matches verified commands. | `READY` | — |
 
 ## Later-stage backlog
 
@@ -811,3 +811,33 @@ the board has been expanded with equivalent acceptance detail.
   keyboard-only smoke of profiles/accounts, and the profile-isolation scenario
   (account under profile A absent under profile B). Most of these were exercised
   ad hoc while building FE-01…FE-05 + INT-01; QA-01 formalises them in one pass.
+
+### 2026-07-15 22:15 UTC — QA-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: cross-app validation only (no feature edits — no defects found); this
+  workboard.
+- Work: Ran the full profiles/accounts vertical-slice validation in one pass.
+- Verification (all green):
+  - **Migrations:** on a fresh temp DB, `alembic upgrade head` → `downgrade
+    base` → `upgrade head` all succeed (reversible).
+  - **Backend:** `ruff check app tests alembic` — all pass; `pytest -q` — 69
+    passed.
+  - **Frontend:** `npm run typecheck` clean; `npm test` — 10 passed; `npm run
+    build` — success.
+  - **Loopback startup:** uvicorn `--host 127.0.0.1` on 8787; `hostname -i` =
+    127.0.0.1 (no off-loopback exposure); web dev server on 127.0.0.1:5173.
+  - **Keyboard smoke (profiles):** tab order reaches Switch to / Rename /
+    Archive as real focusable buttons.
+  - **Profile isolation (live UI):** created profiles "Alpha" + "Beta"; added a
+    "Beta Card" account while Beta was active (accounts=1); switched to Alpha →
+    accounts=0 with the "No accounts yet" empty state. Backend-level isolation
+    was also confirmed earlier (`GET /profiles/1/accounts` populated vs
+    `/profiles/2/accounts` empty).
+- Decisions: No code changes required; the slice met every acceptance criterion.
+- Blockers/risks: none. Milestones M1 and M2 are complete.
+- Handoff: DOC-01 (`READY`, last task in this group) — refresh `README.md`,
+  `apps/api/README.md`, and `docs/architecture/` so a new developer can reproduce
+  the verified setup/run/test commands and the documented behaviour matches the
+  shipped profiles/accounts app. After DOC-01, expand the board with the next
+  vertical slice from the later-stage backlog (categories/transactions).
