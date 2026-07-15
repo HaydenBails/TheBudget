@@ -1,6 +1,7 @@
-// Production pages for the shell. Profiles is implemented in
-// features/profiles/ProfilesPage; accounts → FE-05, categories → backlog.
+// Production pages for the shell. Profiles → features/profiles/ProfilesPage,
+// accounts → features/accounts/AccountsPage; categories → backlog.
 import { useCurrentProfile } from '../features/profiles/ProfileContext';
+import { useAccounts } from '../features/accounts/api';
 
 function PageHead({ title, subtitle }: { title: string; subtitle: string }) {
   return (
@@ -25,7 +26,8 @@ function Placeholder({ badge, title, body, task }: { badge: string; title: strin
 }
 
 export function DashboardPage() {
-  const { currentProfile } = useCurrentProfile();
+  const { currentProfile, currentProfileId } = useCurrentProfile();
+  const accounts = useAccounts(currentProfileId, false);
   return (
     <>
       <PageHead title="Dashboard" subtitle="Your workspace — connected to the local API in a later task." />
@@ -36,7 +38,7 @@ export function DashboardPage() {
         </div>
         <div className="app-tile">
           <div className="app-tile-k">Accounts</div>
-          <div className="app-tile-v">—</div>
+          <div className="app-tile-v">{accounts.data ? accounts.data.length : '—'}</div>
         </div>
         <div className="app-tile">
           <div className="app-tile-k">Categories</div>
@@ -48,20 +50,6 @@ export function DashboardPage() {
         title="Spending insights are on the way"
         body="This production shell renders the Meridian design system with light and dark themes and keyboard-accessible navigation. Live profile, account, and spending data connect through the local API in the upcoming tasks."
         task="FE-03 → FE-05"
-      />
-    </>
-  );
-}
-
-export function AccountsPage() {
-  return (
-    <>
-      <PageHead title="Accounts" subtitle="Manage the cards and accounts for the active profile." />
-      <Placeholder
-        badge="▤"
-        title="Account management"
-        body="Add, edit, and archive credit-card accounts scoped to the active profile — issuer, display name, colour, and masked digits. Wires to the local accounts API."
-        task="FE-05"
       />
     </>
   );

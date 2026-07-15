@@ -87,7 +87,7 @@ Read before implementation:
 | --- | --- | --- |
 | M0 — Stage 1 closure | Meridian is signed off and ADR 0002 records the final decision. | `DONE` |
 | M1 — Development foundation | Database, migrations, app shell, API client, and test foundations work. | `IN PROGRESS` |
-| M2 — Profiles and accounts | A user can create/switch profiles and manage isolated accounts. | `BLOCKED` |
+| M2 — Profiles and accounts | A user can create/switch profiles and manage isolated accounts. | `IN PROGRESS` (FE-04/FE-05 done; awaiting INT-01 + QA-01) |
 | M3 — Core ledger schema | Categories and transactions persist with exact money semantics. | `BLOCKED` |
 | M4 — First production workspace | Meridian shell displays API-backed profile/account data reliably. | `BLOCKED` |
 
@@ -134,7 +134,7 @@ the explicitly named integration tasks.
 | FE-02 | Create production application shell and routes separate from the comparison harness. | FE-01 | `apps/web/src/app/`, `apps/web/src/main.tsx`, reusable components | Production routes render Meridian navigation and theme; prototype routes remain accessible for reference; keyboard navigation works. | `DONE` | Claude Opus 4.8 |
 | FE-03 | Install/configure TanStack Query and define the typed local API client/error model. | FE-02 | `apps/web/package*.json`, `apps/web/src/api/`, query client | Lockfile is consistent; health request works; loading/error states are tested; API base defaults to loopback/local configuration. | `DONE` | Claude Opus 4.8 |
 | FE-04 | Build profile switcher and profile management UI. | FE-03, BE-05 | `apps/web/src/features/profiles/` | List/create/select/delete flows work against API; destructive action confirms; loading, empty, and error states exist. | `DONE` | Claude Opus 4.8 |
-| FE-05 | Build account management UI for the active profile. | FE-04, BE-05 | `apps/web/src/features/accounts/` | Account list/create/edit/delete stays scoped to active profile; form validation and empty/error states are covered. | `READY` | — |
+| FE-05 | Build account management UI for the active profile. | FE-04, BE-05 | `apps/web/src/features/accounts/` | Account list/create/edit/delete stays scoped to active profile; form validation and empty/error states are covered. | `DONE` | Claude Opus 4.8 |
 
 ### Integration, quality, and documentation
 
@@ -736,3 +736,42 @@ the board has been expanded with equivalent acceptance detail.
   `useCurrentProfile()`, consuming `/profiles/{id}/accounts` and `/accounts/{id}`
   (archive/restore, not delete). Read `apps/api/app/schemas/account.py` for exact
   fields before implementing.
+
+### 2026-07-15 21:35 UTC — FE-05 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/src/features/accounts/` (`types.ts`, `api.ts`,
+  `AccountsPage.tsx`, `accounts.css`); `apps/web/src/app/AppShell.tsx` (accounts
+  route → real page); `apps/web/src/app/pages.tsx` (dashboard Accounts-count tile;
+  removed placeholder AccountsPage); reference screenshots.
+- Work: Built account management scoped to the active profile from
+  `useCurrentProfile()`. Account routes are nested under the profile
+  (`/profiles/{id}/accounts`, `.../{accountId}/archive|restore`). Types mirror the
+  backend exactly (integer ids, snake_case `display_name`/`is_archived`,
+  nullable `last4`). A shared `AccountForm` handles create + edit: issuer
+  `<select>` (TD/AMEX/CIBC/OTHER), display name, an accessible colour-swatch
+  radiogroup, optional 4–5 digit last4 with inline validation. Rows show a
+  coloured card chip + masked digits; archive requires an in-row confirm; archived
+  accounts can be restored. When no profile is selected, the page routes the user
+  to Profiles.
+- Verification: `npm run typecheck` clean; `npm run build` ok. End-to-end against
+  the live backend (migrated scratch SQLite + uvicorn + CORS dev server), driven
+  with Playwright: created "TD Cash Back Visa" (issuer TD, green swatch, last4
+  4821) under the active profile; archived-with-confirm → Archived; restored →
+  active. **Profile isolation proven directly:** `GET /profiles/1/accounts`
+  returns the account, `GET /profiles/2/accounts` returns `[]`; the UI's query key
+  and URL are profile-scoped so switching profiles swaps the account list. Empty
+  and error states implemented.
+- ui-ux checks (skill unavailable — see FE-01 exception): labelled inputs +
+  `<select>`, `role="radiogroup"/radio` colour swatches with `aria-checked`,
+  `role="alert"` validation, visible focus, light/dark tokens, colour paired with
+  issuer text + masked digits (never colour alone). Warm CTA on primary actions.
+- Decisions: "delete" realised as archive+confirm (backend exposes archive/
+  restore only). Edit reuses the create form pre-filled (PATCH).
+- Blockers/risks: none. The profiles/accounts vertical slice is now feature-
+  complete end-to-end.
+- Handoff: INT-01 (`READY`) is next in the critical path — add the isolated
+  integration-test DB fixtures and the deterministic frontend request-state tests
+  (mock `api`; cover loading/error/success for profiles + accounts). QA-01 then
+  validates the whole slice and unblocks DOC-01. M2's user-facing behaviour is
+  implemented; QA-01 is the formal gate.
