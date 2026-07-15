@@ -1,8 +1,9 @@
 # Spending Tracker API
 
-Local-first FastAPI backend for the Spending Tracker. **Stage 0 placeholder** —
-it exposes only service metadata and a health probe. Domain models, migrations,
-and statement parsing arrive in later stages.
+Local-first FastAPI backend for the Spending Tracker. Implements the
+**profiles + accounts** domain (SQLAlchemy 2 models, Alembic migrations,
+profile-scoped services, and typed routes). Categories, transactions, and
+statement parsing arrive in later stages.
 
 > The API binds to `127.0.0.1` (loopback) by design and has **no
 > authentication**. It is a single-user, local-only desktop service.
@@ -32,11 +33,22 @@ pip install -r requirements-dev.txt
 uvicorn app.main:app --host 127.0.0.1 --port 8787
 ```
 
-- `GET /`        → `{ "name", "version", "status" }`
-- `GET /health`  → `{ "status": "ok", "service": "spending-tracker-api", "version": "0.0.1" }`
-- `GET /docs`    → interactive OpenAPI (Swagger) UI
+Add `--reload` during development for auto-restart on file changes. Run
+`alembic upgrade head` first so the schema exists.
 
-Add `--reload` during development for auto-restart on file changes.
+### Endpoints
+
+- `GET /` and `GET /health` — service metadata / health probe
+- `GET /docs` — interactive OpenAPI (Swagger) UI
+- **Profiles:** `GET/POST /profiles`, `GET/PATCH /profiles/{id}`,
+  `POST /profiles/{id}/archive`, `POST /profiles/{id}/restore`
+- **Accounts** (scoped to a profile): `GET/POST /profiles/{id}/accounts`,
+  `GET/PATCH /profiles/{id}/accounts/{accountId}`,
+  `POST /profiles/{id}/accounts/{accountId}/archive|restore`
+
+Profiles/accounts are **archived/restored, never hard-deleted**. Every scoped
+query filters by profile id in the service layer; missing or cross-profile ids
+return `404` without leaking existence. Money is integer cents.
 
 ## Configuration
 
@@ -99,12 +111,15 @@ ruff check .
 apps/api/
   app/
     main.py            # FastAPI app + CORS + router wiring
-    config.py          # pydantic-settings Settings
-    routers/
-      health.py        # /health probe
-      # profiles.py, accounts.py, imports.py, ... (future stages)
-  tests/
-    test_health.py
+    config.py          # pydantic-settings Settings (ST_* env)
+    db/                # engine/session factory + get_session dependency (WAL, FK on)
+    domain/            # money (integer cents) + date utilities
+    models/           # SQLAlchemy 2 models: base, profile, account
+    schemas/          # Pydantic v2 request/response schemas
+    services/         # profile-scoped services (profiles, accounts, errors)
+    routers/          # health, profiles, accounts
+  alembic/            # migration env + versions
+  tests/              # health, money, dates, database, profile/account api/services/…
   requirements.txt        # runtime deps
   requirements-dev.txt     # test/lint deps
   pyproject.toml           # ruff + pytest config

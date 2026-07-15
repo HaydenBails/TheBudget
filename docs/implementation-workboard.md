@@ -1,7 +1,7 @@
 # Implementation workboard
 
 - **Purpose:** Single source of truth for implementation planning and AI handoffs
-- **Current phase:** Stage 1 sign-off → Stage 2 foundation
+- **Current phase:** Stage 2 foundation complete (profiles/accounts slice) → next slice TBD
 - **Production UI direction:** Meridian, approved by the product owner
 - **Last updated:** 2026-07-15
 
@@ -142,7 +142,7 @@ the explicitly named integration tasks.
 | --- | --- | --- | --- | --- | --- | --- |
 | INT-01 | Add isolated integration-test database and frontend API mocking/test harness. | BE-05, FE-03 | API test fixtures, web test configuration | Tests never touch the user's real database; backend API tests and frontend request-state tests run deterministically. | `DONE` | Claude Opus 4.8 |
 | QA-01 | Validate the complete profiles/accounts vertical slice. | BE-05, BE-06, FE-05, INT-01 | Cross-app review; avoid feature edits unless defects are found | Clean setup, migrations, backend tests/lint, frontend typecheck/build/tests, loopback startup, keyboard smoke test, and profile-isolation scenarios pass. | `DONE` | Claude Opus 4.8 |
-| DOC-01 | Update setup, architecture, API, and user-flow documentation after the slice lands. | QA-01 | `README.md`, `docs/architecture/`, `apps/api/README.md` | A new developer can reproduce setup and the documented behavior matches verified commands. | `READY` | — |
+| DOC-01 | Update setup, architecture, API, and user-flow documentation after the slice lands. | QA-01 | `README.md`, `docs/architecture/`, `apps/api/README.md` | A new developer can reproduce setup and the documented behavior matches verified commands. | `DONE` | Claude Opus 4.8 |
 
 ## Later-stage backlog
 
@@ -841,3 +841,29 @@ the board has been expanded with equivalent acceptance detail.
   the verified setup/run/test commands and the documented behaviour matches the
   shipped profiles/accounts app. After DOC-01, expand the board with the next
   vertical slice from the later-stage backlog (categories/transactions).
+
+### 2026-07-15 22:30 UTC — DOC-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `README.md`, `apps/api/README.md`, `docs/architecture/overview.md`.
+- Work: Brought the docs in line with the shipped, verified state. Root README:
+  updated Status to Stage 2 foundation, documented the `/app` production app vs
+  the `/` prototype harness, replaced the "Backend placeholder" section with the
+  real setup (venv, `alembic upgrade head`, uvicorn, pytest, ruff) + the actual
+  profiles/accounts endpoints + `ST_DATABASE_PATH` + archive-not-delete + money-
+  as-cents, added the frontend checks (`typecheck`/`test`/`build`), and corrected
+  the repo-shape labels. `apps/api/README.md`: removed the "Stage 0 placeholder"
+  framing, listed the profiles/accounts endpoints and scoping/archival rules, and
+  refreshed the layout tree (db/domain/models/schemas/services/alembic/tests).
+  `docs/architecture/overview.md`: added an "Implemented so far (Stage 2
+  foundation)" section and fixed the stale monorepo labels.
+- Verification: every documented command was actually run during this session
+  (npm install/dev/typecheck/test/build; pip install; `alembic upgrade head` +
+  downgrade/upgrade; uvicorn on 127.0.0.1; pytest 69; ruff) — docs match verified
+  behaviour. Markdown links point at existing files.
+- Blockers/risks: none.
+- Handoff: The profiles/accounts vertical slice (M1 + M2) and its documentation
+  are complete. The next agent should **expand this board** with a new slice from
+  the later-stage backlog — recommended: categories (seed defaults + per-profile
+  overrides) as BE/FE tasks with the same acceptance rigour — before claiming
+  implementation.
