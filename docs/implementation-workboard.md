@@ -132,15 +132,15 @@ the explicitly named integration tasks.
 | --- | --- | --- | --- | --- | --- | --- |
 | FE-01 | Extract Meridian design tokens without changing prototype behavior. | S1-01 | `apps/web/src/styles/`, Meridian CSS, frontend tests | Colors, spacing, typography, radii, shadows, and light/dark tokens are centralized; build and visual smoke check pass. | `DONE` | Codex / fe01_meridian_tokens; acceptance by Claude Opus 4.8 |
 | FE-02 | Create production application shell and routes separate from the comparison harness. | FE-01 | `apps/web/src/app/`, `apps/web/src/main.tsx`, reusable components | Production routes render Meridian navigation and theme; prototype routes remain accessible for reference; keyboard navigation works. | `DONE` | Claude Opus 4.8 |
-| FE-03 | Install/configure TanStack Query and define the typed local API client/error model. | FE-02 | `apps/web/package*.json`, `apps/web/src/api/`, query client | Lockfile is consistent; health request works; loading/error states are tested; API base defaults to loopback/local configuration. | `READY` | — |
-| FE-04 | Build profile switcher and profile management UI. | FE-03, BE-05 | `apps/web/src/features/profiles/` | List/create/select/delete flows work against API; destructive action confirms; loading, empty, and error states exist. | `BLOCKED` | — |
+| FE-03 | Install/configure TanStack Query and define the typed local API client/error model. | FE-02 | `apps/web/package*.json`, `apps/web/src/api/`, query client | Lockfile is consistent; health request works; loading/error states are tested; API base defaults to loopback/local configuration. | `DONE` | Claude Opus 4.8 |
+| FE-04 | Build profile switcher and profile management UI. | FE-03, BE-05 | `apps/web/src/features/profiles/` | List/create/select/delete flows work against API; destructive action confirms; loading, empty, and error states exist. | `READY` | — |
 | FE-05 | Build account management UI for the active profile. | FE-04, BE-05 | `apps/web/src/features/accounts/` | Account list/create/edit/delete stays scoped to active profile; form validation and empty/error states are covered. | `BLOCKED` | — |
 
 ### Integration, quality, and documentation
 
 | ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
-| INT-01 | Add isolated integration-test database and frontend API mocking/test harness. | BE-05, FE-03 | API test fixtures, web test configuration | Tests never touch the user's real database; backend API tests and frontend request-state tests run deterministically. | `BLOCKED` | — |
+| INT-01 | Add isolated integration-test database and frontend API mocking/test harness. | BE-05, FE-03 | API test fixtures, web test configuration | Tests never touch the user's real database; backend API tests and frontend request-state tests run deterministically. | `READY` | — |
 | QA-01 | Validate the complete profiles/accounts vertical slice. | BE-05, BE-06, FE-05, INT-01 | Cross-app review; avoid feature edits unless defects are found | Clean setup, migrations, backend tests/lint, frontend typecheck/build/tests, loopback startup, keyboard smoke test, and profile-isolation scenarios pass. | `BLOCKED` | — |
 | DOC-01 | Update setup, architecture, API, and user-flow documentation after the slice lands. | QA-01 | `README.md`, `docs/architecture/`, `apps/api/README.md` | A new developer can reproduce setup and the documented behavior matches verified commands. | `BLOCKED` | — |
 
@@ -657,3 +657,40 @@ the board has been expanded with equivalent acceptance detail.
   and error model under `apps/web/src/api/`, wrap the app in a
   QueryClientProvider, and prove a `/health` request with loading/error states.
   Then FE-04 (profiles) and INT-01 unblock.
+
+### 2026-07-15 20:55 UTC — FE-03 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/package.json` + `package-lock.json` (add
+  `@tanstack/react-query`), `apps/web/src/api/` (`client.ts`, `queryClient.ts`,
+  `health.ts`), `apps/web/src/vite-env.d.ts`, `apps/web/src/app/AppShell.tsx`
+  (QueryClientProvider + live API-status indicator), `apps/web/src/app/app.css`
+  (status styles), reference screenshots.
+- Work: Added a typed local API client with a normalized `ApiError` (handles the
+  contract's `{detail:[{field,message}]}` and FastAPI's default `{detail:[{loc,
+  msg}]}`, plus a clear offline error on network/CORS failure). Added a shared
+  `QueryClient` (one retry, no retry on 4xx, no refetch-on-focus) and a `useHealth`
+  hook. Wrapped the production shell in `QueryClientProvider` and surfaced a live
+  connection chip (checking / connected / offline) in the nav. API base defaults
+  to `http://127.0.0.1:8787`, overridable via `VITE_API_BASE`.
+- Verification: `npm run typecheck` — clean; `npm run build` — success. End-to-end
+  with the real backend: started `uvicorn app.main:app` (127.0.0.1:8787), served
+  the web dev server on the CORS-allowed `127.0.0.1:5173`, and confirmed the
+  health query resolves — nav shows a green “API connected” (`.app-status.online`).
+  Stopped the backend and reloaded — nav shows red “API offline”
+  (`.app-status.offline`), exercising the error path. Loading state renders
+  “Checking API…”. Backend regression suite earlier this session: 69 passed.
+- Decisions: Kept the query client scoped to the production app shell (prototypes
+  don't use it). Entity (Profile/Account) TS types are intentionally NOT added
+  here — FE-04/FE-05 will derive them from the verified OpenAPI per BE-05's
+  handoff, avoiding speculative drift.
+- Blockers/risks: none. NOTE on “states are tested”: the loading/error/success
+  states are implemented and verified live/rendered, but *automated* deterministic
+  request-state tests require the web test harness, which is **INT-01's** scope
+  (INT-01 depends on FE-03 in the dependency map). Those unit tests are handed to
+  INT-01 rather than duplicated here.
+- Handoff: FE-04 (profiles UI) and INT-01 (test harness) are now `READY`. FE-04
+  should consume `api`/`useQuery` from `src/api`, add profile list/create/select
+  with loading/empty/error states, and derive Profile types from the backend
+  OpenAPI. INT-01 should add the deterministic frontend request-state tests
+  (mocking `api`) and the isolated integration DB fixtures.

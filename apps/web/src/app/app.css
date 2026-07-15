@@ -105,6 +105,43 @@
   align-items: center;
   gap: 12px;
 }
+
+/* live API connection status */
+.app-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: var(--mrd-font-weight-medium);
+  color: var(--mrd-muted);
+  padding: 6px 11px;
+  border-radius: var(--mrd-radius-pill);
+  border: 1px solid var(--mrd-border);
+  background: var(--mrd-panel);
+  white-space: nowrap;
+}
+.app-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mrd-faint);
+}
+.app-status.online .app-status-dot {
+  background: var(--mrd-positive);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mrd-positive) 22%, transparent);
+}
+.app-status.offline .app-status-dot {
+  background: var(--mrd-negative);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mrd-negative) 22%, transparent);
+}
+.app-status.checking .app-status-dot {
+  background: var(--mrd-warm);
+}
+@media (max-width: 860px) {
+  .app-status {
+    display: none;
+  }
+}
 .app-iconbtn {
   height: 36px;
   padding: 0 12px;
