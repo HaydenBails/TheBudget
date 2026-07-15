@@ -1,6 +1,6 @@
 # 2. Stage-1 UI directions
 
-- **Status:** Proposed
+- **Status:** Accepted (pending final sign-off)
 - **Date:** 2026-07-15
 
 ## Context
@@ -24,15 +24,26 @@ Review Categories) so they can be compared apples-to-apples:
 - **Horizon** — bold and colourful; **orange** palette; high-contrast accents;
   chart-led.
 
-**Which direction is selected: TBD — awaiting selection.** This ADR stays in
-**Proposed** status until one direction is chosen; a follow-up ADR (or an update
-to this one, moved to Accepted) will record the pick and its rationale.
+After reviewing the three, the selected direction is a **blend of Ledger and
+Horizon**, implemented as a fourth direction:
+
+- **Meridian** *(selected)* — Ledger's information **density** and precise
+  tabular numbers, softened with Horizon's **rounded cards, gentle gradients and
+  warmth**. Blue-violet (`#4f6bff`) palette. Goal: professional but friendly.
+  Soft top-bar nav with a rounded active pill; a gradient hero KPI alongside a
+  compact secondary-metric row; dense-but-comfortable tables with monospace
+  descriptions; a review flow that pairs Horizon's large friendly category
+  buttons with a Ledger-style queue rail.
+
+The three originals (Aurora, Ledger, Horizon) are retained in the repo for
+reference/comparison but are **not** the production direction. Final visual
+sign-off from the product owner is still pending; Stage 2 builds on Meridian.
 
 ### Prototype variables being compared
 
 | Variable          | What we are evaluating                                              |
 | ----------------- | ------------------------------------------------------------------- |
-| **Palette**       | Indigo (Aurora) vs sky-blue (Ledger) vs orange (Horizon).           |
+| **Palette**       | Indigo (Aurora) vs sky-blue (Ledger) vs orange (Horizon) vs blue-violet (Meridian). |
 | **Nav style**     | Sidebar vs top-bar vs hybrid; wayfinding and screen switching.      |
 | **Metric density**| How many KPIs/metrics per view; breathing room vs information mass.  |
 | **Chart emphasis**| Charts as hero vs charts as support to the tables.                  |

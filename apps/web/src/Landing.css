@@ -88,17 +88,45 @@
 }
 
 .landing-grid {
-  max-width: 1120px;
+  max-width: 1160px;
   margin: 44px auto 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
+  .landing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
   .landing-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.landing-card.recommended {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  box-shadow: 0 12px 34px rgba(79, 107, 255, 0.18);
+}
+
+.landing-ribbon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(4px);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.landing-card-swatch {
+  position: relative;
 }
 
 .landing-card {

@@ -23,19 +23,22 @@ export function Landing() {
       </header>
 
       <section className="landing-hero">
-        <h1>Three directions, one dataset.</h1>
+        <h1>One dataset, four directions.</h1>
         <p>
-          Compare three interactive UI directions for the spending tracker. Each renders the same
+          Compare interactive UI directions for the spending tracker. Each renders the same
           Dashboard, Transactions, and Review Categories screens from an identical synthetic dataset
           ({formatDollarsAbs(spend)} of spending this month) — so the design is judged on its own
-          merits, not different numbers. Toggle light/dark on every screen. Pick one to move forward.
+          merits, not different numbers. <b>Meridian</b> is the current pick: Ledger’s detail with
+          Horizon’s warmth. Toggle light/dark on every screen.
         </p>
       </section>
 
       <section className="landing-grid">
         {directions.map((d) => (
-          <article className="landing-card" key={d.meta.id} style={{ ['--accent' as string]: d.meta.accent }}>
-            <div className="landing-card-swatch" />
+          <article className={`landing-card ${d.meta.id === 'meridian' ? 'recommended' : ''}`} key={d.meta.id} style={{ ['--accent' as string]: d.meta.accent }}>
+            <div className="landing-card-swatch">
+              {d.meta.id === 'meridian' && <span className="landing-ribbon">★ Recommended</span>}
+            </div>
             <div className="landing-card-body">
               <h2>{d.meta.name}</h2>
               <p className="landing-card-tag">{d.meta.tagline}</p>
