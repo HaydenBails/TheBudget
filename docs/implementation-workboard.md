@@ -133,8 +133,8 @@ the explicitly named integration tasks.
 | FE-01 | Extract Meridian design tokens without changing prototype behavior. | S1-01 | `apps/web/src/styles/`, Meridian CSS, frontend tests | Colors, spacing, typography, radii, shadows, and light/dark tokens are centralized; build and visual smoke check pass. | `DONE` | Codex / fe01_meridian_tokens; acceptance by Claude Opus 4.8 |
 | FE-02 | Create production application shell and routes separate from the comparison harness. | FE-01 | `apps/web/src/app/`, `apps/web/src/main.tsx`, reusable components | Production routes render Meridian navigation and theme; prototype routes remain accessible for reference; keyboard navigation works. | `DONE` | Claude Opus 4.8 |
 | FE-03 | Install/configure TanStack Query and define the typed local API client/error model. | FE-02 | `apps/web/package*.json`, `apps/web/src/api/`, query client | Lockfile is consistent; health request works; loading/error states are tested; API base defaults to loopback/local configuration. | `DONE` | Claude Opus 4.8 |
-| FE-04 | Build profile switcher and profile management UI. | FE-03, BE-05 | `apps/web/src/features/profiles/` | List/create/select/delete flows work against API; destructive action confirms; loading, empty, and error states exist. | `READY` | — |
-| FE-05 | Build account management UI for the active profile. | FE-04, BE-05 | `apps/web/src/features/accounts/` | Account list/create/edit/delete stays scoped to active profile; form validation and empty/error states are covered. | `BLOCKED` | — |
+| FE-04 | Build profile switcher and profile management UI. | FE-03, BE-05 | `apps/web/src/features/profiles/` | List/create/select/delete flows work against API; destructive action confirms; loading, empty, and error states exist. | `DONE` | Claude Opus 4.8 |
+| FE-05 | Build account management UI for the active profile. | FE-04, BE-05 | `apps/web/src/features/accounts/` | Account list/create/edit/delete stays scoped to active profile; form validation and empty/error states are covered. | `READY` | — |
 
 ### Integration, quality, and documentation
 
@@ -694,3 +694,45 @@ the board has been expanded with equivalent acceptance detail.
   with loading/empty/error states, and derive Profile types from the backend
   OpenAPI. INT-01 should add the deterministic frontend request-state tests
   (mocking `api`) and the isolated integration DB fixtures.
+
+### 2026-07-15 21:10 UTC — FE-04 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/src/features/profiles/` (`types.ts`, `api.ts`,
+  `ProfileContext.tsx`, `ProfileSwitcher.tsx`, `ProfilesPage.tsx`,
+  `profiles.css`); `apps/web/src/app/AppShell.tsx` (ProfileProvider + nav
+  switcher + profiles route); `apps/web/src/app/pages.tsx` (dashboard active-
+  profile tile; removed the placeholder ProfilesPage); reference screenshots.
+- Work: Built the profile switcher + management UI against the real `/profiles`
+  API. Types mirror the backend exactly (integer ids, snake_case
+  `base_currency`/`is_archived`, no camelCase alias). `ProfileProvider` holds the
+  active profile (persisted in `localStorage`, auto-selects the first active
+  profile, self-heals if the selected profile is archived). The nav
+  `ProfileSwitcher` is an accessible menu (aria-haspopup/expanded,
+  menuitemradio). `ProfilesPage` lists active + archived, creates (with
+  field-level validation surfaced from `ApiError`), switches, renames inline,
+  and archives with an explicit in-row confirmation (restore for archived).
+- Verification: `npm run typecheck` clean; `npm run build` ok. Full end-to-end
+  against a migrated scratch SQLite (`alembic upgrade head`) + uvicorn
+  (127.0.0.1:8787) + dev server (CORS-allowed 5173), driven with Playwright:
+  loaded existing profile → created "Household" via the UI (auto-selected as
+  current) → switcher menu shows both + Manage → switched to "Hayden" → archived
+  "Household" via the confirm step (moved to Archived) → restored it (back to 2
+  active). Loading/empty/error states implemented (empty → "Create your first
+  profile"; error → message + Try again).
+- ui-ux checks (skill unavailable — see FE-01 exception): labelled inputs, real
+  `<button>`s, `role="alert"` on errors, `role="menu"/menuitemradio` +
+  `aria-expanded` on the switcher, visible focus, light/dark via tokens, colour
+  paired with avatar/label. Warm CTA (product-owner request) on primary actions.
+- Decisions: The acceptance's "delete" is realised as archive (with confirm)
+  because the backend intentionally exposes archive/restore, not hard delete
+  (BE-05 contract + product plan: archive is safer; deletion+export is a later
+  deliberate step). Profile entity types are hand-mirrored from the backend
+  schema (verified against a live create response) rather than generated, since
+  no OpenAPI codegen is wired yet.
+- Blockers/risks: none.
+- Handoff: FE-05 (accounts) is `READY` — build account CRUD under
+  `apps/web/src/features/accounts/`, scoped to the active profile from
+  `useCurrentProfile()`, consuming `/profiles/{id}/accounts` and `/accounts/{id}`
+  (archive/restore, not delete). Read `apps/api/app/schemas/account.py` for exact
+  fields before implementing.

@@ -3,7 +3,10 @@ import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useTheme } from '../theme';
 import { queryClient } from '../api/queryClient';
 import { useHealth } from '../api/health';
-import { AccountsPage, CategoriesPage, DashboardPage, ProfilesPage, SettingsPage } from './pages';
+import { ProfileProvider } from '../features/profiles/ProfileContext';
+import { ProfileSwitcher } from '../features/profiles/ProfileSwitcher';
+import { ProfilesPage } from '../features/profiles/ProfilesPage';
+import { AccountsPage, CategoriesPage, DashboardPage, SettingsPage } from './pages';
 import './app.css';
 
 const NAV: { to: string; label: string; icon: string }[] = [
@@ -35,13 +38,7 @@ function TopNav() {
         <button type="button" className="app-iconbtn" onClick={toggle} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
           {theme === 'light' ? '🌙 Dark' : '☀ Light'}
         </button>
-        <span className="app-profile-pill">
-          <span className="app-avatar" aria-hidden>?</span>
-          <span>
-            No profile<br />
-            <small>select one</small>
-          </span>
-        </span>
+        <ProfileSwitcher />
       </div>
     </nav>
   );
@@ -69,20 +66,22 @@ function ApiStatus() {
 export function AppShell() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="app mrd">
-        <TopNav />
-        <main className="app-body">
-          <Routes>
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="profiles" element={<ProfilesPage />} />
-            <Route path="accounts" element={<AccountsPage />} />
-            <Route path="categories" element={<CategoriesPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-            <Route path="*" element={<Navigate to="dashboard" replace />} />
-          </Routes>
-        </main>
-      </div>
+      <ProfileProvider>
+        <div className="app mrd">
+          <TopNav />
+          <main className="app-body">
+            <Routes>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<DashboardPage />} />
+              <Route path="profiles" element={<ProfilesPage />} />
+              <Route path="accounts" element={<AccountsPage />} />
+              <Route path="categories" element={<CategoriesPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="*" element={<Navigate to="dashboard" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </ProfileProvider>
     </QueryClientProvider>
   );
 }

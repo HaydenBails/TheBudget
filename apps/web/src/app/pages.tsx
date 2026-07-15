@@ -1,7 +1,6 @@
-// Placeholder production pages for the FE-02 shell. Each is replaced by a later
-// task (profiles → FE-04, accounts → FE-05, categories/transactions → backlog).
-// They render inside the Meridian-styled shell so navigation, theme, and layout
-// can be verified before the data features land.
+// Production pages for the shell. Profiles is implemented in
+// features/profiles/ProfilesPage; accounts → FE-05, categories → backlog.
+import { useCurrentProfile } from '../features/profiles/ProfileContext';
 
 function PageHead({ title, subtitle }: { title: string; subtitle: string }) {
   return (
@@ -26,13 +25,14 @@ function Placeholder({ badge, title, body, task }: { badge: string; title: strin
 }
 
 export function DashboardPage() {
+  const { currentProfile } = useCurrentProfile();
   return (
     <>
       <PageHead title="Dashboard" subtitle="Your workspace — connected to the local API in a later task." />
       <section className="app-tiles" aria-label="Workspace summary">
         <div className="app-tile">
           <div className="app-tile-k">Active profile</div>
-          <div className="app-tile-v">—</div>
+          <div className="app-tile-v">{currentProfile?.name ?? '—'}</div>
         </div>
         <div className="app-tile">
           <div className="app-tile-k">Accounts</div>
@@ -48,20 +48,6 @@ export function DashboardPage() {
         title="Spending insights are on the way"
         body="This production shell renders the Meridian design system with light and dark themes and keyboard-accessible navigation. Live profile, account, and spending data connect through the local API in the upcoming tasks."
         task="FE-03 → FE-05"
-      />
-    </>
-  );
-}
-
-export function ProfilesPage() {
-  return (
-    <>
-      <PageHead title="Profiles" subtitle="Create, switch, and manage fully-isolated profiles." />
-      <Placeholder
-        badge="◔"
-        title="Profile management"
-        body="Create and switch between isolated profiles, each with its own accounts, categories, and history. Wires to the local profiles API."
-        task="FE-04"
       />
     </>
   );
