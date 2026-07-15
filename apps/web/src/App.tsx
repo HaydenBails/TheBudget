@@ -3,6 +3,7 @@ import { directionById, directions } from './directions/registry';
 import type { ScreenKey } from './directions/types';
 import { useTheme } from './theme';
 import { Landing } from './Landing';
+import { AppShell } from './app/AppShell';
 
 const SCREENS: { key: ScreenKey; label: string }[] = [
   { key: 'dashboard', label: 'Dashboard' },
@@ -71,6 +72,8 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      {/* Production application shell (FE-02), separate from the prototype harness. */}
+      <Route path="/app/*" element={<AppShell />} />
       <Route path="/:directionId/:screen" element={<DirectionScreen />} />
       <Route path="/:directionId" element={<DirectionRedirect />} />
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -17,9 +17,14 @@ export function Landing() {
           <span>Spending Tracker</span>
           <span className="landing-badge">Stage 1 · UI directions</span>
         </div>
-        <button className="landing-themebtn" onClick={toggle}>
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <Link className="landing-themebtn" to="/app" style={{ textDecoration: 'none' }}>
+            Open the app →
+          </Link>
+          <button className="landing-themebtn" onClick={toggle}>
+            {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+          </button>
+        </div>
       </header>
 
       <section className="landing-hero">

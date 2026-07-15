@@ -131,8 +131,8 @@ the explicitly named integration tasks.
 | ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
 | FE-01 | Extract Meridian design tokens without changing prototype behavior. | S1-01 | `apps/web/src/styles/`, Meridian CSS, frontend tests | Colors, spacing, typography, radii, shadows, and light/dark tokens are centralized; build and visual smoke check pass. | `DONE` | Codex / fe01_meridian_tokens; acceptance by Claude Opus 4.8 |
-| FE-02 | Create production application shell and routes separate from the comparison harness. | FE-01 | `apps/web/src/app/`, `apps/web/src/main.tsx`, reusable components | Production routes render Meridian navigation and theme; prototype routes remain accessible for reference; keyboard navigation works. | `READY` | — |
-| FE-03 | Install/configure TanStack Query and define the typed local API client/error model. | FE-02 | `apps/web/package*.json`, `apps/web/src/api/`, query client | Lockfile is consistent; health request works; loading/error states are tested; API base defaults to loopback/local configuration. | `BLOCKED` | — |
+| FE-02 | Create production application shell and routes separate from the comparison harness. | FE-01 | `apps/web/src/app/`, `apps/web/src/main.tsx`, reusable components | Production routes render Meridian navigation and theme; prototype routes remain accessible for reference; keyboard navigation works. | `DONE` | Claude Opus 4.8 |
+| FE-03 | Install/configure TanStack Query and define the typed local API client/error model. | FE-02 | `apps/web/package*.json`, `apps/web/src/api/`, query client | Lockfile is consistent; health request works; loading/error states are tested; API base defaults to loopback/local configuration. | `READY` | — |
 | FE-04 | Build profile switcher and profile management UI. | FE-03, BE-05 | `apps/web/src/features/profiles/` | List/create/select/delete flows work against API; destructive action confirms; loading, empty, and error states exist. | `BLOCKED` | — |
 | FE-05 | Build account management UI for the active profile. | FE-04, BE-05 | `apps/web/src/features/accounts/` | Account list/create/edit/delete stays scoped to active profile; form validation and empty/error states are covered. | `BLOCKED` | — |
 
@@ -618,3 +618,42 @@ the board has been expanded with equivalent acceptance detail.
   recorded — the skill's equivalent checks (semantic markup, labelled inputs,
   visible focus, WCAG-AA contrast, colour-not-alone, keyboard nav, light/dark,
   reduced-motion) are applied and reported manually on UI tasks.
+
+### 2026-07-15 20:40 UTC — FE-02 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/src/app/` (`AppShell.tsx`, `pages.tsx`, `app.css`),
+  `apps/web/src/App.tsx` (mount `/app/*` route), `apps/web/src/Landing.tsx`
+  (added an "Open the app" entry link), plus two reference screenshots under
+  `docs/screenshots/`.
+- Work: Built the production application shell as a Meridian-styled workspace
+  mounted at `/app/*`, fully separate from the prototype comparison harness
+  (which stays reachable at `/` and `/:direction/:screen`). The shell has a
+  sticky top nav (brand + Dashboard/Profiles/Accounts/Categories/Settings), a
+  theme toggle, a profile-indicator placeholder, and nested routes with
+  placeholder pages for each section (profiles → FE-04, accounts → FE-05,
+  categories → backlog). The shell reuses the shared Meridian theme tokens by
+  carrying `class="app mrd"` and importing only `meridian-tokens.css`, so no
+  prototype component styles leak; production styles are namespaced `app-`.
+- Verification: `npm run typecheck` — clean (exit 0); `npm run build` — success
+  (vite 4.1s). Rendered smoke check via headless Chromium: `/app/dashboard`
+  (dark) and `/app/accounts` (light) render the Meridian nav/theme correctly;
+  `/` (prototype landing) still returns 200 and prototypes are unchanged.
+  Keyboard tab order verified programmatically: brand → Dashboard → Profiles →
+  Accounts → Categories → Settings → theme toggle.
+- Slight scope note: edited `App.tsx` (the router) and added one entry link in
+  `Landing.tsx` so the production shell is reachable; both are minimal wiring for
+  "routes separate from the harness," recorded here per protocol.
+- ui-ux checks (skill unavailable — see FE-01 exception): semantic `<nav>`/
+  `<main>`; `NavLink` anchors + real `<button>` for theme with `aria-label`;
+  visible `:focus-visible` outline; light+dark via tokens; `prefers-reduced-
+  motion` handled; nav colour always paired with icon + text label.
+- Decisions: Production app lives under `/app`; the prototype harness is retained
+  per D-02 until the first vertical slice passes QA. A warm CTA accent (product
+  owner's earlier request) is included as an `app-` token for primary buttons,
+  keeping the blue-violet brand.
+- Blockers/risks: none.
+- Handoff: FE-03 is `READY` — add TanStack Query + a typed loopback API client
+  and error model under `apps/web/src/api/`, wrap the app in a
+  QueryClientProvider, and prove a `/health` request with loading/error states.
+  Then FE-04 (profiles) and INT-01 unblock.
