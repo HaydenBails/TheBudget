@@ -17,11 +17,18 @@ _REQUIRED_UPDATE_FIELDS = frozenset({"name", "is_archived"})
 
 
 def create_profile(session: Session, values: ProfileCreate) -> Profile:
-    """Create and flush a profile within the caller-owned transaction."""
+    """Create and flush a profile, seeding its default categories.
+
+    The seed is idempotent; the local import avoids a module import cycle with
+    the category service (which depends on ``require_profile`` here).
+    """
+
+    from app.services.categories import seed_default_categories
 
     profile = Profile(**values.model_dump())
     session.add(profile)
     session.flush()
+    seed_default_categories(session, profile.id)
     return profile
 
 

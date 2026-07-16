@@ -11,6 +11,7 @@ from app.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from app.models.account import Account
+    from app.models.category import Category
 
 
 class Profile(TimestampMixin, Base):
@@ -28,6 +29,11 @@ class Profile(TimestampMixin, Base):
     is_archived: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     accounts: Mapped[list[Account]] = relationship(
+        back_populates="profile",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    categories: Mapped[list[Category]] = relationship(
         back_populates="profile",
         cascade="all, delete-orphan",
         passive_deletes=True,

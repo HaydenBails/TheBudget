@@ -26,6 +26,7 @@ def test_profile_account_migration_upgrade_downgrade_cycle(
         assert set(inspect(engine).get_table_names()) == {
             "accounts",
             "alembic_version",
+            "categories",
             "profiles",
         }
     finally:

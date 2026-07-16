@@ -144,13 +144,25 @@ the explicitly named integration tasks.
 | QA-01 | Validate the complete profiles/accounts vertical slice. | BE-05, BE-06, FE-05, INT-01 | Cross-app review; avoid feature edits unless defects are found | Clean setup, migrations, backend tests/lint, frontend typecheck/build/tests, loopback startup, keyboard smoke test, and profile-isolation scenarios pass. | `DONE` | Claude Opus 4.8 |
 | DOC-01 | Update setup, architecture, API, and user-flow documentation after the slice lands. | QA-01 | `README.md`, `docs/architecture/`, `apps/api/README.md` | A new developer can reproduce setup and the documented behavior matches verified commands. | `DONE` | Claude Opus 4.8 |
 
+### Categories slice (Stage 2 continued → M3)
+
+Expanded 2026-07-16 after the profiles/accounts slice passed QA. Same rigour:
+profile isolation in the service layer, archive/restore (no hard delete), money
+rules N/A here, and full verification before `DONE`.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-07 | Category domain: ORM model, schemas, migration, profile-scoped services, and idempotent default-category seeding (auto-seeded on profile creation). | BE-03 | `apps/api/app/models/category.py`, `apps/api/app/schemas/category.py`, `apps/api/app/services/categories.py`, seed helper, `services/profiles.py` (seed hook), `models/__init__`, `schemas/__init__`, `services/__init__`, `alembic/versions/`, backend tests | Category is profile-scoped (FK + index) with slug/name/color/icon/parent/excluded/is_default/sort_order/archived; migration applies from the prior head and reverses; creating a profile seeds the 13 defaults idempotently; cross-profile reads/writes return not-found; archive/restore covered; pytest + ruff pass. | `DONE` | Claude Opus 4.8 |
+| BE-08 | Typed category API routes nested under the owning profile. | BE-07 | `apps/api/app/routers/categories.py`, `apps/api/app/routers/__init__.py`, `apps/api/app/main.py`, API tests | `GET/POST /profiles/{id}/categories`, `GET/PATCH /profiles/{id}/categories/{categoryId}`, `POST .../archive|restore`; happy paths, field-specific 422s, missing/cross-profile 404, OpenAPI contains routes; pytest passes. | `READY` | — |
+| FE-06 | Category management UI for the active profile. | FE-05, BE-08 | `apps/web/src/features/categories/` | List seeded defaults + custom categories (grouped, sorted), create (name/colour/icon/excluded), edit, archive/restore — all scoped to the active profile; validation + empty/error states; keyboard + light/dark checks. | `BLOCKED` | — |
+| QA-02 | Validate the categories slice. | BE-08, FE-06 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, seeding-on-create, and category profile-isolation scenarios pass. | `BLOCKED` | — |
+
 ## Later-stage backlog
 
-Do not claim these until the profiles/accounts vertical slice is complete and
-the board has been expanded with equivalent acceptance detail.
+Do not claim these until the categories slice is complete and the board has been
+expanded with equivalent acceptance detail.
 
-1. Categories, seed categories, and profile-specific overrides.
-2. Core transaction, split, tag, import, budget, recurring-series, and rule
+1. Core transaction, split, tag, import, budget, recurring-series, and rule
    schemas.
 3. Production TanStack transaction grid using API-backed data.
 4. Temporary upload/staging/preview/commit import framework.
@@ -867,3 +879,42 @@ the board has been expanded with equivalent acceptance detail.
   the later-stage backlog — recommended: categories (seed defaults + per-profile
   overrides) as BE/FE tasks with the same acceptance rigour — before claiming
   implementation.
+
+### 2026-07-16 — board expansion (categories slice) — Claude Opus 4.8
+
+- Added BE-07, BE-08, FE-06, QA-02 rows for the categories vertical slice (M3),
+  with the same isolation/archive/verification rigour as profiles/accounts, and
+  removed categories from the later-stage backlog.
+
+### 2026-07-16 — BE-07 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/api/app/models/category.py` (+ `models/__init__`, Profile
+  `categories` relationship), `apps/api/app/schemas/category.py` (+
+  `schemas/__init__`), `apps/api/app/services/categories.py` +
+  `category_defaults.py` (+ `services/__init__`), `services/profiles.py` (seed
+  hook on create), `alembic/versions/0003_category_models.py`, and
+  `tests/test_category_services.py`; updated the profile/account migration test's
+  head-table set to include `categories`.
+- Work: Added the profile-scoped `Category` model (unique `(profile_id, slug)`,
+  self-FK `parent_id` for future sub-categories, `color` hex check, index on
+  `(profile_id, is_archived)`), Pydantic create/update/read schemas, and
+  profile-isolated services (create with server-derived unique slug + appended
+  sort_order, list in display order, get/require scoped, update with null-guard,
+  archive/restore). `create_profile` now idempotently seeds the 13 default
+  categories (matching the frontend dataset). A reversible migration creates the
+  table after the profile/account head.
+- Verification: migration `upgrade head → downgrade -1 → upgrade head` succeeds
+  (incl. 0003); `ruff check app tests alembic` — all pass; `pytest` — **75
+  passed** (6 new category tests: seed-on-create + 13 defaults, seed idempotency,
+  unique-slug derivation + sort append, cross-profile isolation → not-found,
+  archive/restore, null-required-field rejection). Updating the existing
+  migration test's expected head set is a direct consequence of the new revision.
+- Decisions: user-created categories get a server-derived slug (`slugify(name)`
+  with `-2`, `-3` dedup); slug is not client-supplied. Default categories are
+  `is_default=True`. Seed uses a lazy import inside `create_profile` to avoid a
+  services import cycle.
+- Blockers/risks: none.
+- Handoff: BE-08 is `READY` — add nested `/profiles/{id}/categories` routes
+  (list/create/get/patch/archive/restore) mirroring the accounts router, wire
+  into `main`, and add API tests (happy path, 422, cross-profile 404, OpenAPI).
