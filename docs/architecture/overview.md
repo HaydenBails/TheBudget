@@ -7,24 +7,27 @@ statement data into spending and savings insights. Base currency is **CAD**.
 
 ## Implemented so far (Stage 2 foundation)
 
-The first production vertical slice — **profiles and accounts** — is complete and
-validated:
+Two production vertical slices — **profiles/accounts** and **categories** — are
+complete and validated:
 
-- **Backend:** SQLAlchemy 2 models (`Profile`, `Account`), Alembic migrations,
-  profile-scoped services (cross-profile access → 404), and typed FastAPI routes
-  for profiles and per-profile accounts, with archive/restore (no hard delete).
-  SQLite with FK enforcement + WAL; money as integer cents.
+- **Backend:** SQLAlchemy 2 models (`Profile`, `Account`, `Category`), Alembic
+  migrations, profile-scoped services (cross-profile access → 404), and typed
+  FastAPI routes for profiles, per-profile accounts, and per-profile categories,
+  all with archive/restore (no hard delete). Creating a profile idempotently
+  seeds the 13 default categories. SQLite with FK enforcement + WAL; money as
+  integer cents.
 - **Frontend:** a production application shell at `/app` in the selected
   **Meridian** design, using TanStack Query against the local API. Profile
-  switcher + management (`features/profiles`) and per-profile account management
-  (`features/accounts`) with loading/empty/error states. The prototype
+  switcher + management (`features/profiles`), per-profile account management
+  (`features/accounts`), and per-profile category management
+  (`features/categories`) with loading/empty/error states. The prototype
   comparison harness stays at `/`.
 - **Tests:** backend `pytest` with per-test isolated SQLite; frontend Vitest +
   Testing Library request-state tests. See `docs/implementation-workboard.md`
   for task-by-task status and verification.
 
-Upcoming (later stages): categories, transactions/splits/tags, statement import
-and parsing, budgets, recurring detection, dashboards/analytics, and exports.
+Upcoming (later stages): transactions/splits/tags, statement import and parsing,
+budgets, recurring detection, dashboards/analytics, and exports.
 
 ## Monorepo shape
 

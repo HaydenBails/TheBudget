@@ -11,12 +11,12 @@ categories, learns from your corrections, detects recurring charges, and turns
 raw statement data into clear spending and savings insights.
 
 > **Status:** Stage 2 foundation complete. The **Meridian** UI direction is the
-> production design. The first production vertical slice — **profiles and
-> accounts** — is built end-to-end (FastAPI + SQLite + Alembic backend, a
-> Meridian production app at `/app` backed by TanStack Query) and validated
-> (backend + frontend tests, migrations, profile isolation). Statement parsing
-> and spending analytics are still upcoming — see the product plan and
-> `docs/implementation-workboard.md`.
+> production design. Two production vertical slices — **profiles/accounts** and
+> **categories** (with default seeding) — are built end-to-end (FastAPI + SQLite
+> + Alembic backend, a Meridian production app at `/app` backed by TanStack
+> Query) and validated (backend + frontend tests, migrations, profile
+> isolation). Transactions, statement parsing, and analytics are still upcoming
+> — see the product plan and `docs/implementation-workboard.md`.
 
 Base currency is **CAD**. All persistent data lives in a local **SQLite**
 database. Multiple fully-isolated profiles are supported with no login/PIN.
@@ -113,6 +113,10 @@ The API binds to `127.0.0.1` (local-only) by design and currently exposes:
 - Accounts (scoped to a profile): `GET/POST /profiles/{id}/accounts`,
   `GET/PATCH /profiles/{id}/accounts/{accountId}`,
   `POST /profiles/{id}/accounts/{accountId}/archive|restore`
+- Categories (scoped to a profile; 13 defaults seeded on profile creation):
+  `GET/POST /profiles/{id}/categories`,
+  `GET/PATCH /profiles/{id}/categories/{categoryId}`,
+  `POST /profiles/{id}/categories/{categoryId}/archive|restore`
 
 Every profile-scoped query is filtered by profile id in the service layer, so
 cross-profile access returns 404 (never leaks existence). Money is stored as
