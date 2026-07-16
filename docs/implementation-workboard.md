@@ -88,7 +88,7 @@ Read before implementation:
 | M0 — Stage 1 closure | Meridian is signed off and ADR 0002 records the final decision. | `DONE` |
 | M1 — Development foundation | Database, migrations, app shell, API client, and test foundations work. | `DONE` |
 | M2 — Profiles and accounts | A user can create/switch profiles and manage isolated accounts. | `DONE` (validated by QA-01; DOC-01 remains) |
-| M3 — Core ledger schema | Categories and transactions persist with exact money semantics. | `BLOCKED` |
+| M3 — Core ledger schema | Categories and transactions persist with exact money semantics. | `IN PROGRESS` (categories done + validated; transactions next) |
 | M4 — First production workspace | Meridian shell displays API-backed profile/account data reliably. | `BLOCKED` |
 
 ## Dependency map
@@ -155,7 +155,7 @@ rules N/A here, and full verification before `DONE`.
 | BE-07 | Category domain: ORM model, schemas, migration, profile-scoped services, and idempotent default-category seeding (auto-seeded on profile creation). | BE-03 | `apps/api/app/models/category.py`, `apps/api/app/schemas/category.py`, `apps/api/app/services/categories.py`, seed helper, `services/profiles.py` (seed hook), `models/__init__`, `schemas/__init__`, `services/__init__`, `alembic/versions/`, backend tests | Category is profile-scoped (FK + index) with slug/name/color/icon/parent/excluded/is_default/sort_order/archived; migration applies from the prior head and reverses; creating a profile seeds the 13 defaults idempotently; cross-profile reads/writes return not-found; archive/restore covered; pytest + ruff pass. | `DONE` | Claude Opus 4.8 |
 | BE-08 | Typed category API routes nested under the owning profile. | BE-07 | `apps/api/app/routers/categories.py`, `apps/api/app/routers/__init__.py`, `apps/api/app/main.py`, API tests | `GET/POST /profiles/{id}/categories`, `GET/PATCH /profiles/{id}/categories/{categoryId}`, `POST .../archive|restore`; happy paths, field-specific 422s, missing/cross-profile 404, OpenAPI contains routes; pytest passes. | `DONE` | Claude Opus 4.8 |
 | FE-06 | Category management UI for the active profile. | FE-05, BE-08 | `apps/web/src/features/categories/` | List seeded defaults + custom categories (grouped, sorted), create (name/colour/icon/excluded), edit, archive/restore — all scoped to the active profile; validation + empty/error states; keyboard + light/dark checks. | `DONE` | Claude Opus 4.8 |
-| QA-02 | Validate the categories slice. | BE-08, FE-06 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, seeding-on-create, and category profile-isolation scenarios pass. | `READY` | — |
+| QA-02 | Validate the categories slice. | BE-08, FE-06 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, seeding-on-create, and category profile-isolation scenarios pass. | `DONE` | Claude Opus 4.8 |
 
 ## Later-stage backlog
 
@@ -975,3 +975,26 @@ expanded with equivalent acceptance detail.
 - Handoff: QA-02 (`READY`) — validate the categories slice (migrations, backend
   tests/lint, web typecheck/test/build, seeding-on-create, and category
   profile-isolation) in one pass.
+
+### 2026-07-16 — QA-02 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: cross-app validation only (no feature edits — no defects); this workboard.
+- Work: Validated the categories vertical slice.
+- Verification (all green):
+  - **Migrations:** fresh DB `upgrade head → downgrade base → upgrade head`
+    (incl. 0003) all succeed.
+  - **Backend:** `ruff check app tests alembic` — pass; `pytest` — 81 passed.
+  - **Frontend:** `npm run typecheck` clean; `npm test` — 10 passed; `npm run
+    build` — success.
+  - **Seeding on create:** a new profile exposes exactly 13 default categories
+    (via API and in the UI), all flagged default.
+  - **Category profile isolation:** profile 1's custom "Subscriptions" is absent
+    from profile 2 (which independently auto-seeded its own 13 defaults); the API
+    test suite also asserts cross-profile GET/PATCH → 404.
+- Blockers/risks: none.
+- Handoff: The categories slice is complete and validated. M3 remains
+  `IN PROGRESS` — the next slice is **transactions** (with splits/tags and the
+  money-inclusion rules from `docs/decisions/0003-money-and-accounting.md`),
+  which is substantially larger and should be expanded into its own BE/FE task
+  rows before implementation.
