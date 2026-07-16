@@ -1,0 +1,130 @@
+/* Categories feature styles. Reuses --mrd-* tokens and shared pf-/ac-/app-
+   classes; category-specific bits are namespaced `ct-`. */
+
+.ct-list {
+  list-style: none;
+  margin: 0 0 var(--mrd-space-4);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--mrd-space-3);
+}
+@media (max-width: 760px) {
+  .ct-list {
+    grid-template-columns: 1fr;
+  }
+}
+.ct-row {
+  display: flex;
+  align-items: center;
+  gap: var(--mrd-space-3);
+  padding: var(--mrd-space-4);
+}
+.ct-chip {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  flex: 0 0 auto;
+}
+.ct-meta {
+  min-width: 0;
+}
+.ct-name {
+  font-weight: var(--mrd-font-weight-semibold);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.ct-sub {
+  color: var(--mrd-faint);
+  font-size: 12px;
+  margin-top: 2px;
+  font-family: var(--mrd-font-mono);
+}
+.ct-badge {
+  font-size: 10px;
+  font-weight: var(--mrd-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mrd-accent);
+  background: color-mix(in srgb, var(--mrd-accent) 14%, transparent);
+  padding: 2px 7px;
+  border-radius: var(--mrd-radius-pill);
+}
+.ct-badge-muted {
+  color: var(--mrd-muted);
+  background: var(--mrd-chip);
+}
+.ct-row .pf-actions {
+  margin-left: auto;
+}
+.ct-row .pf-actions .app-btn {
+  padding: 7px 12px;
+  font-size: 13px;
+}
+
+/* form */
+.ct-form {
+  margin-bottom: var(--mrd-space-4);
+}
+.ct-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--mrd-space-4);
+  margin-bottom: var(--mrd-space-4);
+}
+@media (max-width: 760px) {
+  .ct-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.ct-field {
+  min-width: 0;
+}
+.ct-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ct-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1.5px solid var(--mrd-border);
+  background: var(--mrd-panel);
+  font-size: 17px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.ct-icon.selected {
+  border-color: var(--mrd-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mrd-accent) 18%, transparent);
+}
+.ct-icon:focus-visible,
+.ct-toggle input:focus-visible {
+  outline: 2px solid var(--mrd-accent);
+  outline-offset: 2px;
+}
+.ct-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13.5px;
+  color: var(--mrd-muted);
+  margin-bottom: var(--mrd-space-4);
+}
+.ct-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--mrd-accent);
+}
+.ct-form-actions {
+  display: flex;
+  gap: 10px;
+}

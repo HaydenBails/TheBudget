@@ -154,8 +154,8 @@ rules N/A here, and full verification before `DONE`.
 | --- | --- | --- | --- | --- | --- | --- |
 | BE-07 | Category domain: ORM model, schemas, migration, profile-scoped services, and idempotent default-category seeding (auto-seeded on profile creation). | BE-03 | `apps/api/app/models/category.py`, `apps/api/app/schemas/category.py`, `apps/api/app/services/categories.py`, seed helper, `services/profiles.py` (seed hook), `models/__init__`, `schemas/__init__`, `services/__init__`, `alembic/versions/`, backend tests | Category is profile-scoped (FK + index) with slug/name/color/icon/parent/excluded/is_default/sort_order/archived; migration applies from the prior head and reverses; creating a profile seeds the 13 defaults idempotently; cross-profile reads/writes return not-found; archive/restore covered; pytest + ruff pass. | `DONE` | Claude Opus 4.8 |
 | BE-08 | Typed category API routes nested under the owning profile. | BE-07 | `apps/api/app/routers/categories.py`, `apps/api/app/routers/__init__.py`, `apps/api/app/main.py`, API tests | `GET/POST /profiles/{id}/categories`, `GET/PATCH /profiles/{id}/categories/{categoryId}`, `POST .../archive|restore`; happy paths, field-specific 422s, missing/cross-profile 404, OpenAPI contains routes; pytest passes. | `DONE` | Claude Opus 4.8 |
-| FE-06 | Category management UI for the active profile. | FE-05, BE-08 | `apps/web/src/features/categories/` | List seeded defaults + custom categories (grouped, sorted), create (name/colour/icon/excluded), edit, archive/restore — all scoped to the active profile; validation + empty/error states; keyboard + light/dark checks. | `READY` | — |
-| QA-02 | Validate the categories slice. | BE-08, FE-06 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, seeding-on-create, and category profile-isolation scenarios pass. | `BLOCKED` | — |
+| FE-06 | Category management UI for the active profile. | FE-05, BE-08 | `apps/web/src/features/categories/` | List seeded defaults + custom categories (grouped, sorted), create (name/colour/icon/excluded), edit, archive/restore — all scoped to the active profile; validation + empty/error states; keyboard + light/dark checks. | `DONE` | Claude Opus 4.8 |
+| QA-02 | Validate the categories slice. | BE-08, FE-06 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, seeding-on-create, and category profile-isolation scenarios pass. | `READY` | — |
 
 ## Later-stage backlog
 
@@ -943,3 +943,35 @@ expanded with equivalent acceptance detail.
   `sort_order`, `is_archived`, `parent_id`); create body is
   `{name, color, icon?, parent_id?, excluded_from_spending?}` (slug is server-
   derived). Distinguish default vs custom; keep archive/restore.
+
+### 2026-07-16 — FE-06 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/src/features/categories/` (`types.ts`, `api.ts`,
+  `CategoriesPage.tsx`, `categories.css`); `apps/web/src/app/AppShell.tsx`
+  (categories route → real page); `apps/web/src/app/pages.tsx` (dashboard
+  categories-count tile; removed placeholder CategoriesPage); reference
+  screenshot.
+- Work: Built category management scoped to the active profile. Types mirror the
+  backend (integer ids, snake_case, `is_default`, `excluded_from_spending`,
+  `slug`). A shared `CategoryForm` (create + edit) has name, an accessible
+  icon-choice radiogroup, a colour-swatch radiogroup, and an exclude-from-
+  spending toggle. Two-column card grid shows colour chip + icon + name with
+  DEFAULT / EXCLUDED badges and the mono slug; archive requires an in-row
+  confirm; archived categories restore. No-profile routes to Profiles.
+- Verification: `npm run typecheck` clean; `npm test` 10 passed; `npm run build`
+  ok. End-to-end against the live backend (fresh migrated DB + uvicorn + CORS dev
+  server), driven with Playwright: a new profile exposes **13 seeded defaults**
+  (all badged default); created a custom "Subscriptions" (icon + colour +
+  excluded) → 14 rows; archived-with-confirm → Archived; restored → 14 active.
+- ui-ux checks (skill unavailable — see FE-01 exception): labelled input,
+  `role="radiogroup"/radio` icon + colour pickers with `aria-checked`,
+  `role="alert"` validation, checkbox toggle, visible focus, light/dark tokens,
+  colour paired with icon + name + slug. Warm CTA on primary actions.
+- Decisions: default categories are editable/archivable (backend permits it);
+  the UI marks them "default" rather than locking them. Slug is shown read-only
+  (server-derived).
+- Blockers/risks: none.
+- Handoff: QA-02 (`READY`) — validate the categories slice (migrations, backend
+  tests/lint, web typecheck/test/build, seeding-on-create, and category
+  profile-isolation) in one pass.

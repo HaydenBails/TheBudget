@@ -7,7 +7,8 @@ import { ProfileProvider } from '../features/profiles/ProfileContext';
 import { ProfileSwitcher } from '../features/profiles/ProfileSwitcher';
 import { ProfilesPage } from '../features/profiles/ProfilesPage';
 import { AccountsPage } from '../features/accounts/AccountsPage';
-import { CategoriesPage, DashboardPage, SettingsPage } from './pages';
+import { CategoriesPage } from '../features/categories/CategoriesPage';
+import { DashboardPage, SettingsPage } from './pages';
 import './app.css';
 
 const NAV: { to: string; label: string; icon: string }[] = [

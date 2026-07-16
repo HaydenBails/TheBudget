@@ -2,6 +2,7 @@
 // accounts → features/accounts/AccountsPage; categories → backlog.
 import { useCurrentProfile } from '../features/profiles/ProfileContext';
 import { useAccounts } from '../features/accounts/api';
+import { useCategories } from '../features/categories/api';
 
 function PageHead({ title, subtitle }: { title: string; subtitle: string }) {
   return (
@@ -28,6 +29,7 @@ function Placeholder({ badge, title, body, task }: { badge: string; title: strin
 export function DashboardPage() {
   const { currentProfile, currentProfileId } = useCurrentProfile();
   const accounts = useAccounts(currentProfileId, false);
+  const categories = useCategories(currentProfileId, false);
   return (
     <>
       <PageHead title="Dashboard" subtitle="Your workspace — connected to the local API in a later task." />
@@ -42,7 +44,7 @@ export function DashboardPage() {
         </div>
         <div className="app-tile">
           <div className="app-tile-k">Categories</div>
-          <div className="app-tile-v">—</div>
+          <div className="app-tile-v">{categories.data ? categories.data.length : '—'}</div>
         </div>
       </section>
       <Placeholder
@@ -50,20 +52,6 @@ export function DashboardPage() {
         title="Spending insights are on the way"
         body="This production shell renders the Meridian design system with light and dark themes and keyboard-accessible navigation. Live profile, account, and spending data connect through the local API in the upcoming tasks."
         task="FE-03 → FE-05"
-      />
-    </>
-  );
-}
-
-export function CategoriesPage() {
-  return (
-    <>
-      <PageHead title="Categories" subtitle="Default and custom spending categories per profile." />
-      <Placeholder
-        badge="🏷️"
-        title="Category management"
-        body="Review the seeded default categories and add your own, with colours and icons. Backlog item after the profiles/accounts slice ships."
-        task="a later stage"
       />
     </>
   );
