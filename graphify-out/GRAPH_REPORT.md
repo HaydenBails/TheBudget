@@ -1,16 +1,16 @@
 # Graph Report - TheBudget  (2026-07-16)
 
 ## Corpus Check
-- 167 files · ~1,048,166 words
+- 173 files · ~1,126,806 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1869 nodes · 3530 edges · 186 communities (139 shown, 47 thin omitted)
-- Extraction: 78% EXTRACTED · 22% INFERRED · 0% AMBIGUOUS · INFERRED: 761 edges (avg confidence: 0.75)
+- 1881 nodes · 3540 edges · 186 communities (137 shown, 49 thin omitted)
+- Extraction: 78% EXTRACTED · 22% INFERRED · 0% AMBIGUOUS · INFERRED: 762 edges (avg confidence: 0.75)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d2bdd404`
+- Built from commit: `03bf424b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -195,7 +195,7 @@
 - [[_COMMUNITY_profile.py|profile.py]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `Progress log` - 73 edges
+1. `Progress log` - 77 edges
 2. `TimestampedRead` - 46 edges
 3. `ExtractedDocument` - 45 edges
 4. `create_db_engine()` - 35 edges
@@ -207,8 +207,8 @@
 10. `UnsupportedDocumentError` - 27 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `test_transaction_sign_validation_rejects_mismatches()` --calls--> `validate_transaction_sign()`  [INFERRED]
-  apps/api/tests/test_transaction_rules.py → apps/api/app/services/transactions_rules.py
+- `main()` --calls--> `stage_pdf()`  [INFERRED]
+  output/qa04-real/privacy_scan.py → apps/api/app/importing/document.py
 - `renderWithClient()` --calls--> `render()`  [INFERRED]
   apps/web/src/api/health.test.tsx → output/playwright/fe08-longtext-qa.js
 - `renderAndPreview()` --calls--> `render()`  [INFERRED]
@@ -257,23 +257,23 @@
 - **Meridian Transaction Row Encoding** — docs_screenshots_meridian_transactions_dark_account_indicators, docs_screenshots_meridian_transactions_dark_category_status_badges, docs_screenshots_meridian_transactions_dark_signed_amounts, docs_screenshots_meridian_transactions_dark_excluded_transaction_states [EXTRACTED 1.00]
 - **Meridian Transaction Management Workspace** — docs_screenshots_meridian_transactions_light_transaction_scope_summary, docs_screenshots_meridian_transactions_light_profile_account_period_context, docs_screenshots_meridian_transactions_light_search_faceted_filters, docs_screenshots_meridian_transactions_light_dense_comfortable_transaction_table, docs_screenshots_meridian_transactions_light_account_identity_markers, docs_screenshots_meridian_transactions_light_category_badges, docs_screenshots_meridian_transactions_light_accounting_inclusion_cues [INFERRED 0.95]
 
-## Communities (186 total, 47 thin omitted)
+## Communities (186 total, 49 thin omitted)
 
 ### Community 0 - "Account API Services"
-Cohesion: 0.17
-Nodes (17): KEY, sample, useArchiveProfile(), useCreateProfile(), useProfiles(), useRestoreProfile(), useUpdateProfile(), Ctx (+9 more)
+Cohesion: 0.20
+Nodes (15): KEY, sample, useArchiveProfile(), useCreateProfile(), useProfiles(), useRestoreProfile(), useUpdateProfile(), Ctx (+7 more)
 
 ### Community 1 - "Profile Data Model"
 Cohesion: 0.50
 Nodes (4): datetime, Shared SQLAlchemy declarative base and timestamp helpers., Return an aware UTC timestamp for Python-side inserts and updates., utc_now()
 
 ### Community 2 - "Database Migration Setup"
-Cohesion: 0.17
-Nodes (23): AsyncReadable, Digest, DocumentLimits, _extract_document(), Resource limits applied before parser-specific work begins., DocumentExtractionTimeoutError, DocumentPageLimitError, DocumentTooLargeError (+15 more)
+Cohesion: 0.11
+Nodes (43): AsyncReadable, Digest, DocumentLimits, _extract_document(), _extract_document_bounded(), _extract_document_bounded_async(), _extraction_worker(), BinaryIO (+35 more)
 
 ### Community 3 - "Horizon UI Components"
-Cohesion: 0.19
-Nodes (20): create_imported_transaction(), get_transaction(), list_transaction_splits(), Session, Transaction, Profile-isolated transaction persistence operations.  Services flush but never c, Create one final ledger row from a same-scope canonical staged row., Return a transaction only when both its ID and profile owner match. (+12 more)
+Cohesion: 0.15
+Nodes (27): add_transaction_tag(), create_imported_transaction(), get_transaction(), list_transaction_splits(), list_transaction_tags(), _normalize_tag_names(), Session, Transaction (+19 more)
 
 ### Community 4 - "Project Governance Docs"
 Cohesion: 0.40
@@ -288,16 +288,16 @@ Cohesion: 0.21
 Nodes (13): add_cents(), parse_cents(), Exact integer-cent money operations.  Decimal text is accepted only at an input, Parse strict decimal currency text into integer cents.      Accepted examples ar, Add two exact integer-cent amounts., Sum exact integer-cent amounts, rejecting non-integer members., _require_cents(), sum_cents() (+5 more)
 
 ### Community 7 - "Frontend Mock Data"
-Cohesion: 0.13
-Nodes (19): countLabel(), DashboardPage(), SettingsPage(), AccountsPage(), FormValues, key(), useAccounts(), useArchiveAccount() (+11 more)
+Cohesion: 0.22
+Nodes (13): AccountsPage(), FormValues, key(), useAccounts(), useArchiveAccount(), useCreateAccount(), useRestoreAccount(), useUpdateAccount() (+5 more)
 
 ### Community 8 - "FastAPI Application Lifecycle"
 Cohesion: 0.11
-Nodes (29): Base, Base for every persisted domain model., Add immutable creation and automatically refreshed update timestamps., TimestampMixin, ImportBatch, One privacy-safe import preview/commit lifecycle., ImportStagedTransaction, One normalized, structured row from a statement preview. (+21 more)
+Nodes (26): Base, Base for every persisted domain model., Add immutable creation and automatically refreshed update timestamps., TimestampMixin, ImportBatch, One privacy-safe import preview/commit lifecycle., ImportStagedTransaction, Canonical structured transaction candidates awaiting import commit. (+18 more)
 
 ### Community 9 - "Frontend Routing Theme"
-Cohesion: 0.07
-Nodes (51): base(), invalidator(), emptyFilters, transactionKey(), transactionListPath(), useBulkUpdateTransactions(), useCreateTransaction(), useDeleteTransaction() (+43 more)
+Cohesion: 0.11
+Nodes (27): base(), invalidator(), emptyFilters, transactionKey(), transactionListPath(), useBulkUpdateTransactions(), useCreateTransaction(), useDeleteTransaction() (+19 more)
 
 ### Community 10 - "TypeScript Configuration"
 Cohesion: 0.09
@@ -312,8 +312,8 @@ Cohesion: 0.22
 Nodes (13): Per-Transaction Account Indicators, Account and Period Filters, Balanced Detail and Warmth Dark Visual System, Colour-Coded Category and Uncategorized Badges, Category Type and Inclusion Filters, Muted Excluded Transaction States, Hayden Personal Profile Context, Signed Expense Income and Refund Amounts (+5 more)
 
 ### Community 13 - "Ledger UI Components"
-Cohesion: 0.10
-Nodes (17): ABC, Issuer-neutral, persistence-free statement parser contracts., Canonical transaction extracted from a statement, before persistence., Exact-cent reconciliation summary safe to persist or log., Issuer-neutral statement facts; never contains a full account number., ReconciliationResult, StatementMetadata, TransactionCandidate (+9 more)
+Cohesion: 0.09
+Nodes (22): ABC, ParserDetection, Issuer-neutral, persistence-free statement parser contracts., Canonical transaction extracted from a statement, before persistence., Exact-cent reconciliation summary safe to persist or log., One parser's deterministic detection result., Issuer-neutral statement facts; never contains a full account number., ReconciliationResult (+14 more)
 
 ### Community 14 - "Aurora Light Transactions"
 Cohesion: 0.23
@@ -368,8 +368,8 @@ Cohesion: 0.27
 Nodes (11): All Accounts and July 2026 Filters, Nine Category Assignment Cards, Petro-Canada Uncategorized Transaction, Petro-Canada Future Transaction Rule, Meridian Category Review Light Theme, Hayden Personal Profile, Skip and Confirm Category Actions, Category Review Progress 0 of 10 (+3 more)
 
 ### Community 27 - "Aurora UI Components"
-Cohesion: 0.25
-Nodes (11): A single category allocation, in signed integer cents., SplitInput, InvalidUpdateError, An update attempted to clear a required persisted field., TransactionUpdate, Update mutable fields without weakening split or profile invariants., _reject_null_required_fields(), Enforce the canonical debit-positive / credit-negative convention. (+3 more)
+Cohesion: 0.10
+Nodes (24): InvalidUpdateError, Service-layer errors shared by profile-scoped operations., Transaction split amounts do not sum to the parent transaction amount., A requested resource is missing from the caller's allowed scope., An update attempted to clear a required persisted field., ResourceNotFoundError, SplitSumError, TransactionUpdate (+16 more)
 
 ### Community 28 - "Aurora Light Dashboard"
 Cohesion: 0.33
@@ -436,12 +436,12 @@ Cohesion: 0.12
 Nodes (23): _detail_response(), _error_response(), get_import(), post_import_cancel(), post_import_commit(), post_import_preview(), _preview_response(), alias (+15 more)
 
 ### Community 54 - "Category Derivation"
-Cohesion: 0.15
-Nodes (19): key(), useArchiveCategory(), useCategories(), useCreateCategory(), useRestoreCategory(), useUpdateCategory(), CategoriesPage(), CategoryForm() (+11 more)
+Cohesion: 0.16
+Nodes (18): key(), useArchiveCategory(), useCategories(), useCreateCategory(), useRestoreCategory(), useUpdateCategory(), CategoriesPage(), CategoryForm() (+10 more)
 
 ### Community 58 - "Progress log"
 Cohesion: 0.03
-Nodes (73): 2026-07-15 14:42 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 14:50 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 15:03 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:05 EDT — FE-01 — Codex / fe01_acceptance_review, 2026-07-15 15:06 EDT — FE-01 — Codex / fe01_acceptance, 2026-07-15 15:09 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:12 EDT — GOV-01 — Codex, 2026-07-15 15:16 EDT — BE-04 — Codex / be04_services (+65 more)
+Nodes (77): 2026-07-15 14:42 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 14:50 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 15:03 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:05 EDT — FE-01 — Codex / fe01_acceptance_review, 2026-07-15 15:06 EDT — FE-01 — Codex / fe01_acceptance, 2026-07-15 15:09 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:12 EDT — GOV-01 — Codex, 2026-07-15 15:16 EDT — BE-04 — Codex / be04_services (+69 more)
 
 ### Community 59 - "create_profile"
 Cohesion: 0.21
@@ -456,12 +456,12 @@ Cohesion: 0.22
 Nodes (9): Configuration, Database migrations, Endpoints, Layout, Requirements, Run, Setup, Spending Tracker API (+1 more)
 
 ### Community 62 - "update_account"
-Cohesion: 0.27
-Nodes (17): Mutable transaction fields; omission leaves the stored value unchanged., TransactionUpdate, create_transaction(), TransactionCreate, Create a transaction with optional validated splits and tags., _account(), date, Path (+9 more)
+Cohesion: 0.25
+Nodes (20): Mutable transaction fields; omission leaves the stored value unchanged., A single category allocation, in signed integer cents., SplitInput, TransactionUpdate, create_transaction(), TransactionCreate, Create a transaction with optional validated splits and tags., _account() (+12 more)
 
 ### Community 63 - "index.tsx"
-Cohesion: 0.10
-Nodes (22): api, API_BASE, FieldError, RawFieldError, request(), toApiError(), Health, Probe() (+14 more)
+Cohesion: 0.12
+Nodes (17): queryClient, App(), AppShell(), IconName, NAV, TopNav(), countLabel(), DashboardPage() (+9 more)
 
 ### Community 64 - "DocumentLimits"
 Cohesion: 0.25
@@ -472,8 +472,8 @@ Cohesion: 0.12
 Nodes (16): 10. Income, 11.1 Budgets, 11.2 Available-to-save metric, 11. Budgets and Savings Calculation, 18. API Surface, 1. Executive Summary, 23. Risks and Mitigations, 24. Definition of Done for First Complete Release (+8 more)
 
 ### Community 66 - "config.py"
-Cohesion: 0.24
-Nodes (11): Tag and transaction-tag association models (profile-scoped)., A free-form label owned by exactly one profile, unique by name., Tag, add_transaction_tag(), list_transaction_tags(), _normalize_tag_names(), List tags attached to a scoped transaction., Replace a transaction's tags, reusing profile-owned tag records. (+3 more)
+Cohesion: 0.33
+Nodes (5): Tag and transaction-tag association models (profile-scoped)., A free-form label owned by exactly one profile, unique by name., Many-to-many link between transactions and tags., Tag, TransactionTag
 
 ### Community 67 - "test_category_api.py"
 Cohesion: 0.14
@@ -620,8 +620,8 @@ Cohesion: 0.15
 Nodes (10): lifespan(), FastAPI application entrypoint.  Run locally with::      uvicorn app.main:ap, Return basic identifying metadata for the service., Serve a built asset if it exists, else the SPA entry (index.html)., Log startup and dispose lazily initialized database resources on exit., serve_web_app(), service_metadata(), Tests for the health/liveness endpoints. (+2 more)
 
 ### Community 135 - "transactions.py"
-Cohesion: 0.12
-Nodes (23): delete_transaction_route(), get_transaction_route(), patch_transaction(), patch_transactions_bulk(), post_transaction(), post_transaction_restore(), put_transaction_splits(), put_transaction_tags() (+15 more)
+Cohesion: 0.11
+Nodes (24): delete_transaction_route(), get_transaction_route(), patch_transaction(), patch_transactions_bulk(), post_transaction(), post_transaction_restore(), put_transaction_splits(), put_transaction_tags() (+16 more)
 
 ### Community 136 - "TimestampedRead"
 Cohesion: 0.12
@@ -644,8 +644,8 @@ Cohesion: 0.22
 Nodes (9): Backend (FastAPI + SQLite + Alembic), Design direction, Developer prerequisites (frontend build only), Privacy & safety posture, Quick start (frontend dev server), Repository shape, Run the app — Python only, no Node.js required, Run the full local development stack (+1 more)
 
 ### Community 141 - "stage_pdf"
-Cohesion: 0.19
-Nodes (20): ExtractedDocument, Ephemeral text extracted from one validated server-side PDF., Parse the supported, section-aware TD credit-card text layout., TdCreditCardParser, _canonical_result(), _canonical_transaction(), full_document(), Path (+12 more)
+Cohesion: 0.13
+Nodes (30): ExtractedDocument, Ephemeral text extracted from one validated server-side PDF., The supplied document is not a supported text PDF., UnsupportedDocumentError, _classify(), _infer_row_date(), _normalized_lines(), _parse_amount_cents() (+22 more)
 
 ### Community 142 - "TimestampedRead"
 Cohesion: 0.19
@@ -656,8 +656,8 @@ Cohesion: 0.19
 Nodes (18): _candidate(), Decimal, LogCaptureFixture, MonkeyPatch, Path, Create a tiny text PDF fixture without personal statement content., _synthetic_pdf(), test_async_pdf_traversal_is_off_loop_and_cancellation_waits_for_cleanup() (+10 more)
 
 ### Community 144 - "ResourceNotFoundError"
-Cohesion: 0.19
-Nodes (12): _canonical_digest(), BinaryIO, date, Non-reversible, deterministic statement and transaction fingerprints., Hash a binary stream incrementally without retaining its bytes., Identify one account statement without exposing its source values., Identify a row while preserving repeated legitimate occurrences., sha256_stream() (+4 more)
+Cohesion: 0.12
+Nodes (27): Account, Category, centsToInput(), formatCad(), parseCadToCents(), Props, SplitDraft, Props (+19 more)
 
 ### Community 145 - "InvalidUpdateError"
 Cohesion: 0.33
@@ -668,8 +668,8 @@ Cohesion: 0.22
 Nodes (8): AccountRead, AccountUpdate, IssuerCode, Validation and response schemas for credit-card accounts., Supported statement issuers., Mutable account fields; omission leaves the stored value unchanged., Serialized persisted account with explicit profile ownership., StrEnum
 
 ### Community 147 - "InvalidExchangeRateError"
-Cohesion: 0.32
-Nodes (7): InvalidExchangeRateError, An exchange-rate value is ambiguous or exceeds fixed precision., parse_exchange_rate(), Decimal, Exact monetary parsing and statement reconciliation primitives., Parse a positive plain-decimal rate at a fixed eight-place precision., test_exchange_rates_reject_float_ambiguous_or_excess_precision()
+Cohesion: 0.20
+Nodes (9): InvalidExchangeRateError, An exchange-rate value is ambiguous or exceeds fixed precision., parse_exchange_rate(), Decimal, Exact monetary parsing and statement reconciliation primitives., Parse a positive plain-decimal rate at a fixed eight-place precision., test_exchange_rates_reject_float_ambiguous_or_excess_precision(), test_sha256_is_streamed_in_bounded_chunks() (+1 more)
 
 ### Community 148 - "CategoryUpdate"
 Cohesion: 0.33
@@ -704,8 +704,8 @@ Cohesion: 0.33
 Nodes (5): ProfileRead, ProfileUpdate, Validation and response schemas for profiles., Mutable profile fields; omission leaves the stored value unchanged., Serialized persisted profile.
 
 ### Community 156 - "_TrackedStream"
-Cohesion: 0.18
-Nodes (21): _extract_document_bounded(), _extract_document_bounded_async(), _extraction_worker(), BinaryIO, Connection, Logger, Path, Privacy-safe, bounded extraction of text-based statement PDFs. (+13 more)
+Cohesion: 0.20
+Nodes (10): api, API_BASE, FieldError, RawFieldError, request(), toApiError(), Health, Probe() (+2 more)
 
 ### Community 160 - "ResourceNotFoundError"
 Cohesion: 0.20
@@ -727,29 +727,25 @@ Nodes (3): Agent instructions, Frontend design skill requirement, graphify
 Cohesion: 0.38
 Nodes (18): _account(), api_client(), _category_ids(), _profile(), Path, TestClient, HTTP contract tests for profile-isolated transaction routes., test_api_rejects_unsafe_create_update_and_split_cent_amounts() (+10 more)
 
-### Community 165 - "TransactionTag"
-Cohesion: 0.26
-Nodes (12): The supplied document is not a supported text PDF., UnsupportedDocumentError, _classify(), _infer_row_date(), _normalized_lines(), _parse_amount_cents(), _parse_period_date(), _PendingTransaction (+4 more)
-
 ### Community 166 - "import_batch.py"
 Cohesion: 0.08
-Nodes (67): Service-layer errors shared by profile-scoped operations., Transaction split amounts do not sum to the parent transaction amount., A requested resource is missing from the caller's allowed scope., ResourceNotFoundError, SplitSumError, cancel_import(), _claim_import_commit(), _claim_import_preview() (+59 more)
+Nodes (65): _canonical_digest(), BinaryIO, date, Non-reversible, deterministic statement and transaction fingerprints., Hash a binary stream incrementally without retaining its bytes., Identify one account statement without exposing its source values., Identify a row while preserving repeated legitimate occurrences., sha256_stream() (+57 more)
 
 ### Community 167 - "Statement fixtures"
 Cohesion: 0.67
 Nodes (3): Layout (convention), Rules, Statement fixtures
 
 ### Community 168 - "profile.py"
-Cohesion: 0.35
-Nodes (11): api_client(), _create_profile(), Path, TestClient, HTTP contract tests for profile-isolated category routes., test_categories_are_profile_isolated(), test_create_custom_category(), test_new_profile_exposes_seeded_default_categories() (+3 more)
+Cohesion: 0.44
+Nodes (9): _create_profile(), TestClient, HTTP contract tests for profile-isolated category routes., test_categories_are_profile_isolated(), test_create_custom_category(), test_new_profile_exposes_seeded_default_categories(), test_openapi_lists_category_routes(), test_patch_and_archive_restore() (+1 more)
 
 ### Community 174 - "account.py"
 Cohesion: 0.24
 Nodes (10): database_url(), Connection, Alembic environment for the local SQLite database., Return Alembic's URL form of the configured local SQLite path., Run migrations without opening a database connection., Run migrations using an existing connection., Run migrations with the application's configured SQLite engine., run_migrations() (+2 more)
 
 ### Community 175 - "api_client"
-Cohesion: 0.41
-Nodes (11): _create_account(), _create_profile(), TestClient, HTTP contract tests for profile and isolated account routes., test_account_archive_restore_and_validation(), test_account_crud_is_scoped_to_path_profile(), test_cross_profile_account_operations_match_missing_response(), test_missing_profile_rejects_account_collection_operations() (+3 more)
+Cohesion: 0.33
+Nodes (13): api_client(), _create_account(), _create_profile(), Path, TestClient, HTTP contract tests for profile and isolated account routes., test_account_archive_restore_and_validation(), test_account_crud_is_scoped_to_path_profile() (+5 more)
 
 ### Community 176 - "replace_transaction_splits"
 Cohesion: 0.29
@@ -758,10 +754,6 @@ Nodes (5): account, { chromium }, fs, preview, profile
 ### Community 177 - "Q: Independent BE-16 contract audit for atomic key creation, bounded multipart uploads, OpenAPI errors, isolation, durability, privacy, and cleanup"
 Cohesion: 0.40
 Nodes (4): Answer, Outcome, Q: Independent BE-16 contract audit for atomic key creation, bounded multipart uploads, OpenAPI errors, isolation, durability, privacy, and cleanup, Source Nodes
-
-### Community 178 - "suggest_import_account"
-Cohesion: 0.33
-Nodes (3): ParserDetection, One parser's deterministic detection result., Return whether this parser recognizes the validated document.
 
 ### Community 179 - "test_profile_account_migration.py"
 Cohesion: 0.50
@@ -784,14 +776,14 @@ Cohesion: 0.32
 Nodes (8): invalid_update_handler(), JSONResponse, Return readable validation feedback for invalid split allocations., Map absent and out-of-scope resources to the same response shape., Return readable validation feedback for explicit null updates., resource_not_found_handler(), split_sum_handler(), Request
 
 ## Knowledge Gaps
-- **430 isolated node(s):** `spending-tracker-api`, `name`, `private`, `version`, `type` (+425 more)
+- **438 isolated node(s):** `spending-tracker-api`, `name`, `private`, `version`, `type` (+433 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **47 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **49 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Work-memory lessons
 
 **Preferred sources** — corroborated by past sessions; start here.
-- `Dependency-Ordered Execution` (2× useful, score=1.961542302) _(code changed — re-verify)_
+- `Dependency-Ordered Execution` (2× useful, score=1.960664441) _(code changed — re-verify)_
 
 **Known dead ends** — questions that led nowhere; don't re-derive.
 - "Independent BE-16 contract audit for atomic key creation, bounded multipart uploads, OpenAPI errors, isolation, durability, privacy, and cleanup" -> `Configuration`, `Cleanup`, `cleanup()`
@@ -799,11 +791,11 @@ Nodes (8): invalid_update_handler(), JSONResponse, Return readable validation fe
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `patch_transactions_bulk()` connect `transactions.py` to `Horizon UI Components`, `Financial Derived Data`, `TimestampedRead`, `Frontend Routing Theme`, `Aurora UI Components`?**
-  _High betweenness centrality (0.090) - this node is a cross-community bridge._
-- **Why does `TransactionBulkAction` connect `Frontend Routing Theme` to `transactions.py`?**
+- **Why does `patch_transactions_bulk()` connect `transactions.py` to `TimestampedRead`, `Horizon UI Components`, `Financial Derived Data`, `Aurora UI Components`?**
+  _High betweenness centrality (0.089) - this node is a cross-community bridge._
+- **Why does `TransactionBulkAction` connect `transactions.py` to `ResourceNotFoundError`, `Frontend Routing Theme`?**
   _High betweenness centrality (0.086) - this node is a cross-community bridge._
-- **Why does `TimestampedRead` connect `TimestampedRead` to `DocumentLimits`, `Financial Derived Data`, `TimestampedRead`, `Aurora UI Components`, `profile.py`, `test_profile_account_migration.py`, `CategoryUpdate`, `common.py`, `ImportStagedTransactionCreate`, `create_profile`, `update_account`?**
+- **Why does `TimestampedRead` connect `TimestampedRead` to `DocumentLimits`, `Financial Derived Data`, `TimestampedRead`, `profile.py`, `test_profile_account_migration.py`, `CategoryUpdate`, `common.py`, `ImportStagedTransactionCreate`, `create_profile`, `update_account`?**
   _High betweenness centrality (0.045) - this node is a cross-community bridge._
 - **Are the 42 inferred relationships involving `TimestampedRead` (e.g. with `AccountCreate` and `AccountRead`) actually correct?**
   _`TimestampedRead` has 42 INFERRED edges - model-reasoned connections that need verification._

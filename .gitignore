@@ -46,5 +46,13 @@ playwright-report/
 test-results/
 *.log
 
+# Backend test-run scratch roots (never source or fixtures)
+/apps/api/.test-tmp*/
+/apps/api/.fe*-test/
+/apps/api/output/
+/apps/api/be[0-9][0-9]-*/
+/apps/api/qa[0-9][0-9]-*/
+/apps/api/pytest-cache-files-*/
+
 # Temporary statement uploads (never persisted)
 tmp-uploads/

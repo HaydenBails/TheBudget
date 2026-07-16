@@ -1,12 +1,12 @@
 # Graph Report - TheBudget  (2026-07-16)
 
 ## Corpus Check
-- 165 files · ~1,035,333 words
+- 167 files · ~1,048,166 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1858 nodes · 3517 edges · 182 communities (136 shown, 46 thin omitted)
-- Extraction: 78% EXTRACTED · 22% INFERRED · 0% AMBIGUOUS · INFERRED: 759 edges (avg confidence: 0.75)
+- 1869 nodes · 3530 edges · 186 communities (139 shown, 47 thin omitted)
+- Extraction: 78% EXTRACTED · 22% INFERRED · 0% AMBIGUOUS · INFERRED: 761 edges (avg confidence: 0.75)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
@@ -189,9 +189,13 @@
 - [[_COMMUNITY_test_profile_account_migration.py|test_profile_account_migration.py]]
 - [[_COMMUNITY_health.py|health.py]]
 - [[_COMMUNITY_account.py|account.py]]
+- [[_COMMUNITY_test_database.py|test_database.py]]
+- [[_COMMUNITY_get_session|get_session]]
+- [[_COMMUNITY_invalid_update_handler|invalid_update_handler]]
+- [[_COMMUNITY_profile.py|profile.py]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `Progress log` - 72 edges
+1. `Progress log` - 73 edges
 2. `TimestampedRead` - 46 edges
 3. `ExtractedDocument` - 45 edges
 4. `create_db_engine()` - 35 edges
@@ -203,16 +207,16 @@
 10. `UnsupportedDocumentError` - 27 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `test_transaction_sign_validation_rejects_mismatches()` --calls--> `validate_transaction_sign()`  [INFERRED]
+  apps/api/tests/test_transaction_rules.py → apps/api/app/services/transactions_rules.py
+- `renderWithClient()` --calls--> `render()`  [INFERRED]
+  apps/web/src/api/health.test.tsx → output/playwright/fe08-longtext-qa.js
+- `renderAndPreview()` --calls--> `render()`  [INFERRED]
+  apps/web/src/features/imports/ImportPage.test.tsx → output/playwright/fe08-longtext-qa.js
 - `UI Directions Browser Entrypoint` --conceptually_related_to--> `Meridian Production UI Direction`  [INFERRED]
   apps/web/index.html → docs/decisions/0002-ui-directions.md
 - `run_migrations_online()` --calls--> `create_db_engine()`  [INFERRED]
   apps/api/alembic/env.py → apps/api/app/db/session.py
-- `api_client()` --indirect_call--> `get_session()`  [INFERRED]
-  apps/api/tests/test_category_api.py → apps/api/app/db/dependencies.py
-- `api_client()` --indirect_call--> `get_session()`  [INFERRED]
-  apps/api/tests/test_import_api.py → apps/api/app/db/dependencies.py
-- `api_client()` --indirect_call--> `get_session()`  [INFERRED]
-  apps/api/tests/test_transaction_api.py → apps/api/app/db/dependencies.py
 
 ## Import Cycles
 - None detected.
@@ -253,47 +257,47 @@
 - **Meridian Transaction Row Encoding** — docs_screenshots_meridian_transactions_dark_account_indicators, docs_screenshots_meridian_transactions_dark_category_status_badges, docs_screenshots_meridian_transactions_dark_signed_amounts, docs_screenshots_meridian_transactions_dark_excluded_transaction_states [EXTRACTED 1.00]
 - **Meridian Transaction Management Workspace** — docs_screenshots_meridian_transactions_light_transaction_scope_summary, docs_screenshots_meridian_transactions_light_profile_account_period_context, docs_screenshots_meridian_transactions_light_search_faceted_filters, docs_screenshots_meridian_transactions_light_dense_comfortable_transaction_table, docs_screenshots_meridian_transactions_light_account_identity_markers, docs_screenshots_meridian_transactions_light_category_badges, docs_screenshots_meridian_transactions_light_accounting_inclusion_cues [INFERRED 0.95]
 
-## Communities (182 total, 46 thin omitted)
+## Communities (186 total, 47 thin omitted)
 
 ### Community 0 - "Account API Services"
-Cohesion: 0.20
-Nodes (15): KEY, sample, useArchiveProfile(), useCreateProfile(), useProfiles(), useRestoreProfile(), useUpdateProfile(), Ctx (+7 more)
+Cohesion: 0.17
+Nodes (17): KEY, sample, useArchiveProfile(), useCreateProfile(), useProfiles(), useRestoreProfile(), useUpdateProfile(), Ctx (+9 more)
 
 ### Community 1 - "Profile Data Model"
-Cohesion: 0.13
-Nodes (13): Base, datetime, Shared SQLAlchemy declarative base and timestamp helpers., Return an aware UTC timestamp for Python-side inserts and updates., Base for every persisted domain model., utc_now(), Tag and transaction-tag association models (profile-scoped)., Many-to-many link between transactions and tags. (+5 more)
+Cohesion: 0.50
+Nodes (4): datetime, Shared SQLAlchemy declarative base and timestamp helpers., Return an aware UTC timestamp for Python-side inserts and updates., utc_now()
 
 ### Community 2 - "Database Migration Setup"
 Cohesion: 0.17
 Nodes (23): AsyncReadable, Digest, DocumentLimits, _extract_document(), Resource limits applied before parser-specific work begins., DocumentExtractionTimeoutError, DocumentPageLimitError, DocumentTooLargeError (+15 more)
 
 ### Community 3 - "Horizon UI Components"
-Cohesion: 0.17
-Nodes (23): get_transaction(), list_transaction_splits(), Session, Transaction, TransactionUpdate, Profile-isolated transaction persistence operations.  Services flush but never c, Return a transaction only when both its ID and profile owner match., Return a scoped transaction or the uniform not-found error. (+15 more)
+Cohesion: 0.19
+Nodes (20): create_imported_transaction(), get_transaction(), list_transaction_splits(), Session, Transaction, Profile-isolated transaction persistence operations.  Services flush but never c, Create one final ledger row from a same-scope canonical staged row., Return a transaction only when both its ID and profile owner match. (+12 more)
 
 ### Community 4 - "Project Governance Docs"
 Cohesion: 0.40
 Nodes (5): API Lint and Test Gate, Continuous Integration, Web Typecheck and Build Gate, API Runtime Dependency Stack, API Test and Lint Toolchain
 
 ### Community 5 - "Meridian Review Components"
-Cohesion: 0.10
-Nodes (25): api, API_BASE, ApiError, FieldError, RawFieldError, request(), toApiError(), base() (+17 more)
+Cohesion: 0.13
+Nodes (20): ApiError, base(), cancelStatement(), commitStatement(), previewStatement(), preview, amount(), BusyAction (+12 more)
 
 ### Community 6 - "Money Date Utilities"
 Cohesion: 0.21
 Nodes (13): add_cents(), parse_cents(), Exact integer-cent money operations.  Decimal text is accepted only at an input, Parse strict decimal currency text into integer cents.      Accepted examples ar, Add two exact integer-cent amounts., Sum exact integer-cent amounts, rejecting non-integer members., _require_cents(), sum_cents() (+5 more)
 
 ### Community 7 - "Frontend Mock Data"
-Cohesion: 0.22
-Nodes (13): AccountsPage(), FormValues, key(), useAccounts(), useArchiveAccount(), useCreateAccount(), useRestoreAccount(), useUpdateAccount() (+5 more)
+Cohesion: 0.13
+Nodes (19): countLabel(), DashboardPage(), SettingsPage(), AccountsPage(), FormValues, key(), useAccounts(), useArchiveAccount() (+11 more)
 
 ### Community 8 - "FastAPI Application Lifecycle"
-Cohesion: 0.15
-Nodes (23): Add immutable creation and automatically refreshed update timestamps., TimestampMixin, ImportBatch, One privacy-safe import preview/commit lifecycle., ImportStagedTransaction, One normalized, structured row from a statement preview., ImportTransactionLink, Audit link from a staged row to its final or duplicate transaction. (+15 more)
+Cohesion: 0.11
+Nodes (29): Base, Base for every persisted domain model., Add immutable creation and automatically refreshed update timestamps., TimestampMixin, ImportBatch, One privacy-safe import preview/commit lifecycle., ImportStagedTransaction, One normalized, structured row from a statement preview. (+21 more)
 
 ### Community 9 - "Frontend Routing Theme"
 Cohesion: 0.07
-Nodes (55): Account, Category, base(), invalidator(), emptyFilters, transactionKey(), transactionListPath(), useBulkUpdateTransactions() (+47 more)
+Nodes (51): base(), invalidator(), emptyFilters, transactionKey(), transactionListPath(), useBulkUpdateTransactions(), useCreateTransaction(), useDeleteTransaction() (+43 more)
 
 ### Community 10 - "TypeScript Configuration"
 Cohesion: 0.09
@@ -364,8 +368,8 @@ Cohesion: 0.27
 Nodes (11): All Accounts and July 2026 Filters, Nine Category Assignment Cards, Petro-Canada Uncategorized Transaction, Petro-Canada Future Transaction Rule, Meridian Category Review Light Theme, Hayden Personal Profile, Skip and Confirm Category Actions, Category Review Progress 0 of 10 (+3 more)
 
 ### Community 27 - "Aurora UI Components"
-Cohesion: 0.14
-Nodes (14): Service-layer errors shared by profile-scoped operations., Transaction split amounts do not sum to the parent transaction amount., SplitSumError, default_included_for_type(), Pure domain rules for transactions: spending inclusion and split integrity.  K, Return the default spending-inclusion decision for a transaction type., Enforce the canonical debit-positive / credit-negative convention., Raise ``SplitSumError`` unless the splits sum exactly to the parent.      Amou (+6 more)
+Cohesion: 0.25
+Nodes (11): A single category allocation, in signed integer cents., SplitInput, InvalidUpdateError, An update attempted to clear a required persisted field., TransactionUpdate, Update mutable fields without weakening split or profile invariants., _reject_null_required_fields(), Enforce the canonical debit-positive / credit-negative convention. (+3 more)
 
 ### Community 28 - "Aurora Light Dashboard"
 Cohesion: 0.33
@@ -428,16 +432,16 @@ Cohesion: 0.40
 Nodes (4): downgrade(), Create isolated profile and account storage., Remove account storage before its owning profiles., upgrade()
 
 ### Community 52 - "Frontend Design Policy"
-Cohesion: 0.11
-Nodes (26): _detail_response(), _error_response(), get_import(), post_import_cancel(), post_import_commit(), post_import_preview(), _preview_response(), alias (+18 more)
+Cohesion: 0.12
+Nodes (23): _detail_response(), _error_response(), get_import(), post_import_cancel(), post_import_commit(), post_import_preview(), _preview_response(), alias (+15 more)
 
 ### Community 54 - "Category Derivation"
-Cohesion: 0.16
-Nodes (18): key(), useArchiveCategory(), useCategories(), useCreateCategory(), useRestoreCategory(), useUpdateCategory(), CategoriesPage(), CategoryForm() (+10 more)
+Cohesion: 0.15
+Nodes (19): key(), useArchiveCategory(), useCategories(), useCreateCategory(), useRestoreCategory(), useUpdateCategory(), CategoriesPage(), CategoryForm() (+11 more)
 
 ### Community 58 - "Progress log"
 Cohesion: 0.03
-Nodes (72): 2026-07-15 14:42 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 14:50 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 15:03 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:05 EDT — FE-01 — Codex / fe01_acceptance_review, 2026-07-15 15:06 EDT — FE-01 — Codex / fe01_acceptance, 2026-07-15 15:09 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:12 EDT — GOV-01 — Codex, 2026-07-15 15:16 EDT — BE-04 — Codex / be04_services (+64 more)
+Nodes (73): 2026-07-15 14:42 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 14:50 EDT — FE-01 — Codex / fe01_meridian_tokens, 2026-07-15 15:03 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:05 EDT — FE-01 — Codex / fe01_acceptance_review, 2026-07-15 15:06 EDT — FE-01 — Codex / fe01_acceptance, 2026-07-15 15:09 EDT — BE-03 — Codex / be03_models, 2026-07-15 15:12 EDT — GOV-01 — Codex, 2026-07-15 15:16 EDT — BE-04 — Codex / be04_services (+65 more)
 
 ### Community 59 - "create_profile"
 Cohesion: 0.21
@@ -445,19 +449,19 @@ Nodes (26): ProfileCreate, Fields accepted when creating a profile., create_acco
 
 ### Community 60 - "Base"
 Cohesion: 0.14
-Nodes (18): create_db_engine(), create_session_factory(), Path, Session, sessionmaker, SQLAlchemy engine and session construction.  Construction is explicit so tests a, Create a SQLite engine for ``database_path`` with WAL enabled.      The containi, Return a typed session factory bound to ``engine``. (+10 more)
+Nodes (14): create_session_factory(), Session, sessionmaker, SQLAlchemy engine and session construction.  Construction is explicit so tests a, Return a typed session factory bound to ``engine``., api_client(), Path, Path (+6 more)
 
 ### Community 61 - "Spending Tracker (working title)"
 Cohesion: 0.22
 Nodes (9): Configuration, Database migrations, Endpoints, Layout, Requirements, Run, Setup, Spending Tracker API (+1 more)
 
 ### Community 62 - "update_account"
-Cohesion: 0.24
-Nodes (19): Mutable transaction fields; omission leaves the stored value unchanged., A single category allocation, in signed integer cents., SplitInput, TransactionUpdate, create_transaction(), TransactionCreate, Create a transaction with optional validated splits and tags., _account() (+11 more)
+Cohesion: 0.27
+Nodes (17): Mutable transaction fields; omission leaves the stored value unchanged., TransactionUpdate, create_transaction(), TransactionCreate, Create a transaction with optional validated splits and tags., _account(), date, Path (+9 more)
 
 ### Community 63 - "index.tsx"
-Cohesion: 0.09
-Nodes (21): Health, Probe(), useHealth(), queryClient, App(), ApiStatus(), AppShell(), IconName (+13 more)
+Cohesion: 0.10
+Nodes (22): api, API_BASE, FieldError, RawFieldError, request(), toApiError(), Health, Probe() (+14 more)
 
 ### Community 64 - "DocumentLimits"
 Cohesion: 0.25
@@ -468,8 +472,8 @@ Cohesion: 0.12
 Nodes (16): 10. Income, 11.1 Budgets, 11.2 Available-to-save metric, 11. Budgets and Savings Calculation, 18. API Surface, 1. Executive Summary, 23. Risks and Mitigations, 24. Definition of Done for First Complete Release (+8 more)
 
 ### Community 66 - "config.py"
-Cohesion: 0.26
-Nodes (12): A free-form label owned by exactly one profile, unique by name., Tag, InvalidUpdateError, An update attempted to clear a required persisted field., add_transaction_tag(), list_transaction_tags(), _normalize_tag_names(), List tags attached to a scoped transaction. (+4 more)
+Cohesion: 0.24
+Nodes (11): Tag and transaction-tag association models (profile-scoped)., A free-form label owned by exactly one profile, unique by name., Tag, add_transaction_tag(), list_transaction_tags(), _normalize_tag_names(), List tags attached to a scoped transaction., Replace a transaction's tags, reusing profile-owned tag records. (+3 more)
 
 ### Community 67 - "test_category_api.py"
 Cohesion: 0.14
@@ -504,8 +508,8 @@ Cohesion: 0.25
 Nodes (8): Branch / commit conventions, CLAUDE.md — guidance for Claude Code in this repo, Frontend design work, graphify, Mandatory task protocol (from AGENTS.md), Non-negotiable constraints, Read this first, every session, Running things locally
 
 ### Community 76 - "get_session"
-Cohesion: 0.29
-Nodes (17): Account, A masked card account owned by exactly one profile., Profile, Profile persistence model., An isolated local data boundary with no authentication semantics., _batch(), Path, Persistence and ownership coverage for canonical import staging. (+9 more)
+Cohesion: 0.30
+Nodes (20): create_db_engine(), Path, Create a SQLite engine for ``database_path`` with WAL enabled.      The containi, Account, A masked card account owned by exactly one profile., Profile, An isolated local data boundary with no authentication semantics., _batch() (+12 more)
 
 ### Community 77 - "1. Technology stack"
 Cohesion: 0.40
@@ -584,8 +588,8 @@ Cohesion: 0.50
 Nodes (3): DefaultCategory, Canonical default spending categories seeded per profile.  Kept in sync with t, NamedTuple
 
 ### Community 96 - "test_profile_account_migration.py"
-Cohesion: 0.19
-Nodes (11): _content_length(), ImportBodyLimitMiddleware, Bound statement multipart bodies before Starlette spools file parts., Reject oversized import requests at the ASGI receive boundary., _RequestBodyTooLarge, _send_too_large(), ASGIApp, Exception (+3 more)
+Cohesion: 0.10
+Nodes (36): load_or_create_import_fingerprint_key(), Path, Load stable local HMAC key material, creating it with owner-only mode., _content_length(), ImportBodyLimitMiddleware, Bound statement multipart bodies before Starlette spools file parts., Reject oversized import requests at the ASGI receive boundary., _RequestBodyTooLarge (+28 more)
 
 ### Community 97 - "accounts.py"
 Cohesion: 0.14
@@ -612,8 +616,8 @@ Cohesion: 0.67
 Nodes (3): 2.1 Vision, 2.2 Product principles, 2. Product Vision and Principles
 
 ### Community 133 - "TransactionSplit"
-Cohesion: 0.06
-Nodes (48): dispose_database(), get_session(), _get_session_factory(), Session, sessionmaker, FastAPI database dependencies with caller-scoped transactions., Yield one transaction per request, committing only successful requests., Dispose lazily initialized application database resources. (+40 more)
+Cohesion: 0.15
+Nodes (10): lifespan(), FastAPI application entrypoint.  Run locally with::      uvicorn app.main:ap, Return basic identifying metadata for the service., Serve a built asset if it exists, else the SPA entry (index.html)., Log startup and dispose lazily initialized database resources on exit., serve_web_app(), service_metadata(), Tests for the health/liveness endpoints. (+2 more)
 
 ### Community 135 - "transactions.py"
 Cohesion: 0.12
@@ -644,8 +648,8 @@ Cohesion: 0.19
 Nodes (20): ExtractedDocument, Ephemeral text extracted from one validated server-side PDF., Parse the supported, section-aware TD credit-card text layout., TdCreditCardParser, _canonical_result(), _canonical_transaction(), full_document(), Path (+12 more)
 
 ### Community 142 - "TimestampedRead"
-Cohesion: 0.22
-Nodes (18): Response fields shared by timestamped persisted records., TimestampedRead, ImportBatchRead, ImportCancelResponse, ImportCandidateResponse, ImportCommitRequest, ImportCommitResponse, ImportErrorResponse (+10 more)
+Cohesion: 0.19
+Nodes (21): Response fields shared by timestamped persisted records., TimestampedRead, ImportBatchRead, ImportCancelResponse, ImportCandidateResponse, ImportCommitRequest, ImportCommitResponse, ImportDetailResponse (+13 more)
 
 ### Community 143 - "test_importing_primitives.py"
 Cohesion: 0.19
@@ -712,8 +716,8 @@ Cohesion: 0.50
 Nodes (3): fixtures, generator, policy
 
 ### Community 162 - "ImportBatchCreate"
-Cohesion: 0.13
-Nodes (12): Application configuration.  Settings are loaded from environment variables (pr, Runtime configuration for the Spending Tracker API., Settings, Path, Tests for isolated SQLite engine and session configuration., test_database_path_can_be_configured(), test_engine_enables_wal_and_foreign_keys(), Path (+4 more)
+Cohesion: 0.15
+Nodes (8): Application configuration.  Settings are loaded from environment variables (pr, health(), Health-check router.  Kept intentionally dependency-free so it can be used as, Return a static OK payload used to confirm the API is running., Path, Alembic lifecycle test for the profile/account revision., test_profile_account_migration_upgrade_downgrade_cycle(), Migration coverage for the corrected transaction-type contract.
 
 ### Community 163 - "test_profile_account_migration.py"
 Cohesion: 0.67
@@ -728,24 +732,24 @@ Cohesion: 0.26
 Nodes (12): The supplied document is not a supported text PDF., UnsupportedDocumentError, _classify(), _infer_row_date(), _normalized_lines(), _parse_amount_cents(), _parse_period_date(), _PendingTransaction (+4 more)
 
 ### Community 166 - "import_batch.py"
-Cohesion: 0.11
-Nodes (56): A requested resource is missing from the caller's allowed scope., ResourceNotFoundError, cancel_import(), _claim_import_commit(), _claim_import_preview(), commit_import(), _commit_result(), ImportAcknowledgementRequiredError (+48 more)
+Cohesion: 0.08
+Nodes (67): Service-layer errors shared by profile-scoped operations., Transaction split amounts do not sum to the parent transaction amount., A requested resource is missing from the caller's allowed scope., ResourceNotFoundError, SplitSumError, cancel_import(), _claim_import_commit(), _claim_import_preview() (+59 more)
 
 ### Community 167 - "Statement fixtures"
 Cohesion: 0.67
 Nodes (3): Layout (convention), Rules, Statement fixtures
 
 ### Community 168 - "profile.py"
-Cohesion: 0.45
-Nodes (14): _account(), _preview(), _profile(), LogCaptureFixture, TestClient, BE-16 typed, profile-isolated import HTTP contract tests., test_cross_profile_import_ids_are_uniform_404(), test_database_commit_failure_returns_500_and_durably_persists_failed_state() (+6 more)
+Cohesion: 0.35
+Nodes (11): api_client(), _create_profile(), Path, TestClient, HTTP contract tests for profile-isolated category routes., test_categories_are_profile_isolated(), test_create_custom_category(), test_new_profile_exposes_seeded_default_categories() (+3 more)
 
 ### Community 174 - "account.py"
 Cohesion: 0.24
 Nodes (10): database_url(), Connection, Alembic environment for the local SQLite database., Return Alembic's URL form of the configured local SQLite path., Run migrations without opening a database connection., Run migrations using an existing connection., Run migrations with the application's configured SQLite engine., run_migrations() (+2 more)
 
 ### Community 175 - "api_client"
-Cohesion: 0.20
-Nodes (11): load_or_create_import_fingerprint_key(), Path, Load stable local HMAC key material, creating it with owner-only mode., get_import_document_limits(), get_import_fingerprint_key(), Construct validated document limits from local runtime settings., Return stable caller-owned HMAC key material without exposing it., api_client() (+3 more)
+Cohesion: 0.41
+Nodes (11): _create_account(), _create_profile(), TestClient, HTTP contract tests for profile and isolated account routes., test_account_archive_restore_and_validation(), test_account_crud_is_scoped_to_path_profile(), test_cross_profile_account_operations_match_missing_response(), test_missing_profile_rejects_account_collection_operations() (+3 more)
 
 ### Community 176 - "replace_transaction_splits"
 Cohesion: 0.29
@@ -764,13 +768,25 @@ Cohesion: 0.50
 Nodes (3): Category, Spending-category persistence model (profile-scoped)., A spending category owned by exactly one profile.      ``slug`` is unique per
 
 ### Community 180 - "health.py"
-Cohesion: 0.50
-Nodes (3): health(), Health-check router.  Kept intentionally dependency-free so it can be used as, Return a static OK payload used to confirm the API is running.
+Cohesion: 0.20
+Nodes (10): renderWithClient(), renderAndPreview(), account, { chromium }, fs, longAccount, preview, profile (+2 more)
+
+### Community 182 - "test_database.py"
+Cohesion: 0.28
+Nodes (8): Runtime configuration for the Spending Tracker API., Settings, Path, Tests for isolated SQLite engine and session configuration., test_database_path_can_be_configured(), test_engine_enables_wal_and_foreign_keys(), test_session_factory_uses_isolated_database(), BaseSettings
+
+### Community 183 - "get_session"
+Cohesion: 0.28
+Nodes (8): dispose_database(), get_session(), _get_session_factory(), Session, sessionmaker, FastAPI database dependencies with caller-scoped transactions., Yield one transaction per request, committing only successful requests., Dispose lazily initialized application database resources.
+
+### Community 184 - "invalid_update_handler"
+Cohesion: 0.32
+Nodes (8): invalid_update_handler(), JSONResponse, Return readable validation feedback for invalid split allocations., Map absent and out-of-scope resources to the same response shape., Return readable validation feedback for explicit null updates., resource_not_found_handler(), split_sum_handler(), Request
 
 ## Knowledge Gaps
-- **422 isolated node(s):** `spending-tracker-api`, `name`, `private`, `version`, `type` (+417 more)
+- **430 isolated node(s):** `spending-tracker-api`, `name`, `private`, `version`, `type` (+425 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **46 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **47 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Work-memory lessons
 
@@ -783,11 +799,11 @@ Nodes (3): health(), Health-check router.  Kept intentionally dependency-free so
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `patch_transactions_bulk()` connect `transactions.py` to `TimestampedRead`, `Horizon UI Components`, `Financial Derived Data`, `Frontend Routing Theme`?**
-  _High betweenness centrality (0.086) - this node is a cross-community bridge._
+- **Why does `patch_transactions_bulk()` connect `transactions.py` to `Horizon UI Components`, `Financial Derived Data`, `TimestampedRead`, `Frontend Routing Theme`, `Aurora UI Components`?**
+  _High betweenness centrality (0.090) - this node is a cross-community bridge._
 - **Why does `TransactionBulkAction` connect `Frontend Routing Theme` to `transactions.py`?**
-  _High betweenness centrality (0.083) - this node is a cross-community bridge._
-- **Why does `TimestampedRead` connect `TimestampedRead` to `DocumentLimits`, `Financial Derived Data`, `TimestampedRead`, `profile.py`, `test_profile_account_migration.py`, `CategoryUpdate`, `Frontend Design Policy`, `common.py`, `ImportStagedTransactionCreate`, `create_profile`, `update_account`?**
+  _High betweenness centrality (0.086) - this node is a cross-community bridge._
+- **Why does `TimestampedRead` connect `TimestampedRead` to `DocumentLimits`, `Financial Derived Data`, `TimestampedRead`, `Aurora UI Components`, `profile.py`, `test_profile_account_migration.py`, `CategoryUpdate`, `common.py`, `ImportStagedTransactionCreate`, `create_profile`, `update_account`?**
   _High betweenness centrality (0.045) - this node is a cross-community bridge._
 - **Are the 42 inferred relationships involving `TimestampedRead` (e.g. with `AccountCreate` and `AccountRead`) actually correct?**
   _`TimestampedRead` has 42 INFERRED edges - model-reasoned connections that need verification._

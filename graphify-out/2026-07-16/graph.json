@@ -973,7 +973,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "apps_api_app_config_settings",
-      "community": 162,
+      "community": 182,
       "norm_label": "settings"
     },
     {
@@ -983,7 +983,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "basesettings",
-      "community": 162,
+      "community": 182,
       "norm_label": "basesettings"
     },
     {
@@ -993,7 +993,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "apps_api_app_config_load_or_create_import_fingerprint_key",
-      "community": 175,
+      "community": 96,
       "norm_label": "load_or_create_import_fingerprint_key()"
     },
     {
@@ -1003,7 +1003,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_config_py_path",
-      "community": 175,
+      "community": 96,
       "norm_label": "path"
     },
     {
@@ -1023,7 +1023,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "apps_api_app_config_rationale_23",
-      "community": 162,
+      "community": 182,
       "norm_label": "runtime configuration for the spending tracker api."
     },
     {
@@ -1033,7 +1033,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "apps_api_app_config_rationale_65",
-      "community": 175,
+      "community": 96,
       "norm_label": "load stable local hmac key material, creating it with owner-only mode."
     },
     {
@@ -1063,7 +1063,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies",
-      "community": 133,
+      "community": 183,
       "norm_label": "dependencies.py"
     },
     {
@@ -1073,7 +1073,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_get_session",
-      "community": 133,
+      "community": 183,
       "norm_label": "get_session()"
     },
     {
@@ -1083,7 +1083,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_py_session",
-      "community": 133,
+      "community": 183,
       "norm_label": "session"
     },
     {
@@ -1093,7 +1093,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_dispose_database",
-      "community": 133,
+      "community": 183,
       "norm_label": "dispose_database()"
     },
     {
@@ -1103,7 +1103,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_get_session_factory",
-      "community": 133,
+      "community": 183,
       "norm_label": "_get_session_factory()"
     },
     {
@@ -1113,7 +1113,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_py_sessionmaker",
-      "community": 133,
+      "community": 183,
       "norm_label": "sessionmaker"
     },
     {
@@ -1123,7 +1123,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_rationale_1",
-      "community": 133,
+      "community": 183,
       "norm_label": "fastapi database dependencies with caller-scoped transactions."
     },
     {
@@ -1133,7 +1133,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_rationale_20",
-      "community": 133,
+      "community": 183,
       "norm_label": "yield one transaction per request, committing only successful requests."
     },
     {
@@ -1143,7 +1143,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "apps_api_app_db_dependencies_rationale_28",
-      "community": 133,
+      "community": 183,
       "norm_label": "dispose lazily initialized application database resources."
     },
     {
@@ -1163,7 +1163,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "apps_api_app_db_session_create_db_engine",
-      "community": 60,
+      "community": 76,
       "norm_label": "create_db_engine()"
     },
     {
@@ -1173,7 +1173,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_db_session_py_path",
-      "community": 60,
+      "community": 76,
       "norm_label": "path"
     },
     {
@@ -1233,7 +1233,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "apps_api_app_db_session_rationale_16",
-      "community": 60,
+      "community": 76,
       "norm_label": "create a sqlite engine for ``database_path`` with wal enabled.      the containi"
     },
     {
@@ -2333,7 +2333,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "apps_api_app_main_resource_not_found_handler",
-      "community": 133,
+      "community": 184,
       "norm_label": "resource_not_found_handler()"
     },
     {
@@ -2343,7 +2343,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "request",
-      "community": 133,
+      "community": 184,
       "norm_label": "request"
     },
     {
@@ -2353,7 +2353,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_main_py_jsonresponse",
-      "community": 133,
+      "community": 184,
       "norm_label": "jsonresponse"
     },
     {
@@ -2363,7 +2363,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "apps_api_app_main_invalid_update_handler",
-      "community": 133,
+      "community": 184,
       "norm_label": "invalid_update_handler()"
     },
     {
@@ -2373,7 +2373,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "apps_api_app_main_split_sum_handler",
-      "community": 133,
+      "community": 184,
       "norm_label": "split_sum_handler()"
     },
     {
@@ -2433,7 +2433,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "apps_api_app_main_rationale_80",
-      "community": 133,
+      "community": 184,
       "norm_label": "map absent and out-of-scope resources to the same response shape."
     },
     {
@@ -2443,7 +2443,7 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "apps_api_app_main_rationale_93",
-      "community": 133,
+      "community": 184,
       "norm_label": "return readable validation feedback for explicit null updates."
     },
     {
@@ -2453,7 +2453,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "apps_api_app_main_rationale_106",
-      "community": 133,
+      "community": 184,
       "norm_label": "return readable validation feedback for invalid split allocations."
     },
     {
@@ -2743,7 +2743,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "apps_api_app_models_base_base",
-      "community": 1,
+      "community": 8,
       "norm_label": "base"
     },
     {
@@ -2753,7 +2753,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "declarativebase",
-      "community": 1,
+      "community": 8,
       "norm_label": "declarativebase"
     },
     {
@@ -2793,7 +2793,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "apps_api_app_models_base_rationale_26",
-      "community": 1,
+      "community": 8,
       "norm_label": "base for every persisted domain model."
     },
     {
@@ -3033,7 +3033,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_profile",
-      "community": 76,
+      "community": 185,
       "norm_label": "profile.py"
     },
     {
@@ -3053,7 +3053,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_profile_rationale_1",
-      "community": 76,
+      "community": 185,
       "norm_label": "profile persistence model."
     },
     {
@@ -3073,7 +3073,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_tag",
-      "community": 1,
+      "community": 66,
       "norm_label": "tag.py"
     },
     {
@@ -3093,7 +3093,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "apps_api_app_models_tag_transactiontag",
-      "community": 1,
+      "community": 8,
       "norm_label": "transactiontag"
     },
     {
@@ -3103,7 +3103,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_tag_rationale_1",
-      "community": 1,
+      "community": 66,
       "norm_label": "tag and transaction-tag association models (profile-scoped)."
     },
     {
@@ -3123,7 +3123,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "apps_api_app_models_tag_rationale_35",
-      "community": 1,
+      "community": 8,
       "norm_label": "many-to-many link between transactions and tags."
     },
     {
@@ -3183,7 +3183,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_transaction_split",
-      "community": 1,
+      "community": 8,
       "norm_label": "transaction_split.py"
     },
     {
@@ -3193,7 +3193,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "apps_api_app_models_transaction_split_transactionsplit",
-      "community": 1,
+      "community": 8,
       "norm_label": "transactionsplit"
     },
     {
@@ -3203,7 +3203,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_transaction_split_rationale_1",
-      "community": 1,
+      "community": 8,
       "norm_label": "transaction split persistence model.  a transaction may be divided across cate"
     },
     {
@@ -3213,7 +3213,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "apps_api_app_models_transaction_split_rationale_22",
-      "community": 1,
+      "community": 8,
       "norm_label": "one category allocation of a parent transaction, in integer cents."
     },
     {
@@ -3953,7 +3953,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_routers_health",
-      "community": 180,
+      "community": 162,
       "norm_label": "health.py"
     },
     {
@@ -3963,7 +3963,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "apps_api_app_routers_health_health",
-      "community": 180,
+      "community": 162,
       "norm_label": "health()"
     },
     {
@@ -3973,7 +3973,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_routers_health_rationale_1",
-      "community": 180,
+      "community": 162,
       "norm_label": "health-check router.  kept intentionally dependency-free so it can be used as"
     },
     {
@@ -3983,7 +3983,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "apps_api_app_routers_health_rationale_18",
-      "community": 180,
+      "community": 162,
       "norm_label": "return a static ok payload used to confirm the api is running."
     },
     {
@@ -4003,7 +4003,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "apps_api_app_routers_imports_get_import_document_limits",
-      "community": 175,
+      "community": 96,
       "norm_label": "get_import_document_limits()"
     },
     {
@@ -4013,7 +4013,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "apps_api_app_routers_imports_get_import_fingerprint_key",
-      "community": 175,
+      "community": 96,
       "norm_label": "get_import_fingerprint_key()"
     },
     {
@@ -4213,7 +4213,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "apps_api_app_routers_imports_rationale_45",
-      "community": 175,
+      "community": 96,
       "norm_label": "construct validated document limits from local runtime settings."
     },
     {
@@ -4223,7 +4223,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "apps_api_app_routers_imports_rationale_56",
-      "community": 175,
+      "community": 96,
       "norm_label": "return stable caller-owned hmac key material without exposing it."
     },
     {
@@ -5223,7 +5223,7 @@
       "source_location": "L296",
       "_origin": "ast",
       "id": "apps_api_app_schemas_imports_importdetailresponse",
-      "community": 52,
+      "community": 142,
       "norm_label": "importdetailresponse"
     },
     {
@@ -5233,7 +5233,7 @@
       "source_location": "L332",
       "_origin": "ast",
       "id": "apps_api_app_schemas_imports_importpreviewresponse",
-      "community": 52,
+      "community": 142,
       "norm_label": "importpreviewresponse"
     },
     {
@@ -5333,7 +5333,7 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "apps_api_app_schemas_imports_rationale_297",
-      "community": 52,
+      "community": 142,
       "norm_label": "privacy-safe structured import lifecycle response."
     },
     {
@@ -5433,7 +5433,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "apps_api_app_schemas_transaction_splitinput",
-      "community": 62,
+      "community": 27,
       "norm_label": "splitinput"
     },
     {
@@ -5613,7 +5613,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "apps_api_app_schemas_transaction_rationale_57",
-      "community": 62,
+      "community": 27,
       "norm_label": "a single category allocation, in signed integer cents."
     },
     {
@@ -6233,7 +6233,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_errors",
-      "community": 27,
+      "community": 166,
       "norm_label": "errors.py"
     },
     {
@@ -6263,7 +6263,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_invalidupdateerror",
-      "community": 66,
+      "community": 27,
       "norm_label": "invalidupdateerror"
     },
     {
@@ -6273,7 +6273,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_splitsumerror",
-      "community": 27,
+      "community": 166,
       "norm_label": "splitsumerror"
     },
     {
@@ -6283,7 +6283,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_rationale_1",
-      "community": 27,
+      "community": 166,
       "norm_label": "service-layer errors shared by profile-scoped operations."
     },
     {
@@ -6303,7 +6303,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_rationale_9",
-      "community": 66,
+      "community": 27,
       "norm_label": "an update attempted to clear a required persisted field."
     },
     {
@@ -6313,7 +6313,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_rationale_13",
-      "community": 27,
+      "community": 166,
       "norm_label": "transaction split amounts do not sum to the parent transaction amount."
     },
     {
@@ -6363,7 +6363,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "apps_api_app_services_imports_importcommitresult",
-      "community": 166,
+      "community": 8,
       "norm_label": "importcommitresult"
     },
     {
@@ -6523,7 +6523,7 @@
       "source_location": "L520",
       "_origin": "ast",
       "id": "apps_api_app_services_imports_stage_candidates",
-      "community": 8,
+      "community": 166,
       "norm_label": "_stage_candidates()"
     },
     {
@@ -6563,7 +6563,7 @@
       "source_location": "L663",
       "_origin": "ast",
       "id": "apps_api_app_services_imports_commit_result",
-      "community": 166,
+      "community": 8,
       "norm_label": "_commit_result()"
     },
     {
@@ -6953,7 +6953,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_create_imported_transaction",
-      "community": 8,
+      "community": 3,
       "norm_label": "create_imported_transaction()"
     },
     {
@@ -7003,7 +7003,7 @@
       "source_location": "L243",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_update_transaction",
-      "community": 3,
+      "community": 27,
       "norm_label": "update_transaction()"
     },
     {
@@ -7013,7 +7013,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_py_transactionupdate",
-      "community": 3,
+      "community": 27,
       "norm_label": "transactionupdate"
     },
     {
@@ -7113,7 +7113,7 @@
       "source_location": "L475",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_validate_split_values",
-      "community": 3,
+      "community": 27,
       "norm_label": "_validate_split_values()"
     },
     {
@@ -7133,7 +7133,7 @@
       "source_location": "L517",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_reject_null_required_fields",
-      "community": 3,
+      "community": 27,
       "norm_label": "_reject_null_required_fields()"
     },
     {
@@ -7163,7 +7163,7 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rationale_110",
-      "community": 8,
+      "community": 3,
       "norm_label": "create one final ledger row from a same-scope canonical staged row."
     },
     {
@@ -7203,7 +7203,7 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rationale_249",
-      "community": 3,
+      "community": 27,
       "norm_label": "update mutable fields without weakening split or profile invariants."
     },
     {
@@ -7293,7 +7293,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules",
-      "community": 27,
+      "community": 166,
       "norm_label": "transactions_rules.py"
     },
     {
@@ -7303,7 +7303,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_default_included_for_type",
-      "community": 27,
+      "community": 166,
       "norm_label": "default_included_for_type()"
     },
     {
@@ -7323,7 +7323,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_validate_splits_sum",
-      "community": 27,
+      "community": 166,
       "norm_label": "validate_splits_sum()"
     },
     {
@@ -7333,7 +7333,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_rationale_1",
-      "community": 27,
+      "community": 166,
       "norm_label": "pure domain rules for transactions: spending inclusion and split integrity.  k"
     },
     {
@@ -7343,7 +7343,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_rationale_20",
-      "community": 27,
+      "community": 166,
       "norm_label": "return the default spending-inclusion decision for a transaction type."
     },
     {
@@ -7363,7 +7363,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_rationale_37",
-      "community": 27,
+      "community": 166,
       "norm_label": "raise ``splitsumerror`` unless the splits sum exactly to the parent.      amou"
     },
     {
@@ -7396,7 +7396,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api",
-      "community": 133,
+      "community": 168,
       "norm_label": "test_category_api.py"
     },
     {
@@ -7406,7 +7406,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_api_client",
-      "community": 60,
+      "community": 168,
       "norm_label": "api_client()"
     },
     {
@@ -7416,7 +7416,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_py_path",
-      "community": 60,
+      "community": 168,
       "norm_label": "path"
     },
     {
@@ -7426,7 +7426,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_py_testclient",
-      "community": 133,
+      "community": 168,
       "norm_label": "testclient"
     },
     {
@@ -7436,7 +7436,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_create_profile",
-      "community": 133,
+      "community": 168,
       "norm_label": "_create_profile()"
     },
     {
@@ -7446,7 +7446,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_test_new_profile_exposes_seeded_default_categories",
-      "community": 133,
+      "community": 168,
       "norm_label": "test_new_profile_exposes_seeded_default_categories()"
     },
     {
@@ -7456,7 +7456,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_test_create_custom_category",
-      "community": 133,
+      "community": 168,
       "norm_label": "test_create_custom_category()"
     },
     {
@@ -7466,7 +7466,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_test_patch_and_archive_restore",
-      "community": 133,
+      "community": 168,
       "norm_label": "test_patch_and_archive_restore()"
     },
     {
@@ -7476,7 +7476,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_test_categories_are_profile_isolated",
-      "community": 133,
+      "community": 168,
       "norm_label": "test_categories_are_profile_isolated()"
     },
     {
@@ -7486,7 +7486,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_test_validation_error_is_field_specific",
-      "community": 133,
+      "community": 168,
       "norm_label": "test_validation_error_is_field_specific()"
     },
     {
@@ -7496,7 +7496,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_test_openapi_lists_category_routes",
-      "community": 133,
+      "community": 168,
       "norm_label": "test_openapi_lists_category_routes()"
     },
     {
@@ -7506,7 +7506,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_rationale_1",
-      "community": 133,
+      "community": 168,
       "norm_label": "http contract tests for profile-isolated category routes."
     },
     {
@@ -7616,7 +7616,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_database",
-      "community": 162,
+      "community": 182,
       "norm_label": "test_database.py"
     },
     {
@@ -7626,7 +7626,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_tests_test_database_test_database_path_can_be_configured",
-      "community": 162,
+      "community": 182,
       "norm_label": "test_database_path_can_be_configured()"
     },
     {
@@ -7636,7 +7636,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_database_py_path",
-      "community": 162,
+      "community": 182,
       "norm_label": "path"
     },
     {
@@ -7646,7 +7646,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "apps_api_tests_test_database_test_engine_enables_wal_and_foreign_keys",
-      "community": 162,
+      "community": 182,
       "norm_label": "test_engine_enables_wal_and_foreign_keys()"
     },
     {
@@ -7656,7 +7656,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "apps_api_tests_test_database_test_session_factory_uses_isolated_database",
-      "community": 60,
+      "community": 182,
       "norm_label": "test_session_factory_uses_isolated_database()"
     },
     {
@@ -7666,7 +7666,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_database_rationale_1",
-      "community": 162,
+      "community": 182,
       "norm_label": "tests for isolated sqlite engine and session configuration."
     },
     {
@@ -7756,7 +7756,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_import_api.py"
     },
     {
@@ -7766,7 +7766,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_fingerprint_key_is_stable_and_rejects_truncated_material",
-      "community": 175,
+      "community": 96,
       "norm_label": "test_fingerprint_key_is_stable_and_rejects_truncated_material()"
     },
     {
@@ -7776,7 +7776,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_py_path",
-      "community": 175,
+      "community": 96,
       "norm_label": "path"
     },
     {
@@ -7786,7 +7786,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_api_client",
-      "community": 175,
+      "community": 96,
       "norm_label": "api_client()"
     },
     {
@@ -7796,7 +7796,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_py_monkeypatch",
-      "community": 175,
+      "community": 96,
       "norm_label": "monkeypatch"
     },
     {
@@ -7806,7 +7806,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_py_testclient",
-      "community": 168,
+      "community": 96,
       "norm_label": "testclient"
     },
     {
@@ -7816,7 +7816,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_profile",
-      "community": 168,
+      "community": 96,
       "norm_label": "_profile()"
     },
     {
@@ -7826,7 +7826,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_account",
-      "community": 168,
+      "community": 96,
       "norm_label": "_account()"
     },
     {
@@ -7836,7 +7836,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_preview",
-      "community": 168,
+      "community": 96,
       "norm_label": "_preview()"
     },
     {
@@ -7846,7 +7846,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_preview_get_commit_and_privacy_safe_openapi",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_preview_get_commit_and_privacy_safe_openapi()"
     },
     {
@@ -7856,7 +7856,7 @@
       "source_location": "L188",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_upload_boundaries_and_readable_document_errors",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_upload_boundaries_and_readable_document_errors()"
     },
     {
@@ -7866,7 +7866,7 @@
       "source_location": "L260",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_http_body_limit_rejects_before_consuming_complete_stream",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_http_body_limit_rejects_before_consuming_complete_stream()"
     },
     {
@@ -7876,7 +7876,7 @@
       "source_location": "L341",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_duplicate_conflict_persists_reference_and_cancel_is_idempotent",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_duplicate_conflict_persists_reference_and_cancel_is_idempotent()"
     },
     {
@@ -7886,7 +7886,7 @@
       "source_location": "L388",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_needs_review_requires_acknowledgement",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_needs_review_requires_acknowledgement()"
     },
     {
@@ -7896,7 +7896,7 @@
       "source_location": "L425",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_cross_profile_import_ids_are_uniform_404",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_cross_profile_import_ids_are_uniform_404()"
     },
     {
@@ -7906,7 +7906,7 @@
       "source_location": "L447",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_malicious_filename_is_sanitized_and_temp_storage_is_empty",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_malicious_filename_is_sanitized_and_temp_storage_is_empty()"
     },
     {
@@ -7916,7 +7916,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_py_logcapturefixture",
-      "community": 168,
+      "community": 96,
       "norm_label": "logcapturefixture"
     },
     {
@@ -7926,7 +7926,7 @@
       "source_location": "L472",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_test_database_commit_failure_returns_500_and_durably_persists_failed_state",
-      "community": 168,
+      "community": 96,
       "norm_label": "test_database_commit_failure_returns_500_and_durably_persists_failed_state()"
     },
     {
@@ -7936,7 +7936,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_api_rationale_1",
-      "community": 168,
+      "community": 96,
       "norm_label": "be-16 typed, profile-isolated import http contract tests."
     },
     {
@@ -8026,7 +8026,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_persistence_test_import_graph_round_trips_exact_money_and_audit_link",
-      "community": 8,
+      "community": 76,
       "norm_label": "test_import_graph_round_trips_exact_money_and_audit_link()"
     },
     {
@@ -8816,7 +8816,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_profile_account_api.py"
     },
     {
@@ -8826,7 +8826,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_api_client",
-      "community": 133,
+      "community": 60,
       "norm_label": "api_client()"
     },
     {
@@ -8836,7 +8836,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_py_path",
-      "community": 133,
+      "community": 60,
       "norm_label": "path"
     },
     {
@@ -8846,7 +8846,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_py_testclient",
-      "community": 133,
+      "community": 175,
       "norm_label": "testclient"
     },
     {
@@ -8856,7 +8856,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_create_profile",
-      "community": 133,
+      "community": 175,
       "norm_label": "_create_profile()"
     },
     {
@@ -8866,7 +8866,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_create_account",
-      "community": 133,
+      "community": 175,
       "norm_label": "_create_account()"
     },
     {
@@ -8876,7 +8876,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_test_profile_crud_archive_restore_and_default_filter",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_profile_crud_archive_restore_and_default_filter()"
     },
     {
@@ -8886,7 +8886,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_test_profile_validation_and_missing_responses",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_profile_validation_and_missing_responses()"
     },
     {
@@ -8896,7 +8896,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_test_account_crud_is_scoped_to_path_profile",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_account_crud_is_scoped_to_path_profile()"
     },
     {
@@ -8906,7 +8906,7 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_test_cross_profile_account_operations_match_missing_response",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_cross_profile_account_operations_match_missing_response()"
     },
     {
@@ -8916,7 +8916,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_test_account_archive_restore_and_validation",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_account_archive_restore_and_validation()"
     },
     {
@@ -8926,7 +8926,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_test_missing_profile_rejects_account_collection_operations",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_missing_profile_rejects_account_collection_operations()"
     },
     {
@@ -8936,7 +8936,7 @@
       "source_location": "L213",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_test_openapi_contains_typed_routes_and_no_hard_delete",
-      "community": 133,
+      "community": 175,
       "norm_label": "test_openapi_contains_typed_routes_and_no_hard_delete()"
     },
     {
@@ -8946,7 +8946,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_rationale_1",
-      "community": 133,
+      "community": 175,
       "norm_label": "http contract tests for profile and isolated account routes."
     },
     {
@@ -9706,7 +9706,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules",
-      "community": 27,
+      "community": 166,
       "norm_label": "test_transaction_rules.py"
     },
     {
@@ -9736,7 +9736,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_test_default_inclusion_policy",
-      "community": 27,
+      "community": 166,
       "norm_label": "test_default_inclusion_policy()"
     },
     {
@@ -9746,7 +9746,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_test_validate_splits_sum_exact_and_mismatch",
-      "community": 27,
+      "community": 166,
       "norm_label": "test_validate_splits_sum_exact_and_mismatch()"
     },
     {
@@ -9756,7 +9756,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_test_transaction_sign_validation_rejects_mismatches",
-      "community": 27,
+      "community": 166,
       "norm_label": "test_transaction_sign_validation_rejects_mismatches()"
     },
     {
@@ -9776,7 +9776,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_rationale_1",
-      "community": 27,
+      "community": 166,
       "norm_label": "domain-rule tests (split-sum, default inclusion) and orm persistence."
     },
     {
@@ -10246,7 +10246,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_api_client_test",
-      "community": 5,
+      "community": 63,
       "norm_label": "client.test.ts"
     },
     {
@@ -10256,7 +10256,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "apps_web_src_api_client_test_res",
-      "community": 5,
+      "community": 63,
       "norm_label": "res()"
     },
     {
@@ -10266,7 +10266,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_api_client",
-      "community": 5,
+      "community": 63,
       "norm_label": "client.ts"
     },
     {
@@ -10276,7 +10276,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "apps_web_src_api_client_api_base",
-      "community": 5,
+      "community": 63,
       "norm_label": "api_base"
     },
     {
@@ -10286,7 +10286,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_web_src_api_client_fielderror",
-      "community": 5,
+      "community": 63,
       "norm_label": "fielderror"
     },
     {
@@ -10326,7 +10326,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "apps_web_src_api_client_rawfielderror",
-      "community": 5,
+      "community": 63,
       "norm_label": "rawfielderror"
     },
     {
@@ -10336,7 +10336,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "apps_web_src_api_client_toapierror",
-      "community": 5,
+      "community": 63,
       "norm_label": "toapierror()"
     },
     {
@@ -10346,7 +10346,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "apps_web_src_api_client_request",
-      "community": 5,
+      "community": 63,
       "norm_label": "request()"
     },
     {
@@ -10356,7 +10356,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "apps_web_src_api_client_api",
-      "community": 5,
+      "community": 63,
       "norm_label": "api"
     },
     {
@@ -10386,7 +10386,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "apps_web_src_api_health_test_renderwithclient",
-      "community": 63,
+      "community": 180,
       "norm_label": "renderwithclient()"
     },
     {
@@ -10516,7 +10516,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_app_pages",
-      "community": 63,
+      "community": 7,
       "norm_label": "pages.tsx"
     },
     {
@@ -10526,7 +10526,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_pagehead",
-      "community": 63,
+      "community": 7,
       "norm_label": "pagehead()"
     },
     {
@@ -10536,7 +10536,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_countlabel",
-      "community": 63,
+      "community": 7,
       "norm_label": "countlabel()"
     },
     {
@@ -10546,7 +10546,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_dashboardpage",
-      "community": 63,
+      "community": 7,
       "norm_label": "dashboardpage()"
     },
     {
@@ -10556,7 +10556,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_settingspage",
-      "community": 63,
+      "community": 7,
       "norm_label": "settingspage()"
     },
     {
@@ -10716,7 +10716,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "apps_web_src_features_accounts_types_account",
-      "community": 9,
+      "community": 7,
       "norm_label": "account"
     },
     {
@@ -10966,7 +10966,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "apps_web_src_features_categories_types_category",
-      "community": 9,
+      "community": 54,
       "norm_label": "category"
     },
     {
@@ -11030,10 +11030,20 @@
       "norm_label": "importpage.test.tsx"
     },
     {
+      "label": "profileState",
+      "file_type": "code",
+      "source_file": "apps/web/src/features/imports/ImportPage.test.tsx",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "apps_web_src_features_imports_importpage_test_profilestate",
+      "community": 5,
+      "norm_label": "profilestate"
+    },
+    {
       "label": "preview",
       "file_type": "code",
       "source_file": "apps/web/src/features/imports/ImportPage.test.tsx",
-      "source_location": "L29",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "apps_web_src_features_imports_importpage_test_preview",
       "community": 5,
@@ -11043,10 +11053,10 @@
       "label": "renderAndPreview()",
       "file_type": "code",
       "source_file": "apps/web/src/features/imports/ImportPage.test.tsx",
-      "source_location": "L44",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "apps_web_src_features_imports_importpage_test_renderandpreview",
-      "community": 5,
+      "community": 180,
       "norm_label": "renderandpreview()"
     },
     {
@@ -11336,7 +11346,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profilecontext_usecurrentprofile",
-      "community": 63,
+      "community": 0,
       "norm_label": "usecurrentprofile()"
     },
     {
@@ -11346,7 +11356,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profileswitcher_test",
-      "community": 63,
+      "community": 0,
       "norm_label": "profileswitcher.test.tsx"
     },
     {
@@ -11356,7 +11366,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profileswitcher",
-      "community": 63,
+      "community": 0,
       "norm_label": "profileswitcher.tsx"
     },
     {
@@ -11366,7 +11376,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profileswitcher_profileswitcher",
-      "community": 63,
+      "community": 0,
       "norm_label": "profileswitcher()"
     },
     {
@@ -11586,7 +11596,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test",
-      "community": 9,
+      "community": 7,
       "norm_label": "transactionformdialog.test.tsx"
     },
     {
@@ -11596,7 +11606,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test_account",
-      "community": 9,
+      "community": 7,
       "norm_label": "account"
     },
     {
@@ -11606,7 +11616,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test_transaction",
-      "community": 9,
+      "community": 7,
       "norm_label": "transaction"
     },
     {
@@ -11616,7 +11626,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test_harness",
-      "community": 9,
+      "community": 7,
       "norm_label": "harness()"
     },
     {
@@ -12718,6 +12728,96 @@
       "id": "fixtures_statements_td_manifest_fixtures",
       "community": 161,
       "norm_label": "fixtures"
+    },
+    {
+      "label": "fe08-longtext-qa.js",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa",
+      "community": 180,
+      "norm_label": "fe08-longtext-qa.js"
+    },
+    {
+      "label": "{ chromium }",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_chromium",
+      "community": 180,
+      "norm_label": "{ chromium }"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_fs",
+      "community": 180,
+      "norm_label": "fs"
+    },
+    {
+      "label": "longAccount",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_longaccount",
+      "community": 180,
+      "norm_label": "longaccount"
+    },
+    {
+      "label": "profile",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_profile",
+      "community": 180,
+      "norm_label": "profile"
+    },
+    {
+      "label": "account",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_account",
+      "community": 180,
+      "norm_label": "account"
+    },
+    {
+      "label": "preview",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_preview",
+      "community": 180,
+      "norm_label": "preview"
+    },
+    {
+      "label": "setup()",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_setup",
+      "community": 180,
+      "norm_label": "setup()"
+    },
+    {
+      "label": "render()",
+      "file_type": "code",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "output_playwright_fe08_longtext_qa_render",
+      "community": 180,
+      "norm_label": "render()"
     },
     {
       "label": "fe08-qa.js",
@@ -15468,6 +15568,16 @@
       "id": "docs_implementation_workboard_2026_07_16_12_30_edt_fe_08_codex_ledger_consolidation",
       "community": 58,
       "norm_label": "2026-07-16 12:30 edt \u2014 fe-08 \u2014 codex / ledger_consolidation"
+    },
+    {
+      "label": "2026-07-16 12:33 EDT \u2014 FE-08 rendered acceptance \u2014 Codex / root",
+      "file_type": "document",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2024",
+      "_origin": "ast",
+      "id": "docs_implementation_workboard_2026_07_16_12_33_edt_fe_08_rendered_acceptance_codex_root",
+      "community": 58,
+      "norm_label": "2026-07-16 12:33 edt \u2014 fe-08 rendered acceptance \u2014 codex / root"
     },
     {
       "label": "README.md",
@@ -44512,6 +44622,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "apps/web/src/api/health.test.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "apps_web_src_api_health_test_renderwithclient",
+      "target": "output_playwright_fe08_longtext_qa_render"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/api/health.ts",
@@ -46366,7 +46487,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/features/imports/ImportPage.test.tsx",
-      "source_location": "L29",
+      "source_location": "L31",
       "weight": 1.0,
       "source": "apps_web_src_features_imports_importpage_test",
       "target": "apps_web_src_features_imports_importpage_test_preview",
@@ -46376,7 +46497,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/features/imports/ImportPage.test.tsx",
-      "source_location": "L44",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "apps_web_src_features_imports_importpage_test",
+      "target": "apps_web_src_features_imports_importpage_test_profilestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/features/imports/ImportPage.test.tsx",
+      "source_location": "L46",
       "weight": 1.0,
       "source": "apps_web_src_features_imports_importpage_test",
       "target": "apps_web_src_features_imports_importpage_test_renderandpreview",
@@ -46403,6 +46534,17 @@
       "source": "apps_web_src_features_imports_importpage_test",
       "target": "apps_web_src_features_imports_types_importpreview",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "apps/web/src/features/imports/ImportPage.test.tsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "apps_web_src_features_imports_importpage_test_renderandpreview",
+      "target": "output_playwright_fe08_longtext_qa_render"
     },
     {
       "relation": "imports_from",
@@ -46591,7 +46733,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/features/imports/ImportPage.tsx",
-      "source_location": "L195",
+      "source_location": "L199",
       "weight": 1.0,
       "source": "apps_web_src_features_imports_importpage_importpage",
       "target": "apps_web_src_features_imports_importpage_amount",
@@ -49836,6 +49978,97 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_account",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_chromium",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_longaccount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_preview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_profile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_render",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa",
+      "target": "output_playwright_fe08_longtext_qa_setup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/fe08-longtext-qa.js",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "output_playwright_fe08_longtext_qa_render",
+      "target": "output_playwright_fe08_longtext_qa_setup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "output/playwright/fe08-qa.js",
       "source_location": "L6",
       "weight": 1.0,
@@ -52481,6 +52714,16 @@
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_12_30_edt_fe_08_codex_ledger_consolidation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2024",
+      "weight": 1.0,
+      "source": "docs_implementation_workboard_progress_log",
+      "target": "docs_implementation_workboard_2026_07_16_12_33_edt_fe_08_rendered_acceptance_codex_root",
       "confidence_score": 1.0
     },
     {

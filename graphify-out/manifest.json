@@ -295,8 +295,8 @@
     "semantic_hash": "7b977518134be128562c204165bef642"
   },
   "docs/implementation-workboard.md": {
-    "mtime": 1784219592.2035863,
-    "ast_hash": "290dc342ae2993202bfda5b1488e6d5e",
+    "mtime": 1784221305.062605,
+    "ast_hash": "e950b930345fdcc5c769ab4a47559d15",
     "semantic_hash": ""
   },
   "docs/parser-notes/README.md": {
@@ -1132,6 +1132,106 @@
   "output/playwright/fe08-200pct.png": {
     "mtime": 1784219542.4790902,
     "ast_hash": "41d303739a8e56dcb9246e30efc4d59d",
+    "semantic_hash": ""
+  },
+  "output/playwright/fe08-long-qa.json": {
+    "mtime": 1784219809.8551824,
+    "ast_hash": "aaecee62d0cd8d4de010b1185b25b5a4",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-browser.js": {
+    "mtime": 1784220269.4145975,
+    "ast_hash": "2fc42cafc1de1e6776af6da890a0c585",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-browser.json": {
+    "mtime": 1784220284.6269639,
+    "ast_hash": "efca96cebac59e7474c49f628d542a3c",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-duplicate.js": {
+    "mtime": 1784220328.4264429,
+    "ast_hash": "3bf3b927c5dff8cf1246601b53fea172",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-duplicate.json": {
+    "mtime": 1784220338.522076,
+    "ast_hash": "85ca12f01f5bf531218f5e1e467f915a",
+    "semantic_hash": ""
+  },
+  "output/qa04-real/privacy_scan.py": {
+    "mtime": 1784220451.0567684,
+    "ast_hash": "161d6d2f23bf274939b0734bde487869",
+    "semantic_hash": ""
+  },
+  "apps/web/pnpm-workspace.yaml": {
+    "mtime": 1784220191.040638,
+    "ast_hash": "7bb23c19c0343fac40d375bacca550d0",
+    "semantic_hash": ""
+  },
+  "output/playwright/fe08-long-200pct.png": {
+    "mtime": 1784219809.4085226,
+    "ast_hash": "c6478c16a035bdc8fb3a1a149b03a5c9",
+    "semantic_hash": ""
+  },
+  "output/playwright/fe08-long-375.png": {
+    "mtime": 1784219808.801179,
+    "ast_hash": "cd85e767baaa8055a24fd1aa3d517776",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-1440-dark.png": {
+    "mtime": 1784220281.5150406,
+    "ast_hash": "1ec930df0f7fedfde8b9aad230183494",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-1440-light.png": {
+    "mtime": 1784220280.5706983,
+    "ast_hash": "dd39525b7d3c71b6d2e2ac5a825a2496",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-375-dark.png": {
+    "mtime": 1784220278.8856804,
+    "ast_hash": "8b9e25116ecc3b4abdc0799c71f6d3ac",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-375-light.png": {
+    "mtime": 1784220278.4759943,
+    "ast_hash": "7dcdad8f9e44603e5c07bedee4a7a917",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-768-dark.png": {
+    "mtime": 1784220279.8673823,
+    "ast_hash": "93493036d78e88dbfa83eb43f5e2cfef",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-768-light.png": {
+    "mtime": 1784220279.4297612,
+    "ast_hash": "b7cb80249c2831b73daf8a24812242c9",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-duplicate.png": {
+    "mtime": 1784220338.00206,
+    "ast_hash": "5a6c769a85b2905e696cdb5f4548d3ea",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-preview-200pct.png": {
+    "mtime": 1784220283.7272677,
+    "ast_hash": "f91ea8a7981fdda38ff65c545515abad",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-preview.png": {
+    "mtime": 1784220283.4553092,
+    "ast_hash": "e9eeb4635a5a2d8d9805a8e5580ebcce",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-success.png": {
+    "mtime": 1784220284.0197816,
+    "ast_hash": "09930a4e8b7e79b817df7f4e9b88bfc8",
+    "semantic_hash": ""
+  },
+  "output/playwright/qa04-real-transactions.png": {
+    "mtime": 1784220337.514385,
+    "ast_hash": "2a4ffeb5ba3579d0bf26709b9dea38a8",
     "semantic_hash": ""
   }
 }

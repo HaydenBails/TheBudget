@@ -295,8 +295,8 @@
     "semantic_hash": "7b977518134be128562c204165bef642"
   },
   "docs/implementation-workboard.md": {
-    "mtime": 1784219447.7725625,
-    "ast_hash": "c6fddb54227515bba91733c9b77a24e6",
+    "mtime": 1784219592.2035863,
+    "ast_hash": "290dc342ae2993202bfda5b1488e6d5e",
     "semantic_hash": ""
   },
   "docs/parser-notes/README.md": {
@@ -1045,13 +1045,13 @@
     "semantic_hash": ""
   },
   "apps/web/src/features/imports/ImportPage.test.tsx": {
-    "mtime": 1784219315.8004959,
-    "ast_hash": "76541f76062d58598d6d7a5d8bde4c32",
+    "mtime": 1784219699.4534297,
+    "ast_hash": "9c4bab87031db083051b639ca79ee0a8",
     "semantic_hash": ""
   },
   "apps/web/src/features/imports/ImportPage.tsx": {
-    "mtime": 1784219173.3228264,
-    "ast_hash": "a727bc3ecac4b317c4019b7696790fbd",
+    "mtime": 1784219696.6066396,
+    "ast_hash": "d3ad8a77d15d1831ac36a2172e716ef8",
     "semantic_hash": ""
   },
   "apps/web/src/features/imports/api.test.ts": {
@@ -1117,6 +1117,21 @@
   "output/playwright/fe08-success.png": {
     "mtime": 1784219542.125622,
     "ast_hash": "552bffe04527c72b36f24591f8e1a786",
+    "semantic_hash": ""
+  },
+  "output/playwright/fe08-longtext-qa.js": {
+    "mtime": 1784219785.2283447,
+    "ast_hash": "15228add4497e671c47c0ad7ca021000",
+    "semantic_hash": ""
+  },
+  "output/playwright/fe08-qa.json": {
+    "mtime": 1784219542.8664286,
+    "ast_hash": "45416caff45e86ce75bab5d6dcb8b30a",
+    "semantic_hash": ""
+  },
+  "output/playwright/fe08-200pct.png": {
+    "mtime": 1784219542.4790902,
+    "ast_hash": "41d303739a8e56dcb9246e30efc4d59d",
     "semantic_hash": ""
   }
 }

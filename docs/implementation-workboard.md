@@ -208,6 +208,7 @@ non-reversible fingerprints may persist.
 | BE-16 | Typed profile-nested import API. | BE-15 | `apps/api/app/routers/imports.py`; router exports; `apps/api/app/main.py`; upload-limit configuration; import API/OpenAPI tests | Add `POST /profiles/{profile_id}/imports/preview`, `GET /profiles/{profile_id}/imports/{import_id}`, `POST .../{import_id}/commit`, and `POST .../{import_id}/cancel`; Stage 3 accepts one TD PDF per preview. Responses contain only structured metadata, totals, warnings, and duplicate decisions. Test 413 oversize, 415 invalid media, readable 422 scanned/unsupported/reconciliation errors, 409 duplicate, uniform cross-profile 404, malicious filename handling, rollback, cleanup, and OpenAPI coverage. | `DONE` | Codex / be10_transaction_services |
 | FE-08 | Meridian Import Statement workflow and working top action. | BE-16, FE-07 | `apps/web/src/features/imports/**`; minimal `apps/web/src/app/{AppShell.tsx,app.css}` route/action wiring; frontend API tests; `apps/web/dist/**` | The top Import button navigates to `/app/imports`; provide an accessible select/drop-PDF flow, account suggestion/selection, loading/error/cancel states, preview counts by type, expected-versus-parsed totals, warnings, skipped duplicates, explicit needs-review acknowledgement, and commit success linking to Transactions. File data remains transient browser state and is never placed in localStorage, IndexedDB, fixtures, or sample runtime data; clear it after cancel/commit. The agent must read and use `ui-ux-pro-max` and record pointer/keyboard/focus, ≥44px targets, light/dark contrast, reduced motion, 375/768/1440 layouts, and 200%-zoom checks. Typecheck, Vitest, build, and committed-dist refresh pass. | `DONE` | Codex / ledger_consolidation; rendered acceptance by root; independent review CLEAN |
 | QA-04 | Validate the complete Stage 3 import framework and TD vertical slice. | BE-16, FE-08 | Cross-app validation only; avoid feature edits unless defects are found | Fresh migration cycle; Ruff/full pytest; frontend typecheck/test/build; loopback-only run; synthetic TD fixture matrix reconciles within one cent. Private supplied samples may run only from an ignored external path. Verify re-import creates zero duplicates, identical legitimate rows survive occurrence indexing, profile isolation, needs-review acknowledgement, malicious/oversize/scanned inputs, cancel/parser/database-failure cleanup, atomic rollback, log redaction, and absence of raw PDF/full extracted text in the database and temporary storage after terminal operations. Browser-test the complete Import-button workflow. | `IN PROGRESS` | Codex / be11_contract_audit |
+| OPS-CLEAN-01 | Remove generated backend test artifacts accidentally retained in the API tree and prevent recurrence. | — | `apps/api/` generated test/cache directories; repository `.gitignore`; this workboard | Delete only disposable pytest/cache/database/key artifacts; preserve API source, tests, migrations, data, and `.venv`; add scoped ignore rules; verify no matching generated directories remain and tracked API files are limited to intentional source/project files. | `DONE` | Codex / root |
 
 ## Later-stage backlog
 
@@ -2110,3 +2111,26 @@ equivalent dependencies, file ownership, privacy criteria, and verification.
   in scope, and no real statement data will be opened or persisted.
 - Blockers/risks: none.
 - Handoff: Run the complete QA-04 matrix and record exact pass/fail evidence.
+
+### 2026-07-16 — OPS-CLEAN-01 — Codex / root
+
+- Status: `DONE`
+- Scope: Generated test/cache directories under `apps/api`, repository ignore
+  rules, and this workboard only. API source, tests, migrations, local data, and
+  `.venv` were explicitly preserved.
+- Work: Removed 40 disposable pytest scratch roots plus 13 nested Python
+  bytecode-cache directories. The deleted tracked scratch roots contained 728
+  generated database, fingerprint-key, and test-run files; none were product
+  source. Added repository-scoped ignore rules for API `.test-tmp*`, FE test
+  scratch, `output`, `beNN-*`, `qaNN-*`, and `pytest-cache-files-*` roots.
+- Verification: All deletion targets were resolved and confirmed beneath the
+  absolute `apps/api` path before recursive removal. Zero matching generated
+  directories remain. The surviving tracked API tree contains 94 intentional
+  project files across `app`, `tests`, `alembic`, root configuration, and data;
+  ignore probes matched every new pattern. `git diff --check` passed with only
+  existing LF/CRLF conversion warnings.
+- Decisions: Keep `.venv` ignored and on disk because it is the local Python
+  runtime, and preserve `apps/api/data` because it may contain user-local state.
+- Blockers/risks: none.
+- Handoff: Future backend tests must use ignored scratch roots matching the new
+  patterns and must not add generated databases or fingerprint keys to Git.

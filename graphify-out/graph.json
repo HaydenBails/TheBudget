@@ -1473,7 +1473,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "apps_api_app_importing_contracts_parserdetection",
-      "community": 178,
+      "community": 13,
       "norm_label": "parserdetection"
     },
     {
@@ -1483,7 +1483,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "apps_api_app_importing_contracts_parserdetection_post_init",
-      "community": 178,
+      "community": 13,
       "norm_label": ".__post_init__()"
     },
     {
@@ -1563,7 +1563,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "apps_api_app_importing_contracts_rationale_39",
-      "community": 178,
+      "community": 13,
       "norm_label": "one parser's deterministic detection result."
     },
     {
@@ -1603,7 +1603,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_importing_document",
-      "community": 156,
+      "community": 2,
       "norm_label": "document.py"
     },
     {
@@ -1653,7 +1653,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_asyncreadable_read",
-      "community": 156,
+      "community": 2,
       "norm_label": ".read()"
     },
     {
@@ -1673,7 +1673,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_digest_update",
-      "community": 156,
+      "community": 166,
       "norm_label": ".update()"
     },
     {
@@ -1683,7 +1683,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_sanitize_filename",
-      "community": 156,
+      "community": 2,
       "norm_label": "sanitize_filename()"
     },
     {
@@ -1693,7 +1693,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_validate_boundary",
-      "community": 156,
+      "community": 2,
       "norm_label": "_validate_boundary()"
     },
     {
@@ -1713,7 +1713,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_py_path",
-      "community": 156,
+      "community": 2,
       "norm_label": "path"
     },
     {
@@ -1723,7 +1723,7 @@
       "source_location": "L143",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_write_chunk",
-      "community": 156,
+      "community": 2,
       "norm_label": "_write_chunk()"
     },
     {
@@ -1733,7 +1733,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_py_binaryio",
-      "community": 156,
+      "community": 2,
       "norm_label": "binaryio"
     },
     {
@@ -1743,7 +1743,7 @@
       "source_location": "L163",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_validate_magic",
-      "community": 156,
+      "community": 2,
       "norm_label": "_validate_magic()"
     },
     {
@@ -1753,7 +1753,7 @@
       "source_location": "L169",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_extraction_worker",
-      "community": 156,
+      "community": 2,
       "norm_label": "_extraction_worker()"
     },
     {
@@ -1763,7 +1763,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_py_connection",
-      "community": 156,
+      "community": 2,
       "norm_label": "connection"
     },
     {
@@ -1773,7 +1773,7 @@
       "source_location": "L180",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_start_extraction_process",
-      "community": 156,
+      "community": 2,
       "norm_label": "_start_extraction_process()"
     },
     {
@@ -1783,7 +1783,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "baseprocess",
-      "community": 156,
+      "community": 2,
       "norm_label": "baseprocess"
     },
     {
@@ -1793,7 +1793,7 @@
       "source_location": "L191",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_stop_process",
-      "community": 156,
+      "community": 2,
       "norm_label": "_stop_process()"
     },
     {
@@ -1803,7 +1803,7 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_receive_extraction",
-      "community": 156,
+      "community": 2,
       "norm_label": "_receive_extraction()"
     },
     {
@@ -1813,7 +1813,7 @@
       "source_location": "L209",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_extract_document_bounded",
-      "community": 156,
+      "community": 2,
       "norm_label": "_extract_document_bounded()"
     },
     {
@@ -1823,7 +1823,7 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_extract_document_bounded_async",
-      "community": 156,
+      "community": 2,
       "norm_label": "_extract_document_bounded_async()"
     },
     {
@@ -1833,7 +1833,7 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_stage_pdf",
-      "community": 156,
+      "community": 2,
       "norm_label": "stage_pdf()"
     },
     {
@@ -1843,7 +1843,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_py_logger",
-      "community": 156,
+      "community": 2,
       "norm_label": "logger"
     },
     {
@@ -1853,7 +1853,7 @@
       "source_location": "L298",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_stage_pdf_async",
-      "community": 156,
+      "community": 2,
       "norm_label": "stage_pdf_async()"
     },
     {
@@ -1863,7 +1863,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_rationale_1",
-      "community": 156,
+      "community": 2,
       "norm_label": "privacy-safe, bounded extraction of text-based statement pdfs."
     },
     {
@@ -1883,7 +1883,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_rationale_73",
-      "community": 156,
+      "community": 2,
       "norm_label": "discard any client path and retain a display-safe basename only."
     },
     {
@@ -1893,7 +1893,7 @@
       "source_location": "L258",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_rationale_258",
-      "community": 156,
+      "community": 2,
       "norm_label": "stage and extract a synchronous upload, deleting raw bytes on every exit."
     },
     {
@@ -1903,7 +1903,7 @@
       "source_location": "L307",
       "_origin": "ast",
       "id": "apps_api_app_importing_document_rationale_307",
-      "community": 156,
+      "community": 2,
       "norm_label": "stage an async upload with cleanup on success, failure, or cancellation."
     },
     {
@@ -1943,7 +1943,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "apps_api_app_importing_errors_unsupporteddocumenterror",
-      "community": 165,
+      "community": 141,
       "norm_label": "unsupporteddocumenterror"
     },
     {
@@ -2043,7 +2043,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_app_importing_errors_rationale_13",
-      "community": 165,
+      "community": 141,
       "norm_label": "the supplied document is not a supported text pdf."
     },
     {
@@ -2123,7 +2123,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints",
-      "community": 144,
+      "community": 166,
       "norm_label": "fingerprints.py"
     },
     {
@@ -2133,7 +2133,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_sha256_stream",
-      "community": 144,
+      "community": 166,
       "norm_label": "sha256_stream()"
     },
     {
@@ -2143,7 +2143,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_py_binaryio",
-      "community": 144,
+      "community": 166,
       "norm_label": "binaryio"
     },
     {
@@ -2153,7 +2153,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_canonical_digest",
-      "community": 144,
+      "community": 166,
       "norm_label": "_canonical_digest()"
     },
     {
@@ -2163,7 +2163,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_statement_fingerprint",
-      "community": 144,
+      "community": 166,
       "norm_label": "statement_fingerprint()"
     },
     {
@@ -2173,7 +2173,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_transaction_fingerprint",
-      "community": 144,
+      "community": 166,
       "norm_label": "transaction_fingerprint()"
     },
     {
@@ -2183,7 +2183,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_py_date",
-      "community": 144,
+      "community": 166,
       "norm_label": "date"
     },
     {
@@ -2193,7 +2193,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_rationale_1",
-      "community": 144,
+      "community": 166,
       "norm_label": "non-reversible, deterministic statement and transaction fingerprints."
     },
     {
@@ -2203,7 +2203,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_rationale_14",
-      "community": 144,
+      "community": 166,
       "norm_label": "hash a binary stream incrementally without retaining its bytes."
     },
     {
@@ -2213,7 +2213,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_rationale_36",
-      "community": 144,
+      "community": 166,
       "norm_label": "identify one account statement without exposing its source values."
     },
     {
@@ -2223,7 +2223,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "apps_api_app_importing_fingerprints_rationale_55",
-      "community": 144,
+      "community": 166,
       "norm_label": "identify a row while preserving repeated legitimate occurrences."
     },
     {
@@ -2903,7 +2903,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_import_staged_transaction",
-      "community": 170,
+      "community": 8,
       "norm_label": "import_staged_transaction.py"
     },
     {
@@ -2913,7 +2913,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "apps_api_app_models_import_staged_transaction_in",
-      "community": 170,
+      "community": 8,
       "norm_label": "_in()"
     },
     {
@@ -2933,7 +2933,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_models_import_staged_transaction_rationale_1",
-      "community": 170,
+      "community": 8,
       "norm_label": "canonical structured transaction candidates awaiting import commit."
     },
     {
@@ -3093,7 +3093,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "apps_api_app_models_tag_transactiontag",
-      "community": 8,
+      "community": 66,
       "norm_label": "transactiontag"
     },
     {
@@ -3123,7 +3123,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "apps_api_app_models_tag_rationale_35",
-      "community": 8,
+      "community": 66,
       "norm_label": "many-to-many link between transactions and tags."
     },
     {
@@ -3283,7 +3283,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "apps_api_app_parsers_base_statementparser_detect",
-      "community": 178,
+      "community": 13,
       "norm_label": ".detect()"
     },
     {
@@ -3343,7 +3343,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "apps_api_app_parsers_base_rationale_32",
-      "community": 178,
+      "community": 13,
       "norm_label": "return whether this parser recognizes the validated document."
     },
     {
@@ -3383,7 +3383,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td",
-      "community": 165,
+      "community": 141,
       "norm_label": "td.py"
     },
     {
@@ -3393,7 +3393,7 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_pendingtransaction",
-      "community": 165,
+      "community": 13,
       "norm_label": "_pendingtransaction"
     },
     {
@@ -3403,7 +3403,7 @@
       "source_location": "L115",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_tdstatementmetadata",
-      "community": 165,
+      "community": 13,
       "norm_label": "_tdstatementmetadata"
     },
     {
@@ -3413,7 +3413,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_parse_amount_cents",
-      "community": 165,
+      "community": 141,
       "norm_label": "_parse_amount_cents()"
     },
     {
@@ -3423,7 +3423,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_parse_period_date",
-      "community": 165,
+      "community": 141,
       "norm_label": "_parse_period_date()"
     },
     {
@@ -3433,7 +3433,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_py_date",
-      "community": 165,
+      "community": 141,
       "norm_label": "date"
     },
     {
@@ -3443,7 +3443,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_infer_row_date",
-      "community": 165,
+      "community": 141,
       "norm_label": "_infer_row_date()"
     },
     {
@@ -3453,7 +3453,7 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_classify",
-      "community": 165,
+      "community": 141,
       "norm_label": "_classify()"
     },
     {
@@ -3463,7 +3463,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_py_transactiontype",
-      "community": 165,
+      "community": 141,
       "norm_label": "transactiontype"
     },
     {
@@ -3473,7 +3473,7 @@
       "source_location": "L175",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_normalized_lines",
-      "community": 165,
+      "community": 141,
       "norm_label": "_normalized_lines()"
     },
     {
@@ -3503,7 +3503,7 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_tdcreditcardparser_extract_metadata",
-      "community": 165,
+      "community": 141,
       "norm_label": ".extract_metadata()"
     },
     {
@@ -3513,7 +3513,7 @@
       "source_location": "L240",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_tdcreditcardparser_extract_transactions",
-      "community": 165,
+      "community": 141,
       "norm_label": ".extract_transactions()"
     },
     {
@@ -3543,7 +3543,7 @@
       "source_location": "L466",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_tdcreditcardparser_extract_summary_amounts",
-      "community": 165,
+      "community": 141,
       "norm_label": "._extract_summary_amounts()"
     },
     {
@@ -3553,7 +3553,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_parsers_td_rationale_1",
-      "community": 165,
+      "community": 141,
       "norm_label": "versioned parser for supported td canada trust credit-card statements."
     },
     {
@@ -5433,7 +5433,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "apps_api_app_schemas_transaction_splitinput",
-      "community": 27,
+      "community": 62,
       "norm_label": "splitinput"
     },
     {
@@ -5613,7 +5613,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "apps_api_app_schemas_transaction_rationale_57",
-      "community": 27,
+      "community": 62,
       "norm_label": "a single category allocation, in signed integer cents."
     },
     {
@@ -6233,7 +6233,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_errors",
-      "community": 166,
+      "community": 27,
       "norm_label": "errors.py"
     },
     {
@@ -6243,7 +6243,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_resourcenotfounderror",
-      "community": 166,
+      "community": 27,
       "norm_label": "resourcenotfounderror"
     },
     {
@@ -6253,7 +6253,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lookuperror",
-      "community": 166,
+      "community": 27,
       "norm_label": "lookuperror"
     },
     {
@@ -6273,7 +6273,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_splitsumerror",
-      "community": 166,
+      "community": 27,
       "norm_label": "splitsumerror"
     },
     {
@@ -6283,7 +6283,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_rationale_1",
-      "community": 166,
+      "community": 27,
       "norm_label": "service-layer errors shared by profile-scoped operations."
     },
     {
@@ -6293,7 +6293,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_rationale_5",
-      "community": 166,
+      "community": 27,
       "norm_label": "a requested resource is missing from the caller's allowed scope."
     },
     {
@@ -6313,7 +6313,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_app_services_errors_rationale_13",
-      "community": 166,
+      "community": 27,
       "norm_label": "transaction split amounts do not sum to the parent transaction amount."
     },
     {
@@ -6363,7 +6363,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "apps_api_app_services_imports_importcommitresult",
-      "community": 8,
+      "community": 166,
       "norm_label": "importcommitresult"
     },
     {
@@ -6563,7 +6563,7 @@
       "source_location": "L663",
       "_origin": "ast",
       "id": "apps_api_app_services_imports_commit_result",
-      "community": 8,
+      "community": 166,
       "norm_label": "_commit_result()"
     },
     {
@@ -7053,7 +7053,7 @@
       "source_location": "L344",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_list_transaction_tags",
-      "community": 66,
+      "community": 3,
       "norm_label": "list_transaction_tags()"
     },
     {
@@ -7063,7 +7063,7 @@
       "source_location": "L362",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_replace_transaction_tags",
-      "community": 66,
+      "community": 3,
       "norm_label": "replace_transaction_tags()"
     },
     {
@@ -7073,7 +7073,7 @@
       "source_location": "L400",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_add_transaction_tag",
-      "community": 66,
+      "community": 3,
       "norm_label": "add_transaction_tag()"
     },
     {
@@ -7123,7 +7123,7 @@
       "source_location": "L503",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_normalize_tag_names",
-      "community": 66,
+      "community": 3,
       "norm_label": "_normalize_tag_names()"
     },
     {
@@ -7233,7 +7233,7 @@
       "source_location": "L349",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rationale_349",
-      "community": 66,
+      "community": 3,
       "norm_label": "list tags attached to a scoped transaction."
     },
     {
@@ -7243,7 +7243,7 @@
       "source_location": "L368",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rationale_368",
-      "community": 66,
+      "community": 3,
       "norm_label": "replace a transaction's tags, reusing profile-owned tag records."
     },
     {
@@ -7253,7 +7253,7 @@
       "source_location": "L406",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rationale_406",
-      "community": 66,
+      "community": 3,
       "norm_label": "attach one named profile tag, creating it when necessary."
     },
     {
@@ -7293,7 +7293,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules",
-      "community": 166,
+      "community": 27,
       "norm_label": "transactions_rules.py"
     },
     {
@@ -7303,7 +7303,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_default_included_for_type",
-      "community": 166,
+      "community": 27,
       "norm_label": "default_included_for_type()"
     },
     {
@@ -7323,7 +7323,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_validate_splits_sum",
-      "community": 166,
+      "community": 27,
       "norm_label": "validate_splits_sum()"
     },
     {
@@ -7333,7 +7333,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_rationale_1",
-      "community": 166,
+      "community": 27,
       "norm_label": "pure domain rules for transactions: spending inclusion and split integrity.  k"
     },
     {
@@ -7343,7 +7343,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_rationale_20",
-      "community": 166,
+      "community": 27,
       "norm_label": "return the default spending-inclusion decision for a transaction type."
     },
     {
@@ -7363,7 +7363,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "apps_api_app_services_transactions_rules_rationale_37",
-      "community": 166,
+      "community": 27,
       "norm_label": "raise ``splitsumerror`` unless the splits sum exactly to the parent.      amou"
     },
     {
@@ -7406,7 +7406,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_api_client",
-      "community": 168,
+      "community": 60,
       "norm_label": "api_client()"
     },
     {
@@ -7416,7 +7416,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_category_api_py_path",
-      "community": 168,
+      "community": 60,
       "norm_label": "path"
     },
     {
@@ -8256,7 +8256,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_services_syntheticparser_init",
-      "community": 13,
+      "community": 166,
       "norm_label": ".__init__()"
     },
     {
@@ -8276,7 +8276,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "apps_api_tests_test_import_services_syntheticparser_detect",
-      "community": 178,
+      "community": 13,
       "norm_label": ".detect()"
     },
     {
@@ -8586,7 +8586,7 @@
       "source_location": "L206",
       "_origin": "ast",
       "id": "apps_api_tests_test_importing_primitives_trackedstream",
-      "community": 2,
+      "community": 147,
       "norm_label": "_trackedstream"
     },
     {
@@ -8596,7 +8596,7 @@
       "source_location": "L207",
       "_origin": "ast",
       "id": "apps_api_tests_test_importing_primitives_trackedstream_init",
-      "community": 2,
+      "community": 147,
       "norm_label": ".__init__()"
     },
     {
@@ -8606,7 +8606,7 @@
       "source_location": "L211",
       "_origin": "ast",
       "id": "apps_api_tests_test_importing_primitives_trackedstream_read",
-      "community": 2,
+      "community": 147,
       "norm_label": ".read()"
     },
     {
@@ -8616,7 +8616,7 @@
       "source_location": "L216",
       "_origin": "ast",
       "id": "apps_api_tests_test_importing_primitives_test_sha256_is_streamed_in_bounded_chunks",
-      "community": 144,
+      "community": 147,
       "norm_label": "test_sha256_is_streamed_in_bounded_chunks()"
     },
     {
@@ -8626,7 +8626,7 @@
       "source_location": "L224",
       "_origin": "ast",
       "id": "apps_api_tests_test_importing_primitives_test_fingerprints_are_deterministic_non_reversible_and_preserve_occurrences",
-      "community": 144,
+      "community": 166,
       "norm_label": "test_fingerprints_are_deterministic_non_reversible_and_preserve_occurrences()"
     },
     {
@@ -8826,7 +8826,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_api_client",
-      "community": 60,
+      "community": 175,
       "norm_label": "api_client()"
     },
     {
@@ -8836,7 +8836,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_tests_test_profile_account_api_py_path",
-      "community": 60,
+      "community": 175,
       "norm_label": "path"
     },
     {
@@ -9706,7 +9706,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules",
-      "community": 166,
+      "community": 27,
       "norm_label": "test_transaction_rules.py"
     },
     {
@@ -9736,7 +9736,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_test_default_inclusion_policy",
-      "community": 166,
+      "community": 27,
       "norm_label": "test_default_inclusion_policy()"
     },
     {
@@ -9746,7 +9746,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_test_validate_splits_sum_exact_and_mismatch",
-      "community": 166,
+      "community": 27,
       "norm_label": "test_validate_splits_sum_exact_and_mismatch()"
     },
     {
@@ -9756,7 +9756,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_test_transaction_sign_validation_rejects_mismatches",
-      "community": 166,
+      "community": 27,
       "norm_label": "test_transaction_sign_validation_rejects_mismatches()"
     },
     {
@@ -9776,7 +9776,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_rules_rationale_1",
-      "community": 166,
+      "community": 27,
       "norm_label": "domain-rule tests (split-sum, default inclusion) and orm persistence."
     },
     {
@@ -9886,7 +9886,7 @@
       "source_location": "L328",
       "_origin": "ast",
       "id": "apps_api_tests_test_transaction_services_test_split_and_tag_management_enforces_profile_scope",
-      "community": 66,
+      "community": 62,
       "norm_label": "test_split_and_tag_management_enforces_profile_scope()"
     },
     {
@@ -10246,7 +10246,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_api_client_test",
-      "community": 63,
+      "community": 156,
       "norm_label": "client.test.ts"
     },
     {
@@ -10256,7 +10256,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "apps_web_src_api_client_test_res",
-      "community": 63,
+      "community": 156,
       "norm_label": "res()"
     },
     {
@@ -10266,7 +10266,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_api_client",
-      "community": 63,
+      "community": 156,
       "norm_label": "client.ts"
     },
     {
@@ -10276,7 +10276,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "apps_web_src_api_client_api_base",
-      "community": 63,
+      "community": 156,
       "norm_label": "api_base"
     },
     {
@@ -10286,7 +10286,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_web_src_api_client_fielderror",
-      "community": 63,
+      "community": 156,
       "norm_label": "fielderror"
     },
     {
@@ -10326,7 +10326,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "apps_web_src_api_client_rawfielderror",
-      "community": 63,
+      "community": 156,
       "norm_label": "rawfielderror"
     },
     {
@@ -10336,7 +10336,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "apps_web_src_api_client_toapierror",
-      "community": 63,
+      "community": 156,
       "norm_label": "toapierror()"
     },
     {
@@ -10346,7 +10346,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "apps_web_src_api_client_request",
-      "community": 63,
+      "community": 156,
       "norm_label": "request()"
     },
     {
@@ -10356,7 +10356,7 @@
       "source_location": "L102",
       "_origin": "ast",
       "id": "apps_web_src_api_client_api",
-      "community": 63,
+      "community": 156,
       "norm_label": "api"
     },
     {
@@ -10366,7 +10366,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_api_health_test",
-      "community": 63,
+      "community": 156,
       "norm_label": "health.test.tsx"
     },
     {
@@ -10376,7 +10376,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "apps_web_src_api_health_test_probe",
-      "community": 63,
+      "community": 156,
       "norm_label": "probe()"
     },
     {
@@ -10396,7 +10396,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_api_health",
-      "community": 63,
+      "community": 156,
       "norm_label": "health.ts"
     },
     {
@@ -10406,7 +10406,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "apps_web_src_api_health_health",
-      "community": 63,
+      "community": 156,
       "norm_label": "health"
     },
     {
@@ -10416,7 +10416,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "apps_web_src_api_health_usehealth",
-      "community": 63,
+      "community": 156,
       "norm_label": "usehealth()"
     },
     {
@@ -10496,7 +10496,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "apps_web_src_app_appshell_apistatus",
-      "community": 63,
+      "community": 156,
       "norm_label": "apistatus()"
     },
     {
@@ -10516,7 +10516,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_app_pages",
-      "community": 7,
+      "community": 63,
       "norm_label": "pages.tsx"
     },
     {
@@ -10526,7 +10526,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_pagehead",
-      "community": 7,
+      "community": 63,
       "norm_label": "pagehead()"
     },
     {
@@ -10536,7 +10536,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_countlabel",
-      "community": 7,
+      "community": 63,
       "norm_label": "countlabel()"
     },
     {
@@ -10546,7 +10546,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_dashboardpage",
-      "community": 7,
+      "community": 63,
       "norm_label": "dashboardpage()"
     },
     {
@@ -10556,7 +10556,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "apps_web_src_app_pages_settingspage",
-      "community": 7,
+      "community": 63,
       "norm_label": "settingspage()"
     },
     {
@@ -10716,7 +10716,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "apps_web_src_features_accounts_types_account",
-      "community": 7,
+      "community": 144,
       "norm_label": "account"
     },
     {
@@ -10966,7 +10966,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "apps_web_src_features_categories_types_category",
-      "community": 54,
+      "community": 144,
       "norm_label": "category"
     },
     {
@@ -11346,7 +11346,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profilecontext_usecurrentprofile",
-      "community": 0,
+      "community": 63,
       "norm_label": "usecurrentprofile()"
     },
     {
@@ -11356,7 +11356,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profileswitcher_test",
-      "community": 0,
+      "community": 63,
       "norm_label": "profileswitcher.test.tsx"
     },
     {
@@ -11366,7 +11366,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profileswitcher",
-      "community": 0,
+      "community": 63,
       "norm_label": "profileswitcher.tsx"
     },
     {
@@ -11376,7 +11376,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "apps_web_src_features_profiles_profileswitcher_profileswitcher",
-      "community": 0,
+      "community": 63,
       "norm_label": "profileswitcher()"
     },
     {
@@ -11556,7 +11556,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactiondetaildialog",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactiondetaildialog.tsx"
     },
     {
@@ -11566,7 +11566,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactiondetaildialog_splitdraft",
-      "community": 9,
+      "community": 144,
       "norm_label": "splitdraft"
     },
     {
@@ -11576,7 +11576,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactiondetaildialog_props",
-      "community": 9,
+      "community": 144,
       "norm_label": "props"
     },
     {
@@ -11596,7 +11596,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test",
-      "community": 7,
+      "community": 144,
       "norm_label": "transactionformdialog.test.tsx"
     },
     {
@@ -11606,7 +11606,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test_account",
-      "community": 7,
+      "community": 144,
       "norm_label": "account"
     },
     {
@@ -11616,7 +11616,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test_transaction",
-      "community": 7,
+      "community": 144,
       "norm_label": "transaction"
     },
     {
@@ -11626,7 +11626,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_test_harness",
-      "community": 7,
+      "community": 144,
       "norm_label": "harness()"
     },
     {
@@ -11636,7 +11636,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactionformdialog.tsx"
     },
     {
@@ -11646,7 +11646,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_props",
-      "community": 9,
+      "community": 144,
       "norm_label": "props"
     },
     {
@@ -11656,7 +11656,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionformdialog_transactionformdialog",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactionformdialog()"
     },
     {
@@ -11786,7 +11786,7 @@
       "source_location": "L123",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_transactionspage_confirmdialog",
-      "community": 9,
+      "community": 144,
       "norm_label": "confirmdialog()"
     },
     {
@@ -12036,7 +12036,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_money_test",
-      "community": 9,
+      "community": 144,
       "norm_label": "money.test.ts"
     },
     {
@@ -12046,7 +12046,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_money",
-      "community": 9,
+      "community": 144,
       "norm_label": "money.ts"
     },
     {
@@ -12056,7 +12056,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_money_parsecadtocents",
-      "community": 9,
+      "community": 144,
       "norm_label": "parsecadtocents()"
     },
     {
@@ -12066,7 +12066,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_money_centstoinput",
-      "community": 9,
+      "community": 144,
       "norm_label": "centstoinput()"
     },
     {
@@ -12076,7 +12076,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_money_formatcad",
-      "community": 9,
+      "community": 144,
       "norm_label": "formatcad()"
     },
     {
@@ -12086,7 +12086,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types",
-      "community": 9,
+      "community": 144,
       "norm_label": "types.ts"
     },
     {
@@ -12096,7 +12096,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactiontype",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactiontype"
     },
     {
@@ -12106,7 +12106,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_direction",
-      "community": 9,
+      "community": 144,
       "norm_label": "direction"
     },
     {
@@ -12116,7 +12116,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_categorizationstatus",
-      "community": 9,
+      "community": 144,
       "norm_label": "categorizationstatus"
     },
     {
@@ -12126,7 +12126,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactionsource",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactionsource"
     },
     {
@@ -12136,7 +12136,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transaction",
-      "community": 9,
+      "community": 144,
       "norm_label": "transaction"
     },
     {
@@ -12146,7 +12146,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactionsplit",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactionsplit"
     },
     {
@@ -12156,7 +12156,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactiontag",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactiontag"
     },
     {
@@ -12166,7 +12166,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactiondetail",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactiondetail"
     },
     {
@@ -12176,7 +12176,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactioncreate",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactioncreate"
     },
     {
@@ -12186,7 +12186,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactionupdate",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactionupdate"
     },
     {
@@ -12206,7 +12206,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactionbulkaction",
-      "community": 9,
+      "community": 135,
       "norm_label": "transactionbulkaction"
     },
     {
@@ -12216,7 +12216,7 @@
       "source_location": "L114",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactionbulkresult",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactionbulkresult"
     },
     {
@@ -12226,7 +12226,7 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactiondeletedresult",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactiondeletedresult"
     },
     {
@@ -12236,7 +12236,7 @@
       "source_location": "L124",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transaction_types",
-      "community": 9,
+      "community": 144,
       "norm_label": "transaction_types"
     },
     {
@@ -12246,7 +12246,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_types_transactiontypelabel",
-      "community": 9,
+      "community": 144,
       "norm_label": "transactiontypelabel()"
     },
     {
@@ -12256,7 +12256,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_usedialogfocus",
-      "community": 9,
+      "community": 144,
       "norm_label": "usedialogfocus.ts"
     },
     {
@@ -12266,7 +12266,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "apps_web_src_features_transactions_usedialogfocus_usedialogfocus",
-      "community": 9,
+      "community": 144,
       "norm_label": "usedialogfocus()"
     },
     {
@@ -12918,6 +12918,86 @@
       "id": "output_playwright_meridian_qa_fs",
       "community": 172,
       "norm_label": "fs"
+    },
+    {
+      "label": "qa04-real-browser.js",
+      "file_type": "code",
+      "source_file": "output/playwright/qa04-real-browser.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "output_playwright_qa04_real_browser",
+      "community": 165,
+      "norm_label": "qa04-real-browser.js"
+    },
+    {
+      "label": "{ chromium }",
+      "file_type": "code",
+      "source_file": "output/playwright/qa04-real-browser.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "output_playwright_qa04_real_browser_chromium",
+      "community": 165,
+      "norm_label": "{ chromium }"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "output/playwright/qa04-real-browser.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "output_playwright_qa04_real_browser_fs",
+      "community": 165,
+      "norm_label": "fs"
+    },
+    {
+      "label": "qa04-real-duplicate.js",
+      "file_type": "code",
+      "source_file": "output/playwright/qa04-real-duplicate.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "output_playwright_qa04_real_duplicate",
+      "community": 170,
+      "norm_label": "qa04-real-duplicate.js"
+    },
+    {
+      "label": "{ chromium }",
+      "file_type": "code",
+      "source_file": "output/playwright/qa04-real-duplicate.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "output_playwright_qa04_real_duplicate_chromium",
+      "community": 170,
+      "norm_label": "{ chromium }"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "output/playwright/qa04-real-duplicate.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "output_playwright_qa04_real_duplicate_fs",
+      "community": 170,
+      "norm_label": "fs"
+    },
+    {
+      "label": "privacy_scan.py",
+      "file_type": "code",
+      "source_file": "output/qa04-real/privacy_scan.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "output_qa04_real_privacy_scan",
+      "community": 178,
+      "norm_label": "privacy_scan.py"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "output/qa04-real/privacy_scan.py",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "output_qa04_real_privacy_scan_main",
+      "community": 178,
+      "norm_label": "main()"
     },
     {
       "label": "start-app.ps1",
@@ -14833,7 +14913,7 @@
       "label": "Later-stage backlog",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L212",
+      "source_location": "L213",
       "_origin": "ast",
       "id": "docs_implementation_workboard_later_stage_backlog",
       "community": 72,
@@ -14843,7 +14923,7 @@
       "label": "Known blockers and decisions needed",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L221",
+      "source_location": "L222",
       "_origin": "ast",
       "id": "docs_implementation_workboard_known_blockers_and_decisions_needed",
       "community": 72,
@@ -14853,7 +14933,7 @@
       "label": "Progress log",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L228",
+      "source_location": "L229",
       "_origin": "ast",
       "id": "docs_implementation_workboard_progress_log",
       "community": 58,
@@ -14863,7 +14943,7 @@
       "label": "2026-07-15 \u2014 PLAN-01 \u2014 Codex",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L230",
+      "source_location": "L231",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_plan_01_codex",
       "community": 58,
@@ -14873,7 +14953,7 @@
       "label": "2026-07-15 \u2014 S1-01 \u2014 Product owner / Codex",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L245",
+      "source_location": "L246",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_s1_01_product_owner_codex",
       "community": 58,
@@ -14883,7 +14963,7 @@
       "label": "2026-07-15 14:42 EDT \u2014 FE-01 \u2014 Codex / fe01_meridian_tokens",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L257",
+      "source_location": "L258",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_14_42_edt_fe_01_codex_fe01_meridian_tokens",
       "community": 58,
@@ -14893,7 +14973,7 @@
       "label": "2026-07-15 14:50 EDT \u2014 FE-01 \u2014 Codex / fe01_meridian_tokens",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L270",
+      "source_location": "L271",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_14_50_edt_fe_01_codex_fe01_meridian_tokens",
       "community": 58,
@@ -14903,7 +14983,7 @@
       "label": "2026-07-15 \u2014 BE-01 \u2014 Codex BE-01 agent",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L294",
+      "source_location": "L295",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_be_01_codex_be_01_agent",
       "community": 58,
@@ -14913,9 +14993,9 @@
       "label": "2026-07-15 \u2014 BE-01 \u2014 Codex BE-01 agent",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L307",
+      "source_location": "L308",
       "_origin": "ast",
-      "id": "docs_implementation_workboard_2026_07_15_be_01_codex_be_01_agent_307",
+      "id": "docs_implementation_workboard_2026_07_15_be_01_codex_be_01_agent_308",
       "community": 58,
       "norm_label": "2026-07-15 \u2014 be-01 \u2014 codex be-01 agent"
     },
@@ -14923,7 +15003,7 @@
       "label": "2026-07-15 15:05 EDT \u2014 FE-01 \u2014 Codex / fe01_acceptance_review",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L326",
+      "source_location": "L327",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_05_edt_fe_01_codex_fe01_acceptance_review",
       "community": 58,
@@ -14933,7 +15013,7 @@
       "label": "2026-07-15 15:20 EDT \u2014 BE-06 \u2014 Codex / be06_money_dates",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L353",
+      "source_location": "L354",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_20_edt_be_06_codex_be06_money_dates",
       "community": 58,
@@ -14943,7 +15023,7 @@
       "label": "2026-07-15 15:28 EDT \u2014 BE-06 \u2014 Codex / be06_money_dates",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L367",
+      "source_location": "L368",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_28_edt_be_06_codex_be06_money_dates",
       "community": 58,
@@ -14953,7 +15033,7 @@
       "label": "2026-07-15 \u2014 BE-02 \u2014 Codex / be02_alembic",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L390",
+      "source_location": "L391",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_be_02_codex_be02_alembic",
       "community": 58,
@@ -14963,9 +15043,9 @@
       "label": "2026-07-15 \u2014 BE-02 \u2014 Codex / be02_alembic",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L400",
+      "source_location": "L401",
       "_origin": "ast",
-      "id": "docs_implementation_workboard_2026_07_15_be_02_codex_be02_alembic_400",
+      "id": "docs_implementation_workboard_2026_07_15_be_02_codex_be02_alembic_401",
       "community": 58,
       "norm_label": "2026-07-15 \u2014 be-02 \u2014 codex / be02_alembic"
     },
@@ -14973,7 +15053,7 @@
       "label": "2026-07-15 15:03 EDT \u2014 BE-03 \u2014 Codex / be03_models",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L410",
+      "source_location": "L411",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_03_edt_be_03_codex_be03_models",
       "community": 58,
@@ -14983,7 +15063,7 @@
       "label": "2026-07-15 15:06 EDT \u2014 FE-01 \u2014 Codex / fe01_acceptance",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L425",
+      "source_location": "L426",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_06_edt_fe_01_codex_fe01_acceptance",
       "community": 58,
@@ -14993,7 +15073,7 @@
       "label": "2026-07-15 15:09 EDT \u2014 BE-03 \u2014 Codex / be03_models",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L454",
+      "source_location": "L455",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_09_edt_be_03_codex_be03_models",
       "community": 58,
@@ -15003,7 +15083,7 @@
       "label": "2026-07-15 15:12 EDT \u2014 GOV-01 \u2014 Codex",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L482",
+      "source_location": "L483",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_12_edt_gov_01_codex",
       "community": 58,
@@ -15013,7 +15093,7 @@
       "label": "2026-07-15 15:16 EDT \u2014 BE-04 \u2014 Codex / be04_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L501",
+      "source_location": "L502",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_16_edt_be_04_codex_be04_services",
       "community": 58,
@@ -15023,7 +15103,7 @@
       "label": "2026-07-15 15:20 EDT \u2014 BE-04 \u2014 Codex / be04_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L520",
+      "source_location": "L521",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_20_edt_be_04_codex_be04_services",
       "community": 58,
@@ -15033,7 +15113,7 @@
       "label": "2026-07-15 15:22 EDT \u2014 BE-05 \u2014 Codex / be05_api_routes",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L551",
+      "source_location": "L552",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_22_edt_be_05_codex_be05_api_routes",
       "community": 58,
@@ -15043,7 +15123,7 @@
       "label": "2026-07-15 15:26 EDT \u2014 BE-05 \u2014 Codex / be05_api_routes",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L571",
+      "source_location": "L572",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_26_edt_be_05_codex_be05_api_routes",
       "community": 58,
@@ -15053,7 +15133,7 @@
       "label": "2026-07-15 15:58 EDT \u2014 GRAPH-01 \u2014 Codex / root",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L603",
+      "source_location": "L604",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_15_58_edt_graph_01_codex_root",
       "community": 58,
@@ -15063,7 +15143,7 @@
       "label": "2026-07-15 16:03 EDT \u2014 GOV-02 \u2014 Codex / root",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L627",
+      "source_location": "L628",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_16_03_edt_gov_02_codex_root",
       "community": 58,
@@ -15073,7 +15153,7 @@
       "label": "2026-07-15 20:20 UTC \u2014 FE-01 acceptance \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L652",
+      "source_location": "L653",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_20_20_utc_fe_01_acceptance_claude_opus_4_8",
       "community": 58,
@@ -15083,7 +15163,7 @@
       "label": "2026-07-15 20:40 UTC \u2014 FE-02 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L682",
+      "source_location": "L683",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_20_40_utc_fe_02_claude_opus_4_8",
       "community": 58,
@@ -15093,7 +15173,7 @@
       "label": "2026-07-15 20:55 UTC \u2014 FE-03 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L721",
+      "source_location": "L722",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_20_55_utc_fe_03_claude_opus_4_8",
       "community": 58,
@@ -15103,7 +15183,7 @@
       "label": "2026-07-15 21:10 UTC \u2014 FE-04 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L758",
+      "source_location": "L759",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_21_10_utc_fe_04_claude_opus_4_8",
       "community": 58,
@@ -15113,7 +15193,7 @@
       "label": "2026-07-15 21:35 UTC \u2014 FE-05 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L800",
+      "source_location": "L801",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_21_35_utc_fe_05_claude_opus_4_8",
       "community": 58,
@@ -15123,7 +15203,7 @@
       "label": "2026-07-15 21:55 UTC \u2014 INT-01 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L839",
+      "source_location": "L840",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_21_55_utc_int_01_claude_opus_4_8",
       "community": 58,
@@ -15133,7 +15213,7 @@
       "label": "2026-07-15 22:15 UTC \u2014 QA-01 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L875",
+      "source_location": "L876",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_22_15_utc_qa_01_claude_opus_4_8",
       "community": 58,
@@ -15143,7 +15223,7 @@
       "label": "2026-07-15 22:30 UTC \u2014 DOC-01 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L905",
+      "source_location": "L906",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_15_22_30_utc_doc_01_claude_opus_4_8",
       "community": 58,
@@ -15153,7 +15233,7 @@
       "label": "2026-07-16 \u2014 board expansion (categories slice) \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L931",
+      "source_location": "L932",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_board_expansion_categories_slice_claude_opus_4_8",
       "community": 58,
@@ -15163,7 +15243,7 @@
       "label": "2026-07-16 \u2014 BE-07 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L937",
+      "source_location": "L938",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_be_07_claude_opus_4_8",
       "community": 58,
@@ -15173,7 +15253,7 @@
       "label": "2026-07-16 \u2014 BE-08 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L970",
+      "source_location": "L971",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_be_08_claude_opus_4_8",
       "community": 58,
@@ -15183,7 +15263,7 @@
       "label": "2026-07-16 \u2014 FE-06 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L995",
+      "source_location": "L996",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_fe_06_claude_opus_4_8",
       "community": 58,
@@ -15193,7 +15273,7 @@
       "label": "2026-07-16 \u2014 QA-02 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1027",
+      "source_location": "L1028",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_qa_02_claude_opus_4_8",
       "community": 58,
@@ -15203,7 +15283,7 @@
       "label": "2026-07-16 \u2014 board expansion (transactions slice) + BE-09 \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1050",
+      "source_location": "L1051",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_board_expansion_transactions_slice_be_09_claude_opus_4_8",
       "community": 58,
@@ -15213,7 +15293,7 @@
       "label": "2026-07-16 \u2014 DX-01 (run without Node.js) \u2014 Claude Opus 4.8",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1086",
+      "source_location": "L1087",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_dx_01_run_without_node_js_claude_opus_4_8",
       "community": 58,
@@ -15223,7 +15303,7 @@
       "label": "2026-07-16 09:20 EDT \u2014 GOV-03 \u2014 Product owner / Codex",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1120",
+      "source_location": "L1121",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_20_edt_gov_03_product_owner_codex",
       "community": 58,
@@ -15233,7 +15313,7 @@
       "label": "2026-07-16 09:20 EDT \u2014 BE-10 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1139",
+      "source_location": "L1140",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_20_edt_be_10_codex_be10_transaction_services",
       "community": 58,
@@ -15243,7 +15323,7 @@
       "label": "2026-07-16 09:20 EDT \u2014 FE-LEDGER-01 \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1154",
+      "source_location": "L1155",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_20_edt_fe_ledger_01_codex_ledger_consolidation",
       "community": 58,
@@ -15253,7 +15333,7 @@
       "label": "2026-07-16 \u2014 BE-10 scope correction \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1174",
+      "source_location": "L1175",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_be_10_scope_correction_codex_be10_transaction_services",
       "community": 58,
@@ -15263,7 +15343,7 @@
       "label": "2026-07-16 09:39 EDT \u2014 FE-LEDGER-01 \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1196",
+      "source_location": "L1197",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_39_edt_fe_ledger_01_codex_ledger_consolidation",
       "community": 58,
@@ -15273,7 +15353,7 @@
       "label": "2026-07-16 \u2014 BE-10 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1237",
+      "source_location": "L1238",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_be_10_codex_be10_transaction_services",
       "community": 58,
@@ -15283,7 +15363,7 @@
       "label": "2026-07-16 09:45 EDT \u2014 FE-LEDGER-01 review fixes \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1276",
+      "source_location": "L1277",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_45_edt_fe_ledger_01_review_fixes_codex_ledger_consolidation",
       "community": 58,
@@ -15293,7 +15373,7 @@
       "label": "2026-07-16 09:43 EDT \u2014 BE-11 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1293",
+      "source_location": "L1294",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_43_edt_be_11_codex_be11_contract_audit",
       "community": 58,
@@ -15303,7 +15383,7 @@
       "label": "2026-07-16 09:51 EDT \u2014 BE-11 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1309",
+      "source_location": "L1310",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_51_edt_be_11_codex_be11_contract_audit",
       "community": 58,
@@ -15313,7 +15393,7 @@
       "label": "2026-07-16 09:54 EDT \u2014 FE-LEDGER-01 review fixes \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1345",
+      "source_location": "L1346",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_54_edt_fe_ledger_01_review_fixes_codex_ledger_consolidation",
       "community": 58,
@@ -15323,7 +15403,7 @@
       "label": "2026-07-16 09:56 EDT \u2014 FE-07 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1382",
+      "source_location": "L1383",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_09_56_edt_fe_07_codex_be11_contract_audit",
       "community": 58,
@@ -15333,7 +15413,7 @@
       "label": "2026-07-16 10:33 EDT \u2014 FE-07 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1402",
+      "source_location": "L1403",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_10_33_edt_fe_07_codex_be11_contract_audit",
       "community": 58,
@@ -15343,7 +15423,7 @@
       "label": "2026-07-16 10:11 EDT \u2014 BE-10/BE-11 contract correction \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1445",
+      "source_location": "L1446",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_10_11_edt_be_10_be_11_contract_correction_codex_ledger_consolidation",
       "community": 58,
@@ -15353,7 +15433,7 @@
       "label": "2026-07-16 10:15 EDT \u2014 BE-10/BE-11 contract correction \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1464",
+      "source_location": "L1465",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_10_15_edt_be_10_be_11_contract_correction_codex_ledger_consolidation",
       "community": 58,
@@ -15363,7 +15443,7 @@
       "label": "2026-07-16 10:36 EDT \u2014 QA-03 \u2014 Codex / ledger_review",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1491",
+      "source_location": "L1492",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_10_36_edt_qa_03_codex_ledger_review",
       "community": 58,
@@ -15373,7 +15453,7 @@
       "label": "2026-07-16 10:41 EDT \u2014 QA-03 \u2014 Codex / ledger_review",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1501",
+      "source_location": "L1502",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_10_41_edt_qa_03_codex_ledger_review",
       "community": 58,
@@ -15383,7 +15463,7 @@
       "label": "2026-07-16 10:44 EDT \u2014 Stage 3 board expansion \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1511",
+      "source_location": "L1512",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_10_44_edt_stage_3_board_expansion_codex_ledger_consolidation",
       "community": 58,
@@ -15393,7 +15473,7 @@
       "label": "2026-07-16 10:48 EDT \u2014 BE-13 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1536",
+      "source_location": "L1537",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_10_48_edt_be_13_codex_be11_contract_audit",
       "community": 58,
@@ -15403,7 +15483,7 @@
       "label": "2026-07-16 \u2014 BE-12 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1554",
+      "source_location": "L1555",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_be_12_codex_be10_transaction_services",
       "community": 58,
@@ -15413,7 +15493,7 @@
       "label": "2026-07-16 11:07 EDT \u2014 BE-12 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1571",
+      "source_location": "L1572",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_07_edt_be_12_codex_be10_transaction_services",
       "community": 58,
@@ -15423,7 +15503,7 @@
       "label": "2026-07-16 11:09 EDT \u2014 BE-13 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1598",
+      "source_location": "L1599",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_09_edt_be_13_codex_be11_contract_audit",
       "community": 58,
@@ -15433,7 +15513,7 @@
       "label": "2026-07-16 11:12 EDT \u2014 BE-14 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1635",
+      "source_location": "L1636",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_12_edt_be_14_codex_be11_contract_audit",
       "community": 58,
@@ -15443,7 +15523,7 @@
       "label": "2026-07-16 11:13 EDT \u2014 BE-12 review corrections \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1654",
+      "source_location": "L1655",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_13_edt_be_12_review_corrections_codex_be10_transaction_services",
       "community": 58,
@@ -15453,7 +15533,7 @@
       "label": "2026-07-16 11:33 EDT \u2014 BE-12 review corrections \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1673",
+      "source_location": "L1674",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_33_edt_be_12_review_corrections_codex_be10_transaction_services",
       "community": 58,
@@ -15463,7 +15543,7 @@
       "label": "2026-07-16 11:35 EDT \u2014 BE-13 availability regression correction \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1707",
+      "source_location": "L1708",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_35_edt_be_13_availability_regression_correction_codex_be11_contract_audit",
       "community": 58,
@@ -15473,7 +15553,7 @@
       "label": "2026-07-16 11:35 EDT \u2014 BE-14 \u2014 Codex / be11_contract_audit",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1725",
+      "source_location": "L1726",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_35_edt_be_14_codex_be11_contract_audit",
       "community": 58,
@@ -15483,7 +15563,7 @@
       "label": "2026-07-16 11:39 EDT \u2014 BE-15 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1763",
+      "source_location": "L1764",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_39_edt_be_15_codex_be10_transaction_services",
       "community": 58,
@@ -15493,7 +15573,7 @@
       "label": "2026-07-16 11:55 EDT \u2014 BE-15 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1782",
+      "source_location": "L1783",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_55_edt_be_15_codex_be10_transaction_services",
       "community": 58,
@@ -15503,7 +15583,7 @@
       "label": "2026-07-16 11:58 EDT \u2014 BE-16 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1829",
+      "source_location": "L1830",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_11_58_edt_be_16_codex_be10_transaction_services",
       "community": 58,
@@ -15513,7 +15593,7 @@
       "label": "2026-07-16 \u2014 FE-MERIDIAN-01 claimed",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1850",
+      "source_location": "L1851",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_fe_meridian_01_claimed",
       "community": 58,
@@ -15523,7 +15603,7 @@
       "label": "2026-07-16 12:08 EDT \u2014 FE-MERIDIAN-01 \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1866",
+      "source_location": "L1867",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_12_08_edt_fe_meridian_01_codex_ledger_consolidation",
       "community": 58,
@@ -15533,7 +15613,7 @@
       "label": "2026-07-16 12:14 EDT \u2014 FE-MERIDIAN-01 rendered acceptance \u2014 Codex / root",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1901",
+      "source_location": "L1902",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_12_14_edt_fe_meridian_01_rendered_acceptance_codex_root",
       "community": 58,
@@ -15543,7 +15623,7 @@
       "label": "2026-07-16 12:16 EDT \u2014 BE-16 \u2014 Codex / be10_transaction_services",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1922",
+      "source_location": "L1923",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_12_16_edt_be_16_codex_be10_transaction_services",
       "community": 58,
@@ -15553,7 +15633,7 @@
       "label": "2026-07-16 12:25 EDT \u2014 FE-08 \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1961",
+      "source_location": "L1962",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_12_25_edt_fe_08_codex_ledger_consolidation",
       "community": 58,
@@ -15563,7 +15643,7 @@
       "label": "2026-07-16 12:30 EDT \u2014 FE-08 \u2014 Codex / ledger_consolidation",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1981",
+      "source_location": "L1982",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_12_30_edt_fe_08_codex_ledger_consolidation",
       "community": 58,
@@ -15573,11 +15653,51 @@
       "label": "2026-07-16 12:33 EDT \u2014 FE-08 rendered acceptance \u2014 Codex / root",
       "file_type": "document",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L2024",
+      "source_location": "L2025",
       "_origin": "ast",
       "id": "docs_implementation_workboard_2026_07_16_12_33_edt_fe_08_rendered_acceptance_codex_root",
       "community": 58,
       "norm_label": "2026-07-16 12:33 edt \u2014 fe-08 rendered acceptance \u2014 codex / root"
+    },
+    {
+      "label": "2026-07-16 12:37 EDT \u2014 FE-08 independent review fixes \u2014 Codex / ledger_consolidation",
+      "file_type": "document",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2049",
+      "_origin": "ast",
+      "id": "docs_implementation_workboard_2026_07_16_12_37_edt_fe_08_independent_review_fixes_codex_ledger_consolidation",
+      "community": 58,
+      "norm_label": "2026-07-16 12:37 edt \u2014 fe-08 independent review fixes \u2014 codex / ledger_consolidation"
+    },
+    {
+      "label": "2026-07-16 12:39 EDT \u2014 FE-08 final rendered recheck \u2014 Codex / root",
+      "file_type": "document",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2076",
+      "_origin": "ast",
+      "id": "docs_implementation_workboard_2026_07_16_12_39_edt_fe_08_final_rendered_recheck_codex_root",
+      "community": 58,
+      "norm_label": "2026-07-16 12:39 edt \u2014 fe-08 final rendered recheck \u2014 codex / root"
+    },
+    {
+      "label": "2026-07-16 16:20 EDT \u2014 QA-04 \u2014 Codex / be11_contract_audit",
+      "file_type": "document",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2096",
+      "_origin": "ast",
+      "id": "docs_implementation_workboard_2026_07_16_16_20_edt_qa_04_codex_be11_contract_audit",
+      "community": 58,
+      "norm_label": "2026-07-16 16:20 edt \u2014 qa-04 \u2014 codex / be11_contract_audit"
+    },
+    {
+      "label": "2026-07-16 \u2014 OPS-CLEAN-01 \u2014 Codex / root",
+      "file_type": "document",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2115",
+      "_origin": "ast",
+      "id": "docs_implementation_workboard_2026_07_16_ops_clean_01_codex_root",
+      "community": 58,
+      "norm_label": "2026-07-16 \u2014 ops-clean-01 \u2014 codex / root"
     },
     {
       "label": "README.md",
@@ -24506,6 +24626,17 @@
       "source_location": "L201",
       "weight": 1.0,
       "source": "apps_api_tests_test_td_parser_test_unsupported_and_scanned_layouts_fail_closed",
+      "target": "apps_api_app_importing_document_stage_pdf"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "output/qa04-real/privacy_scan.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "output_qa04_real_privacy_scan_main",
       "target": "apps_api_app_importing_document_stage_pdf"
     },
     {
@@ -50149,6 +50280,56 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "output/playwright/qa04-real-browser.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "output_playwright_qa04_real_browser",
+      "target": "output_playwright_qa04_real_browser_chromium",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/qa04-real-browser.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "output_playwright_qa04_real_browser",
+      "target": "output_playwright_qa04_real_browser_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/qa04-real-duplicate.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "output_playwright_qa04_real_duplicate",
+      "target": "output_playwright_qa04_real_duplicate_chromium",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/playwright/qa04-real-duplicate.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "output_playwright_qa04_real_duplicate",
+      "target": "output_playwright_qa04_real_duplicate_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "output/qa04-real/privacy_scan.py",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "output_qa04_real_privacy_scan",
+      "target": "output_qa04_real_privacy_scan_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scripts/start-app.sh",
       "source_location": "L1",
       "weight": 1.0,
@@ -51960,7 +52141,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L221",
+      "source_location": "L222",
       "weight": 1.0,
       "source": "docs_implementation_workboard_implementation_workboard",
       "target": "docs_implementation_workboard_known_blockers_and_decisions_needed",
@@ -51970,7 +52151,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L212",
+      "source_location": "L213",
       "weight": 1.0,
       "source": "docs_implementation_workboard_implementation_workboard",
       "target": "docs_implementation_workboard_later_stage_backlog",
@@ -52010,7 +52191,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L228",
+      "source_location": "L229",
       "weight": 1.0,
       "source": "docs_implementation_workboard_implementation_workboard",
       "target": "docs_implementation_workboard_progress_log",
@@ -52120,7 +52301,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L257",
+      "source_location": "L258",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_14_42_edt_fe_01_codex_fe01_meridian_tokens",
@@ -52130,7 +52311,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L270",
+      "source_location": "L271",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_14_50_edt_fe_01_codex_fe01_meridian_tokens",
@@ -52140,7 +52321,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L410",
+      "source_location": "L411",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_03_edt_be_03_codex_be03_models",
@@ -52150,7 +52331,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L326",
+      "source_location": "L327",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_05_edt_fe_01_codex_fe01_acceptance_review",
@@ -52160,7 +52341,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L425",
+      "source_location": "L426",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_06_edt_fe_01_codex_fe01_acceptance",
@@ -52170,7 +52351,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L454",
+      "source_location": "L455",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_09_edt_be_03_codex_be03_models",
@@ -52180,7 +52361,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L482",
+      "source_location": "L483",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_12_edt_gov_01_codex",
@@ -52190,7 +52371,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L501",
+      "source_location": "L502",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_16_edt_be_04_codex_be04_services",
@@ -52200,7 +52381,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L520",
+      "source_location": "L521",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_20_edt_be_04_codex_be04_services",
@@ -52210,7 +52391,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L353",
+      "source_location": "L354",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_20_edt_be_06_codex_be06_money_dates",
@@ -52220,7 +52401,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L551",
+      "source_location": "L552",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_22_edt_be_05_codex_be05_api_routes",
@@ -52230,7 +52411,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L571",
+      "source_location": "L572",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_26_edt_be_05_codex_be05_api_routes",
@@ -52240,7 +52421,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L367",
+      "source_location": "L368",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_28_edt_be_06_codex_be06_money_dates",
@@ -52250,7 +52431,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L603",
+      "source_location": "L604",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_15_58_edt_graph_01_codex_root",
@@ -52260,7 +52441,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L627",
+      "source_location": "L628",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_16_03_edt_gov_02_codex_root",
@@ -52270,7 +52451,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L652",
+      "source_location": "L653",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_20_20_utc_fe_01_acceptance_claude_opus_4_8",
@@ -52280,7 +52461,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L682",
+      "source_location": "L683",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_20_40_utc_fe_02_claude_opus_4_8",
@@ -52290,7 +52471,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L721",
+      "source_location": "L722",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_20_55_utc_fe_03_claude_opus_4_8",
@@ -52300,7 +52481,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L758",
+      "source_location": "L759",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_21_10_utc_fe_04_claude_opus_4_8",
@@ -52310,7 +52491,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L800",
+      "source_location": "L801",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_21_35_utc_fe_05_claude_opus_4_8",
@@ -52320,7 +52501,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L839",
+      "source_location": "L840",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_21_55_utc_int_01_claude_opus_4_8",
@@ -52330,7 +52511,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L875",
+      "source_location": "L876",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_22_15_utc_qa_01_claude_opus_4_8",
@@ -52340,7 +52521,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L905",
+      "source_location": "L906",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_22_30_utc_doc_01_claude_opus_4_8",
@@ -52350,7 +52531,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L294",
+      "source_location": "L295",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_be_01_codex_be_01_agent",
@@ -52360,17 +52541,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L307",
+      "source_location": "L308",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
-      "target": "docs_implementation_workboard_2026_07_15_be_01_codex_be_01_agent_307",
+      "target": "docs_implementation_workboard_2026_07_15_be_01_codex_be_01_agent_308",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L390",
+      "source_location": "L391",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_be_02_codex_be02_alembic",
@@ -52380,17 +52561,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L400",
+      "source_location": "L401",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
-      "target": "docs_implementation_workboard_2026_07_15_be_02_codex_be02_alembic_400",
+      "target": "docs_implementation_workboard_2026_07_15_be_02_codex_be02_alembic_401",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L230",
+      "source_location": "L231",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_plan_01_codex",
@@ -52400,7 +52581,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L245",
+      "source_location": "L246",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_15_s1_01_product_owner_codex",
@@ -52410,7 +52591,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1139",
+      "source_location": "L1140",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_20_edt_be_10_codex_be10_transaction_services",
@@ -52420,7 +52601,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1154",
+      "source_location": "L1155",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_20_edt_fe_ledger_01_codex_ledger_consolidation",
@@ -52430,7 +52611,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1120",
+      "source_location": "L1121",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_20_edt_gov_03_product_owner_codex",
@@ -52440,7 +52621,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1196",
+      "source_location": "L1197",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_39_edt_fe_ledger_01_codex_ledger_consolidation",
@@ -52450,7 +52631,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1293",
+      "source_location": "L1294",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_43_edt_be_11_codex_be11_contract_audit",
@@ -52460,7 +52641,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1276",
+      "source_location": "L1277",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_45_edt_fe_ledger_01_review_fixes_codex_ledger_consolidation",
@@ -52470,7 +52651,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1309",
+      "source_location": "L1310",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_51_edt_be_11_codex_be11_contract_audit",
@@ -52480,7 +52661,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1345",
+      "source_location": "L1346",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_54_edt_fe_ledger_01_review_fixes_codex_ledger_consolidation",
@@ -52490,7 +52671,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1382",
+      "source_location": "L1383",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_09_56_edt_fe_07_codex_be11_contract_audit",
@@ -52500,7 +52681,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1445",
+      "source_location": "L1446",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_10_11_edt_be_10_be_11_contract_correction_codex_ledger_consolidation",
@@ -52510,7 +52691,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1464",
+      "source_location": "L1465",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_10_15_edt_be_10_be_11_contract_correction_codex_ledger_consolidation",
@@ -52520,7 +52701,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1402",
+      "source_location": "L1403",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_10_33_edt_fe_07_codex_be11_contract_audit",
@@ -52530,7 +52711,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1491",
+      "source_location": "L1492",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_10_36_edt_qa_03_codex_ledger_review",
@@ -52540,7 +52721,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1501",
+      "source_location": "L1502",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_10_41_edt_qa_03_codex_ledger_review",
@@ -52550,7 +52731,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1511",
+      "source_location": "L1512",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_10_44_edt_stage_3_board_expansion_codex_ledger_consolidation",
@@ -52560,7 +52741,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1536",
+      "source_location": "L1537",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_10_48_edt_be_13_codex_be11_contract_audit",
@@ -52570,7 +52751,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1571",
+      "source_location": "L1572",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_07_edt_be_12_codex_be10_transaction_services",
@@ -52580,7 +52761,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1598",
+      "source_location": "L1599",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_09_edt_be_13_codex_be11_contract_audit",
@@ -52590,7 +52771,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1635",
+      "source_location": "L1636",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_12_edt_be_14_codex_be11_contract_audit",
@@ -52600,7 +52781,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1654",
+      "source_location": "L1655",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_13_edt_be_12_review_corrections_codex_be10_transaction_services",
@@ -52610,7 +52791,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1673",
+      "source_location": "L1674",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_33_edt_be_12_review_corrections_codex_be10_transaction_services",
@@ -52620,7 +52801,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1707",
+      "source_location": "L1708",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_35_edt_be_13_availability_regression_correction_codex_be11_contract_audit",
@@ -52630,7 +52811,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1725",
+      "source_location": "L1726",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_35_edt_be_14_codex_be11_contract_audit",
@@ -52640,7 +52821,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1763",
+      "source_location": "L1764",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_39_edt_be_15_codex_be10_transaction_services",
@@ -52650,7 +52831,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1782",
+      "source_location": "L1783",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_55_edt_be_15_codex_be10_transaction_services",
@@ -52660,7 +52841,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1829",
+      "source_location": "L1830",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_11_58_edt_be_16_codex_be10_transaction_services",
@@ -52670,7 +52851,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1866",
+      "source_location": "L1867",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_12_08_edt_fe_meridian_01_codex_ledger_consolidation",
@@ -52680,7 +52861,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1901",
+      "source_location": "L1902",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_12_14_edt_fe_meridian_01_rendered_acceptance_codex_root",
@@ -52690,7 +52871,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1922",
+      "source_location": "L1923",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_12_16_edt_be_16_codex_be10_transaction_services",
@@ -52700,7 +52881,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1961",
+      "source_location": "L1962",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_12_25_edt_fe_08_codex_ledger_consolidation",
@@ -52710,7 +52891,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1981",
+      "source_location": "L1982",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_12_30_edt_fe_08_codex_ledger_consolidation",
@@ -52720,7 +52901,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L2024",
+      "source_location": "L2025",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_12_33_edt_fe_08_rendered_acceptance_codex_root",
@@ -52730,7 +52911,37 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L937",
+      "source_location": "L2049",
+      "weight": 1.0,
+      "source": "docs_implementation_workboard_progress_log",
+      "target": "docs_implementation_workboard_2026_07_16_12_37_edt_fe_08_independent_review_fixes_codex_ledger_consolidation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2076",
+      "weight": 1.0,
+      "source": "docs_implementation_workboard_progress_log",
+      "target": "docs_implementation_workboard_2026_07_16_12_39_edt_fe_08_final_rendered_recheck_codex_root",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L2096",
+      "weight": 1.0,
+      "source": "docs_implementation_workboard_progress_log",
+      "target": "docs_implementation_workboard_2026_07_16_16_20_edt_qa_04_codex_be11_contract_audit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L938",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_be_07_claude_opus_4_8",
@@ -52740,7 +52951,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L970",
+      "source_location": "L971",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_be_08_claude_opus_4_8",
@@ -52750,7 +52961,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1237",
+      "source_location": "L1238",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_be_10_codex_be10_transaction_services",
@@ -52760,7 +52971,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1174",
+      "source_location": "L1175",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_be_10_scope_correction_codex_be10_transaction_services",
@@ -52770,7 +52981,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1554",
+      "source_location": "L1555",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_be_12_codex_be10_transaction_services",
@@ -52780,7 +52991,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L931",
+      "source_location": "L932",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_board_expansion_categories_slice_claude_opus_4_8",
@@ -52790,7 +53001,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1050",
+      "source_location": "L1051",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_board_expansion_transactions_slice_be_09_claude_opus_4_8",
@@ -52800,7 +53011,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1086",
+      "source_location": "L1087",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_dx_01_run_without_node_js_claude_opus_4_8",
@@ -52810,7 +53021,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L995",
+      "source_location": "L996",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_fe_06_claude_opus_4_8",
@@ -52820,7 +53031,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1850",
+      "source_location": "L1851",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_fe_meridian_01_claimed",
@@ -52830,7 +53041,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/implementation-workboard.md",
-      "source_location": "L1027",
+      "source_location": "L2115",
+      "weight": 1.0,
+      "source": "docs_implementation_workboard_progress_log",
+      "target": "docs_implementation_workboard_2026_07_16_ops_clean_01_codex_root",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/implementation-workboard.md",
+      "source_location": "L1028",
       "weight": 1.0,
       "source": "docs_implementation_workboard_progress_log",
       "target": "docs_implementation_workboard_2026_07_16_qa_02_claude_opus_4_8",
@@ -57689,5 +57910,5 @@
       "source_file": "docs/screenshots/meridian-transactions-light.png"
     }
   ],
-  "built_at_commit": "d2bdd4041f679c1943bef96d5823ead0617ed025"
+  "built_at_commit": "03bf424b1891c494d6aa61cbddea4049d604d49a"
 }
