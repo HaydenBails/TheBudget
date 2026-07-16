@@ -22,8 +22,9 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from app.config import settings
 from app.db import dispose_database
-from app.routers import accounts, categories, health, profiles
-from app.services import InvalidUpdateError, ResourceNotFoundError
+from app.middleware import ImportBodyLimitMiddleware
+from app.routers import accounts, categories, health, imports, profiles, transactions
+from app.services import InvalidUpdateError, ResourceNotFoundError, SplitSumError
 
 logger = logging.getLogger("spending_tracker.api")
 
@@ -51,6 +52,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Enforce import request bounds before routing or multipart form parsing.
+app.add_middleware(ImportBodyLimitMiddleware)
+
 # Allow the Vite dev server (both loopback spellings) to call the API.
 app.add_middleware(
     CORSMiddleware,
@@ -64,6 +68,8 @@ app.include_router(health.router)
 app.include_router(profiles.router)
 app.include_router(accounts.router)
 app.include_router(categories.router)
+app.include_router(transactions.router)
+app.include_router(imports.router)
 
 
 @app.exception_handler(ResourceNotFoundError)
@@ -85,6 +91,19 @@ async def invalid_update_handler(
     exc: InvalidUpdateError,
 ) -> JSONResponse:
     """Return readable validation feedback for explicit null updates."""
+
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": str(exc)},
+    )
+
+
+@app.exception_handler(SplitSumError)
+async def split_sum_handler(
+    _request: Request,
+    exc: SplitSumError,
+) -> JSONResponse:
+    """Return readable validation feedback for invalid split allocations."""
 
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

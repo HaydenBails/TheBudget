@@ -4,12 +4,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, CheckConstraint, ForeignKey, Index, String
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    ForeignKey,
+    Index,
+    String,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
+    from app.models.import_batch import ImportBatch
     from app.models.profile import Profile
 
 
@@ -30,6 +37,7 @@ class Account(TimestampMixin, Base):
             name="last4_masked_digits",
         ),
         Index("ix_accounts_profile_id_is_archived", "profile_id", "is_archived"),
+        Index("ux_accounts_profile_id_id", "profile_id", "id", unique=True),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -46,3 +54,8 @@ class Account(TimestampMixin, Base):
     is_archived: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     profile: Mapped[Profile] = relationship(back_populates="accounts")
+    import_batches: Mapped[list[ImportBatch]] = relationship(
+        back_populates="account",
+        passive_deletes="all",
+        overlaps="import_batches,profile",
+    )

@@ -1,0 +1,50 @@
+{
+  "policy": "synthetic-only",
+  "generator": "generate_fixtures.py",
+  "fixtures": [
+    {
+      "file": "td_full_matrix.pdf",
+      "expected": "td_full_matrix.expected.json",
+      "issuer": "TD",
+      "layout_version": "synthetic-td-v1",
+      "page_count": 3,
+      "statement_period_shape": "full-month-name range with year",
+      "synthetic": true,
+      "edge_cases": [
+        "first-middle-last-page rows",
+        "repeated page headers",
+        "page-break continuation",
+        "payment slip",
+        "rewards summary",
+        "legal text",
+        "comma amount",
+        "negative payment",
+        "negative refund",
+        "fee",
+        "interest",
+        "multi-line description",
+        "foreign-currency continuation",
+        "repeated legitimate row",
+        "section reconciliation"
+      ]
+    },
+    {
+      "file": "td_unsupported_layout.pdf",
+      "issuer": "TD",
+      "layout_version": "synthetic-unknown-layout",
+      "page_count": 1,
+      "statement_period_shape": "full-month-name range with year",
+      "synthetic": true,
+      "edge_cases": ["issuer marker without supported transaction table"]
+    },
+    {
+      "file": "td_scanned_placeholder.pdf",
+      "issuer": "TD",
+      "layout_version": "synthetic-image-only-placeholder",
+      "page_count": 1,
+      "statement_period_shape": "none",
+      "synthetic": true,
+      "edge_cases": ["no extractable text"]
+    }
+  ]
+}

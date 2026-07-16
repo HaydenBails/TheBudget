@@ -1,23 +1,23 @@
-/* Profiles feature styles. Consumes the shared --mrd-* tokens (available because
-   the app root carries `.app.mrd`). Namespaced `pf-`. */
+/* Profiles feature styles. The legacy --lg-* names resolve to the shared
+   Meridian semantic tokens on `.app.mrd`. Namespaced `pf-`. */
 
 .pf-list {
   list-style: none;
-  margin: 0 0 var(--mrd-space-4);
+  margin: 0 0 var(--lg-space-4);
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--mrd-space-3);
+  gap: var(--lg-space-3);
 }
 .pf-row {
   display: flex;
   align-items: center;
-  gap: var(--mrd-space-4);
-  padding: var(--mrd-space-4);
+  gap: var(--lg-space-4);
+  padding: var(--lg-space-4);
 }
 .pf-row.current {
-  border-color: color-mix(in srgb, var(--mrd-accent) 45%, var(--mrd-border));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mrd-accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--lg-accent) 45%, var(--lg-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lg-accent) 12%, transparent);
 }
 .pf-row.pf-archived {
   opacity: 0.72;
@@ -28,9 +28,9 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
-  font-weight: var(--mrd-font-weight-bold);
-  color: #fff;
-  background: linear-gradient(135deg, var(--mrd-accent), var(--mrd-accent-2));
+  font-weight: var(--lg-font-weight-bold);
+  color: var(--lg-on-accent);
+  background: linear-gradient(135deg, var(--lg-accent), var(--lg-accent-2));
   flex: 0 0 auto;
 }
 .pf-avatar.sm {
@@ -43,26 +43,26 @@
   min-width: 0;
 }
 .pf-name {
-  font-weight: var(--mrd-font-weight-semibold);
+  font-weight: var(--lg-font-weight-semibold);
   font-size: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .pf-sub {
-  color: var(--mrd-faint);
+  color: var(--lg-faint);
   font-size: 12.5px;
   margin-top: 2px;
 }
 .pf-badge {
   font-size: 10.5px;
-  font-weight: var(--mrd-font-weight-bold);
+  font-weight: var(--lg-font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--mrd-accent);
-  background: color-mix(in srgb, var(--mrd-accent) 14%, transparent);
+  color: var(--lg-accent);
+  background: color-mix(in srgb, var(--lg-accent) 14%, transparent);
   padding: 2px 8px;
-  border-radius: var(--mrd-radius-pill);
+  border-radius: var(--lg-radius-pill);
 }
 .pf-actions {
   margin-left: auto;
@@ -76,27 +76,27 @@
   font-size: 13px;
 }
 .pf-danger {
-  color: var(--mrd-negative);
-  border-color: color-mix(in srgb, var(--mrd-negative) 35%, var(--mrd-border));
+  color: var(--lg-negative);
+  border-color: color-mix(in srgb, var(--lg-negative) 35%, var(--lg-border));
 }
 .pf-confirm {
   align-items: center;
 }
 .pf-confirm-text {
   font-size: 12.5px;
-  color: var(--mrd-muted);
+  color: var(--lg-muted);
   max-width: 28ch;
 }
 
 /* create + rename forms */
 .pf-createcard {
-  margin-bottom: var(--mrd-space-4);
+  margin-bottom: var(--lg-space-4);
 }
 .pf-label {
   display: block;
   font-size: 12.5px;
-  font-weight: var(--mrd-font-weight-semibold);
-  color: var(--mrd-muted);
+  font-weight: var(--lg-font-weight-semibold);
+  color: var(--lg-muted);
   margin-bottom: 8px;
 }
 .pf-createrow,
@@ -111,32 +111,33 @@
 .pf-input {
   flex: 1;
   min-width: 0;
-  border: 1px solid var(--mrd-border);
-  background: var(--mrd-panel);
-  color: var(--mrd-text);
+  min-height: 44px;
+  border: 1px solid var(--lg-border);
+  background: var(--lg-panel);
+  color: var(--lg-text);
   font: inherit;
-  font-size: 14px;
+  font-size: 16px;
   padding: 10px 13px;
-  border-radius: var(--mrd-radius-md);
+  border-radius: var(--lg-radius-md);
 }
 .pf-input:focus-visible {
-  outline: 2px solid var(--mrd-accent);
+  outline: 2px solid var(--lg-accent);
   outline-offset: 1px;
-  border-color: var(--mrd-accent);
+  border-color: var(--lg-accent);
 }
 .pf-error {
   margin: 10px 0 0;
-  color: var(--mrd-negative);
+  color: var(--lg-negative);
   font-size: 13px;
-  font-weight: var(--mrd-font-weight-medium);
+  font-weight: var(--lg-font-weight-medium);
 }
 .pf-state {
-  color: var(--mrd-muted);
+  color: var(--lg-muted);
   text-align: center;
   padding: 32px;
 }
 .pf-state-error {
-  color: var(--mrd-negative);
+  color: var(--lg-negative);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,13 +145,13 @@
 }
 .pf-section {
   font-size: 14px;
-  color: var(--mrd-muted);
-  margin: var(--mrd-space-5) 0 var(--mrd-space-3);
+  color: var(--lg-muted);
+  margin: var(--lg-space-5) 0 var(--lg-space-3);
 }
 .pf-note {
-  color: var(--mrd-faint);
+  color: var(--lg-faint);
   font-size: 12.5px;
-  margin-top: var(--mrd-space-5);
+  margin-top: var(--lg-space-5);
 }
 .pf-visually-hidden {
   position: absolute;
@@ -172,8 +173,8 @@
   line-height: 1.15;
 }
 .pf-switch-name small {
-  color: var(--mrd-faint);
-  font-weight: var(--mrd-font-weight-medium);
+  color: var(--lg-faint);
+  font-weight: var(--lg-font-weight-medium);
 }
 .pf-backdrop {
   position: fixed;
@@ -189,50 +190,51 @@
   right: 0;
   z-index: 31;
   min-width: 240px;
-  background: var(--mrd-panel);
-  border: 1px solid var(--mrd-border);
-  border-radius: var(--mrd-radius-lg);
-  box-shadow: var(--mrd-shadow-card);
+  background: var(--lg-panel);
+  border: 1px solid var(--lg-border);
+  border-radius: var(--lg-radius-lg);
+  box-shadow: var(--lg-shadow-card);
   padding: 6px;
 }
 .pf-menu-head {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--mrd-faint);
-  font-weight: var(--mrd-font-weight-bold);
+  color: var(--lg-faint);
+  font-weight: var(--lg-font-weight-bold);
   padding: 8px 10px 4px;
 }
 .pf-menu-item {
   width: 100%;
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 10px;
   border: 0;
   background: transparent;
-  color: var(--mrd-text);
+  color: var(--lg-text);
   font: inherit;
-  font-weight: var(--mrd-font-weight-medium);
+  font-weight: var(--lg-font-weight-medium);
   padding: 9px 10px;
-  border-radius: var(--mrd-radius-md);
+  border-radius: var(--lg-radius-md);
   cursor: pointer;
   text-align: left;
 }
 .pf-menu-item:hover {
-  background: var(--mrd-chip);
+  background: var(--lg-chip);
 }
 .pf-menu-item.active {
-  color: var(--mrd-accent);
+  color: var(--lg-accent);
 }
 .pf-check {
   margin-left: auto;
-  color: var(--mrd-accent);
-  font-weight: var(--mrd-font-weight-bold);
+  color: var(--lg-accent);
+  font-weight: var(--lg-font-weight-bold);
 }
 .pf-menu-manage {
-  border-top: 1px solid var(--mrd-border-2);
+  border-top: 1px solid var(--lg-border-2);
   margin-top: 4px;
-  color: var(--mrd-muted);
+  color: var(--lg-muted);
 }
 
 @media (max-width: 640px) {

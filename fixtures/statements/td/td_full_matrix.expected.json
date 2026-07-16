@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "issuer": "TD",
+    "account_last4": "4821",
+    "period_start": "2026-06-01",
+    "period_end": "2026-06-30",
+    "currency": "CAD",
+    "expected_activity_cents": -3900,
+    "expected_debits_cents": 148600,
+    "expected_credits_cents": -152500
+  },
+  "transactions": [
+    {
+      "source_index": 0,
+      "occurrence_index": 0,
+      "transaction_date": "2026-06-02",
+      "posted_date": "2026-06-03",
+      "raw_description": "SYNTHETIC MARKET",
+      "amount_cents": 123456,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 1,
+      "occurrence_index": 0,
+      "transaction_date": "2026-06-04",
+      "posted_date": "2026-06-05",
+      "raw_description": "PAYMENT - THANK YOU",
+      "amount_cents": -150000,
+      "txn_type": "payment",
+      "direction": "credit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 2,
+      "occurrence_index": 0,
+      "transaction_date": "2026-06-06",
+      "posted_date": "2026-06-07",
+      "raw_description": "SYNTHETIC RETURN",
+      "amount_cents": -2500,
+      "txn_type": "refund",
+      "direction": "credit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 3,
+      "occurrence_index": 0,
+      "transaction_date": "2026-06-08",
+      "posted_date": "2026-06-09",
+      "raw_description": "SYNTHETIC CLOUD MONTHLY SERVICE",
+      "amount_cents": 1345,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": "USD",
+      "original_amount_cents": 1000,
+      "exchange_rate": "1.34500000"
+    },
+    {
+      "source_index": 4,
+      "occurrence_index": 0,
+      "transaction_date": "2026-06-10",
+      "posted_date": "2026-06-11",
+      "raw_description": "ANNUAL FEE",
+      "amount_cents": 2565,
+      "txn_type": "fee",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 5,
+      "occurrence_index": 0,
+      "transaction_date": "2026-06-12",
+      "posted_date": "2026-06-13",
+      "raw_description": "INTEREST CHARGE",
+      "amount_cents": 1234,
+      "txn_type": "interest",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 6,
+      "occurrence_index": 0,
+      "transaction_date": "2026-06-14",
+      "posted_date": "2026-06-15",
+      "raw_description": "SYNTHETIC CAFE",
+      "amount_cents": 10000,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 7,
+      "occurrence_index": 1,
+      "transaction_date": "2026-06-14",
+      "posted_date": "2026-06-15",
+      "raw_description": "SYNTHETIC CAFE",
+      "amount_cents": 10000,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    }
+  ],
+  "reconciliation": {
+    "status": "reconciled",
+    "expected_cents": -3900,
+    "parsed_cents": -3900,
+    "delta_cents": 0,
+    "tolerance_cents": 1,
+    "transaction_count": 8
+  }
+}

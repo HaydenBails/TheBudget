@@ -1,0 +1,12 @@
+{
+  "mobile375": {
+    "overflow": false,
+    "scrollWidth": 375,
+    "clientWidth": 375
+  },
+  "zoom200": {
+    "overflow": false,
+    "scrollWidth": 1440,
+    "clientWidth": 1440
+  }
+}

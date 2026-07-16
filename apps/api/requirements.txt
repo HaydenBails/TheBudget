@@ -7,6 +7,5 @@ pydantic==2.10.5
 pydantic-settings==2.7.1
 SQLAlchemy==2.0.36
 alembic==1.14.0
-
-# --- Future stages (do NOT install yet; uncomment as each stage lands) ---
-# pdfplumber==0.11.5          # Stage 3: text-based statement parsing
+pdfplumber==0.11.5
+python-multipart==0.0.20

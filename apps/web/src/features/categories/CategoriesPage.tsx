@@ -9,7 +9,8 @@ import {
   useRestoreCategory,
   useUpdateCategory,
 } from './api';
-import { CATEGORY_COLORS, ICON_CHOICES, type Category, type CategoryCreate } from './types';
+import { CategoryIcon, normalizeCategoryIcon } from './CategoryIcon';
+import { CATEGORY_COLORS, CATEGORY_ICON_CHOICES, type Category, type CategoryCreate } from './types';
 import './categories.css';
 
 interface FormValues {
@@ -37,7 +38,7 @@ function CategoryForm({
   const [v, setV] = useState<FormValues>({
     name: initial?.name ?? '',
     color: initial?.color ?? CATEGORY_COLORS[0],
-    icon: initial?.icon ?? ICON_CHOICES[0],
+    icon: normalizeCategoryIcon(initial?.icon ?? CATEGORY_ICON_CHOICES[0].value),
     excluded_from_spending: initial?.excluded_from_spending ?? false,
   });
   const [touched, setTouched] = useState(false);
@@ -73,17 +74,17 @@ function CategoryForm({
         <div className="ct-field">
           <span className="pf-label" id="ct-icon-label">Icon</span>
           <div className="ct-icons" role="radiogroup" aria-labelledby="ct-icon-label">
-            {ICON_CHOICES.map((ic) => (
+            {CATEGORY_ICON_CHOICES.map((icon) => (
               <button
-                key={ic}
+                key={icon.value}
                 type="button"
                 role="radio"
-                aria-checked={v.icon === ic}
-                aria-label={`Icon ${ic}`}
-                className={`ct-icon ${v.icon === ic ? 'selected' : ''}`}
-                onClick={() => setV({ ...v, icon: ic })}
+                aria-checked={v.icon === icon.value}
+                aria-label={icon.label}
+                className={`ct-icon ${v.icon === icon.value ? 'selected' : ''}`}
+                onClick={() => setV({ ...v, icon: icon.value })}
               >
-                {ic}
+                <CategoryIcon name={icon.value} />
               </button>
             ))}
           </div>
@@ -143,8 +144,8 @@ function CategoryRow({
   const [confirm, setConfirm] = useState(false);
   return (
     <li className="app-card ct-row">
-      <span className="ct-chip" style={{ background: category.color + '22', color: category.color }} aria-hidden>
-        {category.icon || '•'}
+      <span className="ct-chip" style={{ background: category.color + '22' }} aria-hidden>
+        <CategoryIcon name={category.icon} />
       </span>
       <div className="ct-meta">
         <div className="ct-name">
@@ -189,7 +190,7 @@ export function CategoriesPage() {
       <>
         <div className="app-head"><div><h1>Categories</h1><p>Spending categories for the active profile.</p></div></div>
         <div className="app-card app-placeholder">
-          <span className="app-badge" aria-hidden>🏷️</span>
+          <span className="app-badge" aria-hidden><CategoryIcon name="category" /></span>
           <h2>No profile selected</h2>
           <p>Categories belong to a profile. Create or select a profile first.</p>
           <Link className="app-btn primary" to="/app/profiles" style={{ marginTop: 14 }}>Go to profiles</Link>
@@ -268,7 +269,7 @@ export function CategoriesPage() {
           <ul className="ct-list">
             {archived.map((c) => (
               <li key={c.id} className="app-card ct-row pf-archived">
-                <span className="ct-chip" style={{ background: c.color + '22', color: c.color }} aria-hidden>{c.icon || '•'}</span>
+                <span className="ct-chip" style={{ background: c.color + '22' }} aria-hidden><CategoryIcon name={c.icon} /></span>
                 <div className="ct-meta">
                   <div className="ct-name">{c.name}</div>
                   <div className="ct-sub">Archived</div>

@@ -1,62 +1,50 @@
 # 2. Stage-1 UI directions
 
 - **Status:** Accepted
-- **Date:** 2026-07-15
+- **Date:** 2026-07-16
 
 ## Context
 
-Before committing to production UI components, we want to evaluate distinct
-visual and interaction approaches against real screens and real (synthetic)
-data, rather than debating in the abstract. The product is desktop-first and
-data-dense (transaction grids, category review, spending/savings charts), so the
-chosen direction must hold up under density, in both light and dark mode.
+Before committing to production UI components, we evaluated distinct visual and
+interaction approaches against the same screens and synthetic dataset. The
+product is desktop-first and data-dense, so the chosen direction must support
+transaction grids, category review, and spending charts in light and dark mode.
 
-## Decision
+## Decision history
 
-Build **three comparable UI directions** on a single shared **synthetic
-dataset**, each implementing the same core screens (Dashboard, Transactions,
-Review Categories) so they can be compared apples-to-apples:
+Stage 1 compared three directions:
 
-- **Aurora** — calm, modern banking feel; **indigo** palette; generous spacing;
-  soft depth.
-- **Ledger** — dense, data-forward; **sky-blue** palette; compact rows;
-  spreadsheet-like clarity.
-- **Horizon** — bold and colourful; **orange** palette; high-contrast accents;
-  chart-led.
+- **Aurora** — calm, modern banking feel; indigo palette; generous spacing.
+- **Ledger** — dense, data-forward; sky-blue palette; compact rows.
+- **Horizon** — bold and colourful; orange palette; chart-led.
 
-After reviewing the three, the selected direction is a **blend of Ledger and
-Horizon**, implemented as a fourth direction:
+Meridian was initially selected on 2026-07-15. On 2026-07-16 the product owner
+briefly superseded that choice with Ledger, then issued a newer direct decision
+to retain the live API-backed application while returning its production visual
+system to **Meridian**. The newest decision governs.
 
-- **Meridian** *(selected)* — Ledger's information **density** and precise
-  tabular numbers, softened with Horizon's **rounded cards, gentle gradients and
-  warmth**. Blue-violet (`#4f6bff`) palette. Goal: professional but friendly.
-  Soft top-bar nav with a rounded active pill; a gradient hero KPI alongside a
-  compact secondary-metric row; dense-but-comfortable tables with monospace
-  descriptions; a review flow that pairs Horizon's large friendly category
-  buttons with a Ledger-style queue rail.
+## Current production direction
 
-The three originals (Aurora, Ledger, Horizon) are retained in the repo for
-reference/comparison but are **not** the production direction. The product owner
-approved Meridian as the production direction on 2026-07-15; Stage 2 builds on
-Meridian.
+**Meridian** is selected: approachable, professional, and data-capable, with
+blue-violet accents, rounded surfaces, gentle depth, clear hierarchy, and the
+existing top-navigation model. Transaction tables remain precise and compact
+enough for real finance work.
 
-### Prototype variables being compared
+Production must retain visible focus, pointer and keyboard operation, at least
+44px targets, responsive layouts, light/dark contrast, 200% zoom support, and
+reduced-motion behavior.
 
-| Variable          | What we are evaluating                                              |
-| ----------------- | ------------------------------------------------------------------- |
-| **Palette**       | Indigo (Aurora) vs sky-blue (Ledger) vs orange (Horizon) vs blue-violet (Meridian). |
-| **Nav style**     | Sidebar vs top-bar vs hybrid; wayfinding and screen switching.      |
-| **Metric density**| How many KPIs/metrics per view; breathing room vs information mass.  |
-| **Chart emphasis**| Charts as hero vs charts as support to the tables.                  |
-| **Light/dark**    | Legibility, contrast, and accent behaviour in both themes.          |
+The comparison harness, synthetic runtime dataset, and all old prototype routes
+(including the original Meridian prototype) remain retired. Production screens
+use live local API data and one Meridian token system; this decision does not
+restore prototype or mock-data code.
 
 ## Consequences
 
-- **Positive:** the choice is grounded in interactive prototypes on identical
-  data; density and dark-mode weaknesses surface early; a clear vocabulary
-  (Aurora/Ledger/Horizon) for discussing direction.
-- **Negative / trade-offs:** building three directions costs more up front and
-  produces throwaway prototype code; production components are deferred until a
-  direction is selected.
-- **Follow-up:** once selected, extract shared design tokens/components into
-  `packages/ui` and retire the unused prototypes.
+- **Positive:** Meridian keeps the production app friendly and coherent without
+  sacrificing the real transaction, account, category, and profile workflows.
+- **Trade-off:** softer surfaces and larger radii must not reduce table density
+  or information contrast; those qualities require explicit QA.
+- **Follow-up:** maintain a single Meridian production token system, keep the
+  comparison/sample-data runtime removed, and build new screens against live
+  local APIs only.

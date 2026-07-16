@@ -12,6 +12,7 @@ from app.models.base import Base, TimestampMixin
 if TYPE_CHECKING:
     from app.models.account import Account
     from app.models.category import Category
+    from app.models.import_batch import ImportBatch
     from app.models.tag import Tag
     from app.models.transaction import Transaction
 
@@ -44,9 +45,16 @@ class Profile(TimestampMixin, Base):
         back_populates="profile",
         cascade="all, delete-orphan",
         passive_deletes=True,
+        overlaps="import_batch,transactions",
     )
     tags: Mapped[list[Tag]] = relationship(
         back_populates="profile",
         cascade="all, delete-orphan",
         passive_deletes=True,
+    )
+    import_batches: Mapped[list[ImportBatch]] = relationship(
+        back_populates="profile",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        overlaps="account,import_batches",
     )

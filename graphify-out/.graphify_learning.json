@@ -1,37 +1,106 @@
 {
-  "generated_at": "2026-07-15T20:02:04.432031+00:00",
+  "generated_at": "2026-07-16T16:40:08.524272+00:00",
   "nodes": {
-    "docs_implementation_workboard_dependency_ordered_execution": {
-      "code_fingerprint": "1efe7f5c3ebc76d98e839127b88a99263322998d549b3b0cd8bab00122fb96fb",
-      "label": "Dependency-Ordered Execution",
-      "last": "2026-07-15T20:00:19.047731+00:00",
+    "agents_workboard_protocol": {
+      "code_fingerprint": "53aaff012229812122be81e861b61647179d78af0bc4ec3c5df3100a54aa57cb",
+      "label": "Mandatory Workboard Protocol",
+      "last": "2026-07-15T20:03:58.274637+00:00",
       "provenance": [
         {
-          "date": "2026-07-15T20:00:19.047731+00:00",
+          "date": "2026-07-15T20:03:58.274637+00:00",
           "outcome": "useful",
-          "q": "how can we use this for better token usage"
+          "q": "can you build that into the agent.md"
         }
       ],
-      "score": 0.999971819,
-      "source_file": "docs/implementation-workboard.md",
+      "score": 0.980360957,
+      "source_file": "AGENTS.md",
       "status": "tentative",
       "uses": 1
     },
-    "docs_implementation_workboard_implementation_workboard": {
-      "code_fingerprint": "1efe7f5c3ebc76d98e839127b88a99263322998d549b3b0cd8bab00122fb96fb",
-      "label": "Implementation Workboard",
-      "last": "2026-07-15T20:00:19.047731+00:00",
+    "apps_api_app_importing_contracts_transactioncandidate": {
+      "code_fingerprint": "00bcd1b1f129212cd2f1ad021275f1f9573db4c59d820f0b82394c30ceba3058",
+      "label": "TransactionCandidate",
+      "last": "2026-07-16T15:24:17.088312+00:00",
       "provenance": [
+        {
+          "date": "2026-07-16T15:24:17.088312+00:00",
+          "outcome": "useful",
+          "q": "Where are the issuer-neutral parser contracts and exact reconciliation boundaries needed by the TD parser? Expanded terms: statement parser detection metadata candidate transaction reconciliation occurrences foreign payment refund interest"
+        }
+      ],
+      "score": 0.998783605,
+      "source_file": "apps/api/app/importing/contracts.py",
+      "status": "tentative",
+      "uses": 1
+    },
+    "apps_api_app_models_import_batch_importbatch": {
+      "code_fingerprint": "27d8479b91e04cb9cf452ad1d21cd48b085811dd9029502887167b21f74a18ec",
+      "label": "ImportBatch",
+      "last": "2026-07-16T15:58:15.513931+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-16T15:58:15.513931+00:00",
+          "outcome": "useful",
+          "q": "Final independent BE-15 review of stale/concurrent duplicate safety, atomic rollback, one-cent reconciliation, durable failures, partial unique index parity, and occurrence repeats"
+        }
+      ],
+      "score": 0.999328202,
+      "source_file": "apps/api/app/models/import_batch.py",
+      "status": "tentative",
+      "uses": 1
+    },
+    "apps_api_app_models_import_staged_transaction_importstagedtransaction": {
+      "code_fingerprint": "f96e2ca39834cbffbf765b92a8e54832cd2885ba1618ee5cedd381762be543de",
+      "label": "ImportStagedTransaction",
+      "last": "2026-07-16T15:58:15.513931+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-16T15:58:15.513931+00:00",
+          "outcome": "useful",
+          "q": "Final independent BE-15 review of stale/concurrent duplicate safety, atomic rollback, one-cent reconciliation, durable failures, partial unique index parity, and occurrence repeats"
+        }
+      ],
+      "score": 0.999328202,
+      "source_file": "apps/api/app/models/import_staged_transaction.py",
+      "status": "tentative",
+      "uses": 1
+    },
+    "apps_api_app_parsers_base_statementparser": {
+      "code_fingerprint": "e11cd7cd8bff1c77f810669b150473450e292a392c83126d1cf621f38ded11c2",
+      "label": "StatementParser",
+      "last": "2026-07-16T15:24:17.088312+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-16T15:24:17.088312+00:00",
+          "outcome": "useful",
+          "q": "Where are the issuer-neutral parser contracts and exact reconciliation boundaries needed by the TD parser? Expanded terms: statement parser detection metadata candidate transaction reconciliation occurrences foreign payment refund interest"
+        }
+      ],
+      "score": 0.998783605,
+      "source_file": "apps/api/app/parsers/base.py",
+      "status": "tentative",
+      "uses": 1
+    },
+    "docs_implementation_workboard_dependency_ordered_execution": {
+      "code_fingerprint": "0411b2bb64579b318ee81201f9ce7ce44136104ecccedbe94723fb2a99ad3de9",
+      "label": "Dependency-Ordered Execution",
+      "last": "2026-07-15T20:03:58.274637+00:00",
+      "provenance": [
+        {
+          "date": "2026-07-15T20:03:58.274637+00:00",
+          "outcome": "useful",
+          "q": "can you build that into the agent.md"
+        },
         {
           "date": "2026-07-15T20:00:19.047731+00:00",
           "outcome": "useful",
           "q": "how can we use this for better token usage"
         }
       ],
-      "score": 0.999971819,
+      "score": 1.960664441,
       "source_file": "docs/implementation-workboard.md",
-      "status": "tentative",
-      "uses": 1
+      "status": "preferred",
+      "uses": 2
     },
     "spending_tracker_product_plan_agent_delegation": {
       "code_fingerprint": "29e09a5ce843f9f645906dbc14420bda82bc91362448139d51baf4bf8121d79a",
@@ -44,7 +113,7 @@
           "q": "how can we use this for better token usage"
         }
       ],
-      "score": 0.999971819,
+      "score": 0.980303485,
       "source_file": "SPENDING_TRACKER_PRODUCT_PLAN.md",
       "status": "tentative",
       "uses": 1

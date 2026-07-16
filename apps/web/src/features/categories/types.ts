@@ -46,4 +46,26 @@ export const CATEGORY_COLORS = [
   '#8b5cf6',
 ];
 
-export const ICON_CHOICES = ['🏠', '🛒', '🍽️', '🚗', '💊', '✂️', '🛍️', '🎬', '💰', '💳', '🏦', '📦', '🎁', '✈️', '📱', '🐾'];
+export type CategoryIconName =
+  | 'home' | 'groceries' | 'dining' | 'transport' | 'health' | 'personal'
+  | 'shopping' | 'entertainment' | 'income' | 'card' | 'bank' | 'package'
+  | 'gift' | 'travel' | 'phone' | 'pet' | 'category';
+
+export const CATEGORY_ICON_CHOICES: ReadonlyArray<{ value: CategoryIconName; label: string }> = [
+  { value: 'home', label: 'Home' },
+  { value: 'groceries', label: 'Groceries' },
+  { value: 'dining', label: 'Dining' },
+  { value: 'transport', label: 'Transport' },
+  { value: 'health', label: 'Health' },
+  { value: 'personal', label: 'Personal care' },
+  { value: 'shopping', label: 'Shopping' },
+  { value: 'entertainment', label: 'Entertainment' },
+  { value: 'income', label: 'Income' },
+  { value: 'card', label: 'Card' },
+  { value: 'bank', label: 'Bank' },
+  { value: 'package', label: 'Package' },
+  { value: 'gift', label: 'Gift' },
+  { value: 'travel', label: 'Travel' },
+  { value: 'phone', label: 'Phone' },
+  { value: 'pet', label: 'Pet' },
+];

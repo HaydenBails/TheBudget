@@ -1,0 +1,138 @@
+[
+  {
+    "width": 375,
+    "colorScheme": "light",
+    "audit": {
+      "route": "/app/imports",
+      "overflow": false,
+      "undersized": [
+        {
+          "text": "",
+          "w": 1,
+          "h": 1
+        }
+      ],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "text": "Dark",
+      "outline": "solid"
+    }
+  },
+  {
+    "width": 375,
+    "colorScheme": "dark",
+    "audit": {
+      "route": "/app/imports",
+      "overflow": false,
+      "undersized": [
+        {
+          "text": "",
+          "w": 1,
+          "h": 1
+        }
+      ],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "text": "Light",
+      "outline": "solid"
+    }
+  },
+  {
+    "width": 768,
+    "colorScheme": "light",
+    "audit": {
+      "route": "/app/imports",
+      "overflow": false,
+      "undersized": [
+        {
+          "text": "",
+          "w": 1,
+          "h": 1
+        }
+      ],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "text": "Dark",
+      "outline": "solid"
+    }
+  },
+  {
+    "width": 768,
+    "colorScheme": "dark",
+    "audit": {
+      "route": "/app/imports",
+      "overflow": false,
+      "undersized": [
+        {
+          "text": "",
+          "w": 1,
+          "h": 1
+        }
+      ],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "text": "Light",
+      "outline": "solid"
+    }
+  },
+  {
+    "width": 1440,
+    "colorScheme": "light",
+    "audit": {
+      "route": "/app/imports",
+      "overflow": false,
+      "undersized": [
+        {
+          "text": "",
+          "w": 1,
+          "h": 1
+        }
+      ],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "text": "Dark",
+      "outline": "solid"
+    }
+  },
+  {
+    "width": 1440,
+    "colorScheme": "dark",
+    "audit": {
+      "route": "/app/imports",
+      "overflow": false,
+      "undersized": [
+        {
+          "text": "",
+          "w": 1,
+          "h": 1
+        }
+      ],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "text": "Light",
+      "outline": "solid"
+    }
+  },
+  {
+    "workflow": {
+      "previewFocused": "Review before import",
+      "disabledBeforeAck": true,
+      "disabledAfterAck": false,
+      "successFocused": "Transactions added",
+      "successText": "✓\n3 created\n\n0 exact duplicates linked without creating another transaction."
+    }
+  },
+  {
+    "zoom200": {
+      "overflow": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    }
+  }
+]

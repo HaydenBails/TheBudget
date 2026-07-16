@@ -1,29 +1,16 @@
-// Production pages for the shell. Profiles → features/profiles/ProfilesPage,
-// accounts → features/accounts/AccountsPage; categories → backlog.
+import { Link } from 'react-router-dom';
 import { useCurrentProfile } from '../features/profiles/ProfileContext';
 import { useAccounts } from '../features/accounts/api';
 import { useCategories } from '../features/categories/api';
 
 function PageHead({ title, subtitle }: { title: string; subtitle: string }) {
-  return (
-    <div className="app-head">
-      <div>
-        <h1>{title}</h1>
-        <p>{subtitle}</p>
-      </div>
-    </div>
-  );
+  return <div className="app-head"><div><h1>{title}</h1><p>{subtitle}</p></div></div>;
 }
 
-function Placeholder({ badge, title, body, task }: { badge: string; title: string; body: string; task: string }) {
-  return (
-    <div className="app-card app-placeholder">
-      <span className="app-badge" aria-hidden>{badge}</span>
-      <h2>{title}</h2>
-      <p>{body}</p>
-      <span className="app-tag">Arrives in {task}</span>
-    </div>
-  );
+function countLabel(isLoading: boolean, isError: boolean, count?: number) {
+  if (isLoading) return 'Loading…';
+  if (isError) return 'Unavailable';
+  return String(count ?? 0);
 }
 
 export function DashboardPage() {
@@ -32,27 +19,23 @@ export function DashboardPage() {
   const categories = useCategories(currentProfileId, false);
   return (
     <>
-      <PageHead title="Dashboard" subtitle="Your workspace — connected to the local API in a later task." />
+      <PageHead title="Dashboard" subtitle="A live summary of the data stored on this device." />
       <section className="app-tiles" aria-label="Workspace summary">
-        <div className="app-tile">
-          <div className="app-tile-k">Active profile</div>
-          <div className="app-tile-v">{currentProfile?.name ?? '—'}</div>
-        </div>
-        <div className="app-tile">
-          <div className="app-tile-k">Accounts</div>
-          <div className="app-tile-v">{accounts.data ? accounts.data.length : '—'}</div>
-        </div>
-        <div className="app-tile">
-          <div className="app-tile-k">Categories</div>
-          <div className="app-tile-v">{categories.data ? categories.data.length : '—'}</div>
-        </div>
+        <div className="app-tile"><div className="app-tile-k">Active profile</div><div className="app-tile-v">{currentProfile?.name ?? 'None'}</div></div>
+        <div className="app-tile"><div className="app-tile-k">Active accounts</div><div className="app-tile-v">{countLabel(accounts.isLoading, accounts.isError, accounts.data?.length)}</div></div>
+        <div className="app-tile"><div className="app-tile-k">Active categories</div><div className="app-tile-v">{countLabel(categories.isLoading, categories.isError, categories.data?.length)}</div></div>
       </section>
-      <Placeholder
-        badge="◧"
-        title="Spending insights are on the way"
-        body="This production shell renders the Meridian design system with light and dark themes and keyboard-accessible navigation. Live profile, account, and spending data connect through the local API in the upcoming tasks."
-        task="FE-03 → FE-05"
-      />
+      <section className="app-card app-placeholder" aria-labelledby="workspace-title">
+        <h2 id="workspace-title">Your Meridian workspace</h2>
+        <p>Profiles, accounts, categories, and transactions are connected to the local API and ready to manage.</p>
+        <div className="app-placeholder-actions">
+          <Link className="app-btn" to="/app/profiles">Manage profiles</Link>
+          <Link className="app-btn" to="/app/accounts">Manage accounts</Link>
+          <Link className="app-btn" to="/app/categories">Manage categories</Link>
+          <Link className="app-btn primary" to="/app/transactions">View transactions</Link>
+        </div>
+        <span className="app-tag">Local data only</span>
+      </section>
     </>
   );
 }
@@ -60,14 +43,11 @@ export function DashboardPage() {
 export function SettingsPage() {
   return (
     <>
-      <PageHead title="Settings" subtitle="Local, private, and yours — this app binds to your machine only." />
-      <div className="app-card">
-        <p style={{ margin: 0, color: 'var(--mrd-muted)', lineHeight: 1.6 }}>
-          The spending tracker runs entirely on <b>127.0.0.1</b> with data in a local SQLite
-          database. There is no account, login, or cloud sync. Theme preference is remembered in
-          this browser. More settings appear as features land.
-        </p>
-      </div>
+      <PageHead title="Settings" subtitle="Local, private, and stored on your machine." />
+      <section className="app-card" aria-labelledby="privacy-title">
+        <h2 id="privacy-title">Privacy and appearance</h2>
+        <p className="app-settings-copy">Meridian runs on <b>127.0.0.1</b> and stores application data in a local SQLite database. There is no login or cloud sync. Use the theme control in the top bar to switch appearance; that choice is remembered in this browser.</p>
+      </section>
     </>
   );
 }

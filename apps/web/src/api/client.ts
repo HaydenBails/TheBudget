@@ -19,12 +19,25 @@ export interface FieldError {
 export class ApiError extends Error {
   readonly status: number;
   readonly fieldErrors: FieldError[];
+  readonly code?: string;
+  readonly importId?: number;
+  readonly duplicateOfImportId?: number;
+  readonly lifecycleStatus?: string;
 
-  constructor(message: string, status: number, fieldErrors: FieldError[] = []) {
+  constructor(message: string, status: number, fieldErrors: FieldError[] = [], metadata: {
+    code?: string;
+    importId?: number;
+    duplicateOfImportId?: number;
+    lifecycleStatus?: string;
+  } = {}) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.fieldErrors = fieldErrors;
+    this.code = metadata.code;
+    this.importId = metadata.importId;
+    this.duplicateOfImportId = metadata.duplicateOfImportId;
+    this.lifecycleStatus = metadata.lifecycleStatus;
   }
 
   /** Convenience: the message for a specific field, if any. */
@@ -42,8 +55,10 @@ interface RawFieldError {
 
 async function toApiError(res: Response): Promise<ApiError> {
   let detail: unknown;
+  let payload: Record<string, unknown> = {};
   try {
-    detail = (await res.json())?.detail;
+    payload = await res.json() as Record<string, unknown>;
+    detail = payload.detail;
   } catch {
     /* non-JSON body */
   }
@@ -57,17 +72,23 @@ async function toApiError(res: Response): Promise<ApiError> {
     const summary = fields.map((f) => f.message).filter(Boolean).join('; ') || 'Validation error';
     return new ApiError(summary, res.status, fields);
   }
-  if (typeof detail === 'string') return new ApiError(detail, res.status);
-  return new ApiError(`Request failed (${res.status})`, res.status);
+  const metadata = {
+    code: typeof payload.code === 'string' ? payload.code : undefined,
+    importId: typeof payload.import_id === 'number' ? payload.import_id : undefined,
+    duplicateOfImportId: typeof payload.duplicate_of_import_id === 'number' ? payload.duplicate_of_import_id : undefined,
+    lifecycleStatus: typeof payload.status === 'string' ? payload.status : undefined,
+  };
+  if (typeof detail === 'string') return new ApiError(detail, res.status, [], metadata);
+  return new ApiError(`Request failed (${res.status})`, res.status, [], metadata);
 }
 
-async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+async function request<T>(method: string, path: string, body?: unknown, form = false): Promise<T> {
   let res: Response;
   try {
     res = await fetch(`${API_BASE}${path}`, {
       method,
-      headers: body !== undefined ? { 'Content-Type': 'application/json' } : undefined,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      headers: body !== undefined && !form ? { 'Content-Type': 'application/json' } : undefined,
+      body: body !== undefined ? (form ? body as FormData : JSON.stringify(body)) : undefined,
     });
   } catch {
     // Network failure / server unreachable / CORS — surface a clear offline error.
@@ -81,5 +102,8 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 export const api = {
   get: <T>(path: string) => request<T>('GET', path),
   post: <T>(path: string, body?: unknown) => request<T>('POST', path, body),
+  postForm: <T>(path: string, body: FormData) => request<T>('POST', path, body, true),
+  put: <T>(path: string, body?: unknown) => request<T>('PUT', path, body),
   patch: <T>(path: string, body?: unknown) => request<T>('PATCH', path, body),
+  delete: <T>(path: string) => request<T>('DELETE', path),
 };

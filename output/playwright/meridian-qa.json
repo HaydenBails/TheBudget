@@ -1,0 +1,111 @@
+[
+  {
+    "width": 375,
+    "colorScheme": "light",
+    "audit": {
+      "title": "Meridian — Spending Tracker",
+      "brand": "MERIDIAN",
+      "overflow": false,
+      "undersized": [],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "tag": "A",
+      "text": "Skip to content",
+      "outline": "solid"
+    },
+    "route": "/app/transactions"
+  },
+  {
+    "width": 375,
+    "colorScheme": "dark",
+    "audit": {
+      "title": "Meridian — Spending Tracker",
+      "brand": "MERIDIAN",
+      "overflow": false,
+      "undersized": [],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "tag": "A",
+      "text": "Skip to content",
+      "outline": "solid"
+    },
+    "route": "/app/transactions"
+  },
+  {
+    "width": 768,
+    "colorScheme": "light",
+    "audit": {
+      "title": "Meridian — Spending Tracker",
+      "brand": "MERIDIAN",
+      "overflow": false,
+      "undersized": [],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "tag": "A",
+      "text": "Skip to content",
+      "outline": "solid"
+    },
+    "route": "/app/transactions"
+  },
+  {
+    "width": 768,
+    "colorScheme": "dark",
+    "audit": {
+      "title": "Meridian — Spending Tracker",
+      "brand": "MERIDIAN",
+      "overflow": false,
+      "undersized": [],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "tag": "A",
+      "text": "Skip to content",
+      "outline": "solid"
+    },
+    "route": "/app/transactions"
+  },
+  {
+    "width": 1440,
+    "colorScheme": "light",
+    "audit": {
+      "title": "Meridian — Spending Tracker",
+      "brand": "MERIDIAN",
+      "overflow": false,
+      "undersized": [],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "tag": "A",
+      "text": "Skip to content",
+      "outline": "solid"
+    },
+    "route": "/app/transactions"
+  },
+  {
+    "width": 1440,
+    "colorScheme": "dark",
+    "audit": {
+      "title": "Meridian — Spending Tracker",
+      "brand": "MERIDIAN",
+      "overflow": false,
+      "undersized": [],
+      "reducedMotion": "1e-05s"
+    },
+    "focus": {
+      "tag": "A",
+      "text": "Skip to content",
+      "outline": "solid"
+    },
+    "route": "/app/transactions"
+  },
+  {
+    "zoom200": {
+      "overflow": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    }
+  }
+]

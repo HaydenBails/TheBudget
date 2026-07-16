@@ -1,13 +1,13 @@
-/* Categories feature styles. Reuses --mrd-* tokens and shared pf-/ac-/app-
+/* Categories feature styles. Reuses --lg-* tokens and shared pf-/ac-/app-
    classes; category-specific bits are namespaced `ct-`. */
 
 .ct-list {
   list-style: none;
-  margin: 0 0 var(--mrd-space-4);
+  margin: 0 0 var(--lg-space-4);
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--mrd-space-3);
+  gap: var(--lg-space-3);
 }
 @media (max-width: 760px) {
   .ct-list {
@@ -17,8 +17,8 @@
 .ct-row {
   display: flex;
   align-items: center;
-  gap: var(--mrd-space-3);
-  padding: var(--mrd-space-4);
+  gap: var(--lg-space-3);
+  padding: var(--lg-space-4);
 }
 .ct-chip {
   width: 40px;
@@ -28,12 +28,13 @@
   place-items: center;
   font-size: 19px;
   flex: 0 0 auto;
+  color: var(--lg-text);
 }
 .ct-meta {
   min-width: 0;
 }
 .ct-name {
-  font-weight: var(--mrd-font-weight-semibold);
+  font-weight: var(--lg-font-weight-semibold);
   font-size: 15px;
   display: flex;
   align-items: center;
@@ -41,24 +42,24 @@
   flex-wrap: wrap;
 }
 .ct-sub {
-  color: var(--mrd-faint);
+  color: var(--lg-faint);
   font-size: 12px;
   margin-top: 2px;
-  font-family: var(--mrd-font-mono);
+  font-family: var(--lg-font-mono);
 }
 .ct-badge {
   font-size: 10px;
-  font-weight: var(--mrd-font-weight-bold);
+  font-weight: var(--lg-font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--mrd-accent);
-  background: color-mix(in srgb, var(--mrd-accent) 14%, transparent);
+  color: var(--lg-accent);
+  background: color-mix(in srgb, var(--lg-accent) 14%, transparent);
   padding: 2px 7px;
-  border-radius: var(--mrd-radius-pill);
+  border-radius: var(--lg-radius-pill);
 }
 .ct-badge-muted {
-  color: var(--mrd-muted);
-  background: var(--mrd-chip);
+  color: var(--lg-muted);
+  background: var(--lg-chip);
 }
 .ct-row .pf-actions {
   margin-left: auto;
@@ -70,13 +71,13 @@
 
 /* form */
 .ct-form {
-  margin-bottom: var(--mrd-space-4);
+  margin-bottom: var(--lg-space-4);
 }
 .ct-form-grid {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
-  gap: var(--mrd-space-4);
-  margin-bottom: var(--mrd-space-4);
+  gap: var(--lg-space-4);
+  margin-bottom: var(--lg-space-4);
 }
 @media (max-width: 760px) {
   .ct-form-grid {
@@ -92,23 +93,25 @@
   gap: 6px;
 }
 .ct-icon {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border-radius: 9px;
-  border: 1.5px solid var(--mrd-border);
-  background: var(--mrd-panel);
+  border: 1.5px solid var(--lg-border);
+  background: var(--lg-panel);
   font-size: 17px;
   cursor: pointer;
   display: grid;
   place-items: center;
+  color: var(--lg-text);
 }
+.ct-icon-svg { width: 20px; height: 20px; display: block; }
 .ct-icon.selected {
-  border-color: var(--mrd-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mrd-accent) 18%, transparent);
+  border-color: var(--lg-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--lg-accent) 18%, transparent);
 }
 .ct-icon:focus-visible,
 .ct-toggle input:focus-visible {
-  outline: 2px solid var(--mrd-accent);
+  outline: 2px solid var(--lg-accent);
   outline-offset: 2px;
 }
 .ct-toggle {
@@ -116,13 +119,14 @@
   align-items: center;
   gap: 9px;
   font-size: 13.5px;
-  color: var(--mrd-muted);
-  margin-bottom: var(--mrd-space-4);
+  color: var(--lg-muted);
+  margin-bottom: var(--lg-space-4);
+  min-height: 44px;
 }
 .ct-toggle input {
   width: 16px;
   height: 16px;
-  accent-color: var(--mrd-accent);
+  accent-color: var(--lg-accent);
 }
 .ct-form-actions {
   display: flex;

@@ -8,18 +8,29 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from app.services.errors import SplitSumError
+from app.services.errors import InvalidUpdateError, SplitSumError
 
 # Types that count toward core spending by default (product plan §7.2).
-# Refunds are included so they reduce net spending in their category; payments,
-# transfers, cash advances, fees, interest, and income are excluded by default.
-_DEFAULT_INCLUDED_TYPES = frozenset({"purchase", "refund"})
+# Refunds offset their linked/assigned category in reporting but are not new
+# included expenses. Every non-purchase type is excluded by default.
+_DEFAULT_INCLUDED_TYPES = frozenset({"purchase"})
 
 
 def default_included_for_type(transaction_type: str) -> bool:
     """Return the default spending-inclusion decision for a transaction type."""
 
     return transaction_type in _DEFAULT_INCLUDED_TYPES
+
+
+def validate_transaction_sign(amount_cents: int, direction: str) -> None:
+    """Enforce the canonical debit-positive / credit-negative convention."""
+
+    if amount_cents == 0:
+        raise InvalidUpdateError("transaction amount must be nonzero")
+    if direction == "debit" and amount_cents < 0:
+        raise InvalidUpdateError("debit transaction amounts must be positive")
+    if direction == "credit" and amount_cents > 0:
+        raise InvalidUpdateError("credit transaction amounts must be negative")
 
 
 def validate_splits_sum(parent_amount_cents: int, split_amounts: Iterable[int]) -> None:

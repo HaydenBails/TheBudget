@@ -20,6 +20,7 @@ from app.services import (
     default_included_for_type,
     list_categories,
     validate_splits_sum,
+    validate_transaction_sign,
 )
 
 
@@ -37,15 +38,38 @@ def session(tmp_path: Path) -> Iterator[Session]:
 
 def test_default_inclusion_policy() -> None:
     assert default_included_for_type("purchase") is True
-    assert default_included_for_type("refund") is True
-    for excluded in ("payment", "cash_advance", "fee", "interest", "income", "unknown"):
+    for excluded in (
+        "refund",
+        "payment",
+        "transfer",
+        "cash_advance",
+        "fee",
+        "interest",
+        "income",
+        "unknown",
+    ):
         assert default_included_for_type(excluded) is False
 
 
 def test_validate_splits_sum_exact_and_mismatch() -> None:
-    validate_splits_sum(-10000, [-6000, -4000])  # ok, returns None
+    validate_splits_sum(10000, [6000, 4000])  # ok, returns None
     with pytest.raises(SplitSumError):
-        validate_splits_sum(-10000, [-6000, -3000])
+        validate_splits_sum(10000, [6000, 3000])
+
+
+@pytest.mark.parametrize(
+    ("amount_cents", "direction"),
+    [(0, "debit"), (-1, "debit"), (1, "credit")],
+)
+def test_transaction_sign_validation_rejects_mismatches(
+    amount_cents: int,
+    direction: str,
+) -> None:
+    with pytest.raises(ValueError):
+        validate_transaction_sign(amount_cents, direction)
+
+    validate_transaction_sign(1, "debit")
+    validate_transaction_sign(-1, "credit")
 
 
 def test_transaction_persists_with_splits(session: Session) -> None:
@@ -66,14 +90,14 @@ def test_transaction_persists_with_splits(session: Session) -> None:
         date=date(2026, 7, 14),
         raw_description="LOBLAWS #1042",
         merchant="Loblaws",
-        amount_cents=-10000,
+        amount_cents=10000,
         direction="debit",
         type="purchase",
         included_in_spending=True,
     )
     txn.splits = [
-        TransactionSplit(category_id=groceries.id, amount_cents=-6000),
-        TransactionSplit(category_id=dining.id, amount_cents=-4000),
+        TransactionSplit(category_id=groceries.id, amount_cents=6000),
+        TransactionSplit(category_id=dining.id, amount_cents=4000),
     ]
     session.add(txn)
     session.flush()

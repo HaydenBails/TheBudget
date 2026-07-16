@@ -1,11 +1,11 @@
-/* Accounts feature styles. Reuses --mrd-* tokens and shared pf-/app- classes;
+/* Accounts feature styles. Reuses --lg-* tokens and shared pf-/app- classes;
    account-specific bits are namespaced `ac-`. */
 
 .ac-row {
   display: flex;
   align-items: center;
-  gap: var(--mrd-space-4);
-  padding: var(--mrd-space-4);
+  gap: var(--lg-space-4);
+  padding: var(--lg-space-4);
 }
 .ac-card-chip {
   width: 56px;
@@ -15,7 +15,7 @@
   place-items: center;
   color: #fff;
   font-size: 11px;
-  font-weight: var(--mrd-font-weight-bold);
+  font-weight: var(--lg-font-weight-bold);
   letter-spacing: 0.02em;
   flex: 0 0 auto;
   box-shadow: inset 0 -10px 18px -12px rgba(0, 0, 0, 0.5);
@@ -24,11 +24,11 @@
   min-width: 0;
 }
 .ac-name {
-  font-weight: var(--mrd-font-weight-semibold);
+  font-weight: var(--lg-font-weight-semibold);
   font-size: 15px;
 }
 .ac-sub {
-  color: var(--mrd-faint);
+  color: var(--lg-faint);
   font-size: 12.5px;
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
@@ -36,20 +36,20 @@
 
 /* form */
 .ac-form {
-  margin-bottom: var(--mrd-space-4);
+  margin-bottom: var(--lg-space-4);
 }
 .ac-form-grid {
   display: grid;
   grid-template-columns: minmax(140px, 1fr) 2fr minmax(120px, 1fr);
-  gap: var(--mrd-space-4);
-  margin-bottom: var(--mrd-space-4);
+  gap: var(--lg-space-4);
+  margin-bottom: var(--lg-space-4);
 }
 .ac-field {
   min-width: 0;
 }
 .ac-optional {
-  color: var(--mrd-faint);
-  font-weight: var(--mrd-font-weight-medium);
+  color: var(--lg-faint);
+  font-weight: var(--lg-font-weight-medium);
 }
 select.pf-input {
   appearance: none;
@@ -61,24 +61,24 @@ select.pf-input {
   gap: 8px;
 }
 .ac-swatch {
-  width: 30px;
-  height: 30px;
+  width: 44px;
+  height: 44px;
   border-radius: 9px;
   border: 2px solid transparent;
   cursor: pointer;
   padding: 0;
 }
 .ac-swatch.selected {
-  box-shadow: 0 0 0 2px var(--mrd-panel), 0 0 0 4px var(--mrd-text);
+  box-shadow: 0 0 0 2px var(--lg-panel), 0 0 0 4px var(--lg-text);
 }
 .ac-swatch:focus-visible {
-  outline: 2px solid var(--mrd-accent);
+  outline: 2px solid var(--lg-accent);
   outline-offset: 2px;
 }
 .ac-form-actions {
   display: flex;
   gap: 10px;
-  margin-top: var(--mrd-space-4);
+  margin-top: var(--lg-space-4);
 }
 
 @media (max-width: 720px) {

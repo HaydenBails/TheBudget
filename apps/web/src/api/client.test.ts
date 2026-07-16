@@ -21,6 +21,15 @@ describe('api client', () => {
     await expect(api.get('/x')).resolves.toEqual({ hello: 'world' });
   });
 
+  it('sends PUT bodies and DELETE requests for replace and soft-delete endpoints', async () => {
+    const fetchMock = vi.fn(async () => res(200, { ok: true }));
+    vi.stubGlobal('fetch', fetchMock);
+    await api.put('/x/splits', { splits: [] });
+    await api.delete('/x');
+    expect(fetchMock).toHaveBeenNthCalledWith(1, expect.stringContaining('/x/splits'), expect.objectContaining({ method: 'PUT', body: '{"splits":[]}' }));
+    expect(fetchMock).toHaveBeenNthCalledWith(2, expect.stringContaining('/x'), expect.objectContaining({ method: 'DELETE' }));
+  });
+
   it('maps the contract field-error shape to ApiError', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => res(422, { detail: [{ field: 'name', message: 'Required' }] })));
     await expect(api.post('/x', {})).rejects.toBeInstanceOf(ApiError);
@@ -48,6 +57,15 @@ describe('api client', () => {
   it('maps a string detail to the error message', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => res(404, { detail: 'not found' })));
     await expect(api.get('/x')).rejects.toMatchObject({ status: 404, message: 'not found' });
+  });
+
+  it('preserves structured import lifecycle metadata', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => res(500, {
+      detail: 'Commit failed', code: 'commit_failed', import_id: 8, status: 'failed',
+    })));
+    await expect(api.post('/imports/8/commit', {})).rejects.toMatchObject({
+      status: 500, message: 'Commit failed', code: 'commit_failed', importId: 8, lifecycleStatus: 'failed',
+    });
   });
 
   it('surfaces a network failure as an offline ApiError (status 0)', async () => {

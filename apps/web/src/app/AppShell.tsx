@@ -1,4 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
+import type { ReactNode } from 'react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useTheme } from '../theme';
 import { queryClient } from '../api/queryClient';
@@ -8,73 +9,86 @@ import { ProfileSwitcher } from '../features/profiles/ProfileSwitcher';
 import { ProfilesPage } from '../features/profiles/ProfilesPage';
 import { AccountsPage } from '../features/accounts/AccountsPage';
 import { CategoriesPage } from '../features/categories/CategoriesPage';
+import { TransactionsPage } from '../features/transactions/TransactionsPage';
+import { ImportPage } from '../features/imports/ImportPage';
 import { DashboardPage, SettingsPage } from './pages';
 import './app.css';
 
-const NAV: { to: string; label: string; icon: string }[] = [
-  { to: 'dashboard', label: 'Dashboard', icon: '◧' },
-  { to: 'profiles', label: 'Profiles', icon: '◔' },
-  { to: 'accounts', label: 'Accounts', icon: '▤' },
-  { to: 'categories', label: 'Categories', icon: '🏷️' },
-  { to: 'settings', label: 'Settings', icon: '⚙' },
+type IconName = 'dashboard' | 'transactions' | 'profiles' | 'accounts' | 'categories' | 'settings' | 'import' | 'sun' | 'moon';
+
+const NAV: { to: string; label: string; icon: IconName }[] = [
+  { to: '/app/dashboard', label: 'Dashboard', icon: 'dashboard' },
+  { to: '/app/transactions', label: 'Transactions', icon: 'transactions' },
+  { to: '/app/profiles', label: 'Profiles', icon: 'profiles' },
+  { to: '/app/accounts', label: 'Accounts', icon: 'accounts' },
+  { to: '/app/categories', label: 'Categories', icon: 'categories' },
+  { to: '/app/settings', label: 'Settings', icon: 'settings' },
 ];
+
+function Icon({ name }: { name: IconName }) {
+  const paths: Record<IconName, ReactNode> = {
+    dashboard: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
+    transactions: <><path d="M4 5h16M4 12h16M4 19h16" /><circle cx="7" cy="5" r="1" /><circle cx="17" cy="12" r="1" /><circle cx="10" cy="19" r="1" /></>,
+    profiles: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></>,
+    accounts: <><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20M6 15h4" /></>,
+    categories: <><path d="M20.6 13.6 11 4H4v7l9.6 9.6a2 2 0 0 0 2.8 0l4.2-4.2a2 2 0 0 0 0-2.8Z" /><circle cx="7.5" cy="7.5" r=".5" /></>,
+    settings: <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.2 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H2.4v-4h.1A1.7 1.7 0 0 0 4.2 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 8.6 4.2a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V2.4h4v.1A1.7 1.7 0 0 0 15 4.2a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 8.6a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4h.1v4h-.1a1.7 1.7 0 0 0-1.7 1Z" /></>,
+    import: <><path d="M12 3v12m0-12L7 8m5-5 5 5" /><path d="M4 14v6h16v-6" /></>,
+    sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" /></>,
+    moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />,
+  };
+  return <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
+}
 
 function TopNav() {
   const { theme, toggle } = useTheme();
   return (
-    <nav className="app-nav" aria-label="Primary">
-      <NavLink to="dashboard" className="app-brand">
-        <span className="app-logo" aria-hidden>◈</span>
-        Spending Tracker
+    <header className="app-nav">
+      <NavLink to="/app/dashboard" className="app-brand" aria-label="Meridian dashboard">
+        <span className="app-logo" aria-hidden="true" />
+        <span>MERIDIAN</span>
       </NavLink>
-      <div className="app-tabs">
-        {NAV.map((n) => (
-          <NavLink key={n.to} to={n.to} className={({ isActive }) => `app-tab ${isActive ? 'active' : ''}`}>
-            <span className="app-tab-ico" aria-hidden>{n.icon}</span>
-            {n.label}
+      <nav className="app-tabs" aria-label="Primary">
+        {NAV.map((item) => (
+          <NavLink key={item.to} to={item.to} className={({ isActive }) => `app-tab ${isActive ? 'active' : ''}`}>
+            <Icon name={item.icon} />
+            <span>{item.label}</span>
           </NavLink>
         ))}
-      </div>
+      </nav>
       <div className="app-nav-right">
         <ApiStatus />
+        <NavLink to="/app/imports" className={({ isActive }) => `app-import-action ${isActive ? 'active' : ''}`} aria-label="Import statement"><Icon name="import" /><span>Import</span></NavLink>
         <button type="button" className="app-iconbtn" onClick={toggle} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
-          {theme === 'light' ? '🌙 Dark' : '☀ Light'}
+          <Icon name={theme === 'light' ? 'moon' : 'sun'} />
+          <span className="app-theme-label">{theme === 'light' ? 'Dark' : 'Light'}</span>
         </button>
         <ProfileSwitcher />
       </div>
-    </nav>
+    </header>
   );
 }
 
-/** Live connection state for the local API (loading / error / success). */
 function ApiStatus() {
   const { isLoading, isError, data } = useHealth();
   const state = isLoading ? 'checking' : isError || !data ? 'offline' : 'online';
   const label = state === 'checking' ? 'Checking API…' : state === 'offline' ? 'API offline' : 'API connected';
-  return (
-    <span className={`app-status ${state}`} role="status" title={label}>
-      <span className="app-status-dot" aria-hidden />
-      {label}
-    </span>
-  );
+  return <span className={`app-status ${state}`} role="status" title={label}><span className="app-status-dot" aria-hidden="true" />{label}</span>;
 }
 
-/**
- * Production application shell (FE-02 + FE-03). Mounted at `/app/*`, separate
- * from the prototype comparison harness. Renders the Meridian design system
- * (top nav + theme) and nested routes, wrapped in the TanStack Query client so
- * data features (FE-04…FE-05) can consume the local API.
- */
 export function AppShell() {
   return (
     <QueryClientProvider client={queryClient}>
       <ProfileProvider>
         <div className="app mrd">
+          <a className="app-skip" href="#main-content">Skip to content</a>
           <TopNav />
-          <main className="app-body">
+          <main className="app-body" id="main-content" tabIndex={-1}>
             <Routes>
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<DashboardPage />} />
+              <Route path="transactions" element={<TransactionsPage />} />
+              <Route path="imports" element={<ImportPage />} />
               <Route path="profiles" element={<ProfilesPage />} />
               <Route path="accounts" element={<AccountsPage />} />
               <Route path="categories" element={<CategoriesPage />} />

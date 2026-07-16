@@ -1,9 +1,9 @@
 # Implementation workboard
 
 - **Purpose:** Single source of truth for implementation planning and AI handoffs
-- **Current phase:** Stage 2 foundation complete (profiles/accounts slice) → next slice TBD
+- **Current phase:** Stage 3 import API + Meridian production UI (BE-16/FE-MERIDIAN-01)
 - **Production UI direction:** Meridian, approved by the product owner
-- **Last updated:** 2026-07-15
+- **Last updated:** 2026-07-16
 
 This document is intentionally operational. Product requirements remain in
 [`SPENDING_TRACKER_PRODUCT_PLAN.md`](../SPENDING_TRACKER_PRODUCT_PLAN.md), while
@@ -71,8 +71,9 @@ Append entries; do not rewrite another contributor's history.
   committed or persisted.
 - SQLite, FastAPI, SQLAlchemy 2, Alembic, React, TypeScript, Vite, TanStack Query,
   TanStack Table, Recharts, and React Router are the accepted stack.
-- The existing Aurora, Ledger, and Horizon prototypes are references, not the
-  production application.
+- Meridian is the production UI direction. The Stage-1 comparison harness and
+  every old prototype/runtime sample-data path, including the retired Meridian
+  prototype, remain removed; production uses live API data only.
 
 Read before implementation:
 
@@ -88,8 +89,9 @@ Read before implementation:
 | M0 — Stage 1 closure | Meridian is signed off and ADR 0002 records the final decision. | `DONE` |
 | M1 — Development foundation | Database, migrations, app shell, API client, and test foundations work. | `DONE` |
 | M2 — Profiles and accounts | A user can create/switch profiles and manage isolated accounts. | `DONE` (validated by QA-01; DOC-01 remains) |
-| M3 — Core ledger schema | Categories and transactions persist with exact money semantics. | `IN PROGRESS` (categories done + validated; transactions next) |
-| M4 — First production workspace | Meridian shell displays API-backed profile/account data reliably. | `BLOCKED` |
+| M3 — Core ledger schema | Categories and transactions persist with exact money semantics. | `DONE` |
+| M4 — First production workspace | Production shell displays API-backed profile/account/category/transaction data reliably. | `DONE` |
+| M5 — TD statement import | A TD PDF can be safely staged, reconciled, previewed, deduplicated, and atomically committed without retaining raw statement content. | `IN PROGRESS` |
 
 ## Dependency map
 
@@ -101,6 +103,11 @@ S1-01
                                       │         │
                                       └── INT-01 ┘
 BE-05 + BE-06 + FE-05 + INT-01 ── QA-01 ── DOC-01
+
+QA-03
+  ├── BE-12 ────────────────────────┐
+  └── BE-13 ── BE-14 ──────────────┤
+                                     └── BE-15 ── BE-16 ── FE-08 ── QA-04
 ```
 
 Tasks with separate file scopes may run in parallel after their dependencies
@@ -168,29 +175,55 @@ and soft-deleted (restorable), never hard-deleted.
 | ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
 | BE-09 | Transaction/split/tag schema: ORM models, Pydantic schemas, migration, and a split-sum domain validator. | BE-07 | `apps/api/app/models/{transaction,transaction_split,tag}.py`, `schemas/transaction.py`, `services/transactions_rules.py` (split-sum + default inclusion), `models/__init__`, `schemas/__init__`, `alembic/versions/`, backend tests | Transaction is profile+account scoped (signed `amount_cents`, type/status/source enums, `included_in_spending`, nullable `category_id`, soft-delete `deleted_at`); split rows reference a category and sum-check against the parent; tags are unique per profile with a many-to-many link; migration applies/reverses from the prior head; split-sum + default-inclusion helpers unit-tested; pytest + ruff pass. | `DONE` | Claude Opus 4.8 |
-| BE-10 | Transaction services: profile-scoped create/list/filter/update, split + tag management, soft delete/restore, spending-inclusion policy. | BE-09 | `apps/api/app/services/transactions.py`, backend tests | CRUD + filtering (account/category/type/date/included/search) scoped to profile; splits validated to sum to the parent; soft delete hides from default lists and metrics; cross-profile access → not-found; archive/restore-equivalent (soft delete) covered; pytest passes. | `READY` | — |
-| BE-11 | Typed transaction API routes (incl. bulk categorize/exclude) nested under the profile. | BE-10 | `apps/api/app/routers/transactions.py`, `app/main.py`, API tests | List/create/get/patch/soft-delete/restore + a bulk endpoint; validation 422; missing/cross-profile 404; OpenAPI contains routes; pytest passes. | `BLOCKED` | — |
-| FE-07 | Transactions workspace UI (TanStack Table) for the active profile. | FE-06, BE-11 | `apps/web/src/features/transactions/` | Virtualized/paginated table scoped to the active profile: search + filters, inline category assignment, included/excluded display, soft delete + restore; loading/empty/error states; keyboard + light/dark checks. | `BLOCKED` | — |
-| QA-03 | Validate the transactions slice. | BE-11, FE-07 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, split-sum + inclusion rules, and transaction profile-isolation scenarios pass. | `BLOCKED` | — |
+| BE-10 | Transaction services: profile-scoped create/list/filter/update, split + tag management, soft delete/restore, spending-inclusion policy. | BE-09 | `apps/api/app/services/transactions.py`, backend tests | CRUD + filtering (account/category/type/date/included/search) scoped to profile; splits validated to sum to the parent; soft delete hides from default lists and metrics; cross-profile access → not-found; archive/restore-equivalent (soft delete) covered; pytest passes. | `DONE` | Codex / be10_transaction_services |
+| BE-11 | Typed transaction API routes (incl. bulk categorize/exclude) nested under the profile. | BE-10 | `apps/api/app/routers/transactions.py`, `app/main.py`, API tests | List/create/get/patch/soft-delete/restore + a bulk endpoint; validation 422; missing/cross-profile 404; OpenAPI contains routes; pytest passes. | `DONE` | Codex / be11_contract_audit |
+| FE-LEDGER-01 | Consolidate the production frontend onto Ledger and retire Stage-1 comparison/sample-data features. | FE-06 | `apps/web/src/App.tsx`, `apps/web/src/app/`, production styles/tokens, Stage-1 `directions/` + mock-data removal, frontend tests, `apps/web/dist/` | `/` and `/app/*` enter one Ledger-styled API-backed app; comparison switcher/routes and unused Aurora/Horizon/Meridian runtime code are removed; no production runtime imports synthetic `mockData`; every top-nav control works by keyboard and pointer; responsive/light/dark/reduced-motion checks pass; typecheck/test/build pass and committed `dist` is refreshed. | `DONE` | Codex / ledger_consolidation |
+| FE-07 | Transactions workspace UI (TanStack Table) for the active profile. | FE-LEDGER-01, FE-06, BE-11 | `apps/web/src/features/transactions/` | Virtualized/paginated table scoped to the active profile: search + filters, inline category assignment, included/excluded display, soft delete + restore; loading/empty/error states; keyboard + light/dark checks. | `DONE` | Codex / be11_contract_audit |
+| FE-MERIDIAN-01 | Supersede Ledger styling with Meridian across the API-backed production workspace while keeping prototypes and sample data retired. | FE-07 | `apps/web/src/app/`, current feature styles/copy, `apps/web/dist/`, ADR 0002, direction text in this workboard | `/` and `/app/*` retain the current real API flows under one Meridian token system and responsive shell; no comparison route, prototype runtime, or sample data returns. Top controls work by keyboard/pointer; visible focus, ≥44px targets, light/dark contrast, reduced motion, 375/768/1440 and 200%-zoom checks pass. Typecheck, Vitest, build, rendered QA, and committed-dist refresh pass. | `DONE` | Codex / ledger_consolidation; rendered acceptance by root |
+| QA-03 | Validate the transactions slice. | BE-11, FE-07 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, split-sum + inclusion rules, and transaction profile-isolation scenarios pass. | `DONE` | Codex / ledger_review |
+
+### Stage 3 — Import framework and TD parser (M5)
+
+Expanded 2026-07-16 after QA-03 validated the transaction workspace. BE-12 and
+BE-13 have disjoint file ownership and may run in parallel. BE-12 exclusively
+owns the import migration and persistence contracts; BE-13/BE-14 exclusively
+own extraction, parser, reconciliation, and fixture files. BE-15 is the first
+convergence point and the only task in this slice that writes staged rows into
+final transaction tables.
+
+All work remains local-only. Real statements, raw PDF bytes, full extracted
+statement text, client filesystem paths, full account numbers, and transaction
+lists in logs must never be committed or persisted. Temporary statement files
+must use server-owned paths and be deleted after commit, cancellation, or any
+failure. Only structured transaction candidates, statement metadata,
+validation results, sanitized source filenames, parser versions, and
+non-reversible fingerprints may persist.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-12 | Import persistence and canonical staging contracts. | QA-03 | `apps/api/app/models/{import_batch,import_staged_transaction,import_warning,import_transaction_link}.py`; model/schema exports; profile/account/transaction relationships; `apps/api/app/schemas/imports.py`; migration `0006`; focused model/schema/migration tests | Profile-scoped batch and staging rows; selected account must belong to the profile; indexed file hash/logical statement key and profile/account transaction fingerprint; structured integer-cent summaries, validation status, parser/version, sanitized source filename, source-row reference, and duplicate decision. Add the transaction import FK and nullable original foreign amount/currency plus fixed-precision exchange rate. Migration applies/reverses from 0005. Schema inspection proves there is no PDF-byte, extracted-page-text, client-path, or full-account-number column. Pytest and Ruff pass. | `DONE` | Codex / be10_transaction_services |
+| BE-13 | Safe document extraction, parser interface, reconciliation, and fingerprint primitives. | QA-03 | `apps/api/app/importing/{contracts,document,reconciliation,fingerprints,errors}.py`; `apps/api/app/parsers/base.py`; `apps/api/requirements.txt`; focused importing tests | Implement canonical `StatementParser.detect`, `extract_metadata`, `extract_transactions`, and `reconcile`; streamed SHA-256; extension/MIME/PDF-magic validation; configurable file/page limits; actionable rejection of scanned/image-only PDFs; server-owned temporary paths only; cleanup on success, exception, and cancellation; logs contain IDs/counts/deltas only. Money uses integer cents and exchange-rate parsing uses Decimal/fixed precision, never float. Pytest and Ruff pass. | `DONE` | Codex / be11_contract_audit |
+| BE-14 | TD credit-card parser and privacy-safe regression fixture matrix. | BE-13 | `apps/api/app/parsers/td.py`; `fixtures/statements/td/**`; `docs/parser-notes/td.md`; TD parser tests | Synthetic/redacted fixtures plus expected canonical JSON and a manifest cover first/middle/last pages, page breaks, headers/footers/payment slips/legal text, comma amounts, negative credits/refunds, `PAYMENT - THANK YOU`, fees, interest, repeated legitimate rows, foreign-currency continuation lines, and unsupported layouts. Preserve transaction/posting dates and raw descriptions; charged CAD amount is integer cents; reconcile every available section within one cent. No real statement, name, address, barcode, or unmasked number is committed. | `DONE` | Codex / be11_contract_audit |
+| BE-15 | Profile-isolated import preview, duplicate detection, and atomic commit services. | BE-12, BE-14, BE-10 | `apps/api/app/services/imports.py`; minimal import-aware extension to `apps/api/app/services/transactions.py`; service exports; focused import service tests | Preview persists canonical candidates/warnings without final transactions; suggests an account from issuer/masked digits but accepts only a same-profile account. Exact file/logical duplicates are blocked with the prior import reference; occurrence-aware fingerprints preserve legitimate identical purchases; only high-confidence overlaps auto-skip. Commit is atomic/idempotent, sets `pdf_import`, import FK, and source-row links; `needs_review` requires explicit acknowledgement. Failed commit leaves no partial transaction rows. Commit/cancel/failure cleans raw PDF and extracted text, and logs expose no statement content. | `DONE` | Codex / be10_transaction_services |
+| BE-16 | Typed profile-nested import API. | BE-15 | `apps/api/app/routers/imports.py`; router exports; `apps/api/app/main.py`; upload-limit configuration; import API/OpenAPI tests | Add `POST /profiles/{profile_id}/imports/preview`, `GET /profiles/{profile_id}/imports/{import_id}`, `POST .../{import_id}/commit`, and `POST .../{import_id}/cancel`; Stage 3 accepts one TD PDF per preview. Responses contain only structured metadata, totals, warnings, and duplicate decisions. Test 413 oversize, 415 invalid media, readable 422 scanned/unsupported/reconciliation errors, 409 duplicate, uniform cross-profile 404, malicious filename handling, rollback, cleanup, and OpenAPI coverage. | `DONE` | Codex / be10_transaction_services |
+| FE-08 | Meridian Import Statement workflow and working top action. | BE-16, FE-07 | `apps/web/src/features/imports/**`; minimal `apps/web/src/app/{AppShell.tsx,app.css}` route/action wiring; frontend API tests; `apps/web/dist/**` | The top Import button navigates to `/app/imports`; provide an accessible select/drop-PDF flow, account suggestion/selection, loading/error/cancel states, preview counts by type, expected-versus-parsed totals, warnings, skipped duplicates, explicit needs-review acknowledgement, and commit success linking to Transactions. File data remains transient browser state and is never placed in localStorage, IndexedDB, fixtures, or sample runtime data; clear it after cancel/commit. The agent must read and use `ui-ux-pro-max` and record pointer/keyboard/focus, ≥44px targets, light/dark contrast, reduced motion, 375/768/1440 layouts, and 200%-zoom checks. Typecheck, Vitest, build, and committed-dist refresh pass. | `DONE` | Codex / ledger_consolidation; rendered acceptance by root; independent review CLEAN |
+| QA-04 | Validate the complete Stage 3 import framework and TD vertical slice. | BE-16, FE-08 | Cross-app validation only; avoid feature edits unless defects are found | Fresh migration cycle; Ruff/full pytest; frontend typecheck/test/build; loopback-only run; synthetic TD fixture matrix reconciles within one cent. Private supplied samples may run only from an ignored external path. Verify re-import creates zero duplicates, identical legitimate rows survive occurrence indexing, profile isolation, needs-review acknowledgement, malicious/oversize/scanned inputs, cancel/parser/database-failure cleanup, atomic rollback, log redaction, and absence of raw PDF/full extracted text in the database and temporary storage after terminal operations. Browser-test the complete Import-button workflow. | `IN PROGRESS` | Codex / be11_contract_audit |
 
 ## Later-stage backlog
 
-Do not claim these until the transactions slice is complete and the board has
-been expanded with equivalent acceptance detail.
+Do not claim these until M5 passes QA-04 and the board has been expanded with
+equivalent dependencies, file ownership, privacy criteria, and verification.
 
-1. Statement import framework (temporary upload → staging → preview → commit).
-3. Production TanStack transaction grid using API-backed data.
-4. Temporary upload/staging/preview/commit import framework.
-5. TD parser and reconciliation fixtures.
-6. Amex and CIBC discovery/parsers.
-7. Categorization, merchant normalization, and remembered rules.
+1. Amex section-aware parser, multi-file import, and mixed-issuer reliability.
+2. CIBC discovery gate and parser after representative private samples exist.
+3. Categorization, merchant normalization, and remembered rules.
 
 ## Known blockers and decisions needed
 
 | ID | Item | Owner | Resolution needed |
 | --- | --- | --- | --- |
 | D-01 | Meridian is selected but ADR 0002 still says final sign-off is pending. | Product owner | `RESOLVED` — Meridian approved as-is on 2026-07-15 and ADR 0002 updated. |
-| D-02 | Production prototype retention/removal timing is not explicit. | Product owner/lead agent | Default: keep all prototypes accessible until the first production vertical slice passes QA. |
+| D-02 | Production prototype retention/removal timing is not explicit. | Product owner/lead agent | `RESOLVED` — the 2026-07-16 latest decision selects Meridian styling while keeping the comparison harness, every prototype route, and sample runtime data retired. |
 
 ## Progress log
 
@@ -1083,3 +1116,997 @@ been expanded with equivalent acceptance detail.
 - Exception: direct product-owner DX request, not a pre-existing READY row —
   completed and recorded here without claiming an implementation task. Does not
   change the transactions-slice plan; BE-10 remains `READY`.
+
+### 2026-07-16 09:20 EDT — GOV-03 — Product owner / Codex
+
+- Status: `DONE`
+- Scope: `docs/decisions/0002-ui-directions.md` and this workboard
+- Work: Recorded the product owner's superseding decision to make Ledger the
+  sole production UI direction and retire the Stage-1 comparison harness,
+  unused prototype directions, and synthetic runtime data.
+- Verification: Reconciled the decision against the overnight workboard and
+  current frontend routing/import graph; implementation verification belongs to
+  FE-LEDGER-01.
+- Decisions: Ledger replaces Meridian for all new production UI. The existing
+  API-backed profile/account/category functionality is preserved and restyled;
+  removal targets comparison/prototype/sample paths, not real user data.
+- Blockers/risks: none
+- Handoff: FE-LEDGER-01 implements and verifies the consolidation while BE-10
+  proceeds independently in the backend.
+- Exception: This direct product-owner decision supersedes the previous accepted
+  UI direction and was recorded without a pre-existing READY governance row.
+
+### 2026-07-16 09:20 EDT — BE-10 — Codex / be10_transaction_services
+
+- Status: `IN PROGRESS`
+- Scope: `apps/api/app/services/transactions.py`, focused backend transaction
+  service tests, service exports if required, and this workboard
+- Work: Implement profile-scoped transaction creation, filtered listing,
+  updates, split/tag management, soft delete/restore, and spending-inclusion
+  behavior on top of BE-09.
+- Verification: pending implementation
+- Decisions: Preserve integer cents, non-disclosing cross-profile not-found
+  behavior, transaction-neutral service boundaries, exact split sums, and
+  default exclusion of soft-deleted rows.
+- Blockers/risks: none
+- Handoff: Complete focused/full backend tests and Ruff, then unblock BE-11.
+
+### 2026-07-16 09:20 EDT — FE-LEDGER-01 — Codex / ledger_consolidation
+
+- Status: `IN PROGRESS`
+- Scope: `apps/web/src/App.tsx`, `apps/web/src/app/`, production Ledger
+  styles/tokens, comparison/prototype/sample-data removal, frontend tests,
+  `apps/web/dist/`, and this workboard
+- Work: Consolidate the production UI onto Ledger, route `/` directly into the
+  app, remove comparison-only features and synthetic runtime data, and verify
+  every top navigation control.
+- Verification: pending typecheck, tests, build, rendered responsive/light/dark
+  smoke checks, keyboard navigation, reduced motion, and rebuilt committed dist
+- Decisions: Preserve API-backed profiles, accounts, and categories. Use one
+  primary Ledger navigation hierarchy with real links/buttons, semantic theme
+  tokens, minimum touch targets, visible focus, and no color-only state.
+- Blockers/risks: The `ui-ux-pro-max` search script directory is present but its
+  documented `search.py` is missing; the agent must apply the fully read skill's
+  embedded rules and record that tooling limitation.
+- Handoff: Finish the Ledger-only shell independently of BE-10; FE-07 will add
+  the live transaction workspace after BE-11.
+
+### 2026-07-16 — BE-10 scope correction — Codex / be10_transaction_services
+
+- Status: `IN PROGRESS`
+- Scope: BE-10 service/test files plus the minimal accepted-contract correction
+  in `models/transaction.py`, `schemas/transaction.py`,
+  `services/transactions_rules.py`, focused rule tests, and a new Alembic
+  revision after 0004.
+- Work: Before implementing services, the BE-11 contract audit found that BE-09
+  conflicts with accepted ADR 0003: purchase/outflow amounts must be positive,
+  refunds are excluded from spending by default (while offset in reporting),
+  and `transfer` must be a supported transaction type. Correct these contracts
+  before BE-10 relies on them; do not rewrite migration 0004.
+- Verification: pending focused/full backend tests, migration cycle, Ruff, and
+  `git diff --check`.
+- Decisions: ADR 0003 and the product plan are authoritative over the stale
+  BE-09 docstring/rule/test assumptions. Service inputs for splits and tags stay
+  explicit because `TransactionCreate` intentionally contains only parent-row
+  fields.
+- Blockers/risks: none.
+- Handoff: Complete the correction and BE-10 implementation, then publish the
+  stable service contract for BE-11.
+
+### 2026-07-16 09:39 EDT — FE-LEDGER-01 — Codex / ledger_consolidation
+
+- Status: `DONE`
+- Scope: `apps/web/index.html`, `apps/web/src/App.tsx`, `apps/web/src/app/`,
+  profile/account/category presentation styles, profile switcher interaction,
+  retired Stage-1 frontend files, `apps/web/dist/`, and this workboard.
+- Work: Made Ledger the only production frontend and kept profiles, accounts,
+  categories, health, and profile selection API-backed. `/` and legacy
+  prototype URLs now enter `/app/dashboard`; removed Landing, comparison
+  routing/chrome, Aurora/Horizon/Ledger/Meridian prototypes, Meridian tokens,
+  and the synthetic `mockData`/derived/format/type runtime. Rebuilt the shell
+  with Ledger semantic tokens, compact responsive navigation, SVG controls,
+  skip navigation, and accurate live/empty dashboard content. All top controls
+  are real links/buttons; the profile menu supports focus-on-open and Escape.
+- Verification: bundled Node runtime: `tsc --noEmit` clean; Vitest **3 files,
+  10 tests passed**; Vite production build succeeded (**101 modules**) and
+  refreshed committed `dist`. FastAPI `TestClient` returned HTML 200 for `/`,
+  `/app/accounts`, and the legacy `/ledger/dashboard`. Playwright against a
+  fresh migrated temp SQLite database verified API-connected loading/empty
+  states; pointer navigation through Dashboard/Profiles/Accounts/Categories/
+  Settings; brand navigation; theme light → dark → light; profile-create entry,
+  a real profile creation, switcher open, and Escape close; and legacy
+  `/aurora/dashboard` redirect to `/app/dashboard`. Keyboard tab order covered
+  skip link, brand, all five nav links, theme, and profile control. Rendered
+  light/dark checks passed at **1440×900, 768×900, and 375×812** with no document
+  horizontal overflow; all five mobile tabs remain visible, top controls are
+  44×44px minimum, and reduced-motion media emulation reduced transitions to
+  0.01ms. Final `rg` found no UI-directions/prototype/sample/Meridian runtime
+  strings; `git diff --check -- apps/web` passed (line-ending warnings only).
+- Decisions: Ledger's dark terminal-style top rail and sky-blue accent are the
+  sole visual direction. Transaction UI should extend the absolute `/app/*`
+  routes and `--lg-*` tokens, use tabular figures, and remain API-only.
+- Blockers/risks: The required `ui-ux-pro-max` skill was read and applied, but
+  its documented `search.py` is missing, so embedded guidance drove the checks.
+  The Playwright CLI's `npx` prerequisite was unavailable; rendered QA used the
+  installed persistent Playwright runtime with system Edge instead. No pnpm
+  lock/workspace artifacts remain.
+- Handoff: FE-07 can add the transactions nav route/workspace after BE-11 is
+  done, preserving the Ledger shell, absolute `/app/*` routes, `--lg-*` tokens,
+  44px targets, focus visibility, themes, responsiveness, and reduced motion.
+
+### 2026-07-16 — BE-10 — Codex / be10_transaction_services
+
+- Status: `DONE`
+- Scope: `apps/api/app/services/transactions.py`, service exports,
+  transaction model/schema/rules corrections, Alembic revision 0005,
+  `tests/test_transaction_{rules,services,migration}.py`, and this workboard.
+- Work: Added profile-scoped transaction create/get/list/update services with
+  account, direct-or-split category, type, inclusive date, included-state, and
+  merchant/raw-description/notes/tag search filters. Added exact split replace/
+  clear and case-insensitive reusable tag management, soft delete/restore, and
+  uniform non-disclosing cross-profile lookup behavior. Services flush without
+  commit/rollback. Corrected the accepted transaction contract: nonzero signed
+  cents use debit-positive/credit-negative convention; only purchases default
+  included, cash advances alone may opt in, excluded categories force exclusion,
+  and only included purchases may carry two-or-more same-sign exact-sum splits.
+  Added editable `raw_description` with required-null protection. Added
+  `transfer` to model/schema/storage through revision 0005; downgrade maps live
+  transfers deterministically to excluded `payment` rows before restoring the
+  old CHECK constraint.
+- Verification: focused transaction/rule/migration suite **13 passed**; full
+  backend suite **94 passed**; `ruff check app tests alembic` passed. Alembic
+  coverage upgrades to head, persists a transfer, downgrades to 0004, and
+  verifies its deterministic `payment` mapping. `graphify update .` initially
+  hit the repository's protected pytest-temp ACL, then succeeded with approved
+  access: **1,224 nodes, 1,934 edges, 135 communities**. The initial focused
+  pytest attempt likewise hit that existing ACL; reruns used the system temp
+  root and passed.
+- Decisions: Empty splits clear the allocation; non-empty splits require at
+  least two rows. Explicit `included_in_spending=True` is valid for purchases
+  and cash advances only; explicit false remains available for exclusion.
+  Collection filters using a foreign-profile account/category ID return an
+  empty scoped result, while addressed transaction/split/tag operations return
+  the identical `transaction not found` used for missing IDs.
+- Blockers/risks: none.
+- Handoff: BE-11 is `READY`. Build nested transaction routes against the public
+  exports in `app.services`; map `ResourceNotFoundError` to uniform 404 and
+  `InvalidUpdateError`/`SplitSumError` to field-readable 422 responses, while
+  preserving request-owned commit/rollback boundaries.
+
+### 2026-07-16 09:45 EDT — FE-LEDGER-01 review fixes — Codex / ledger_consolidation
+
+- Status: `IN PROGRESS`
+- Scope: Ledger semantic colour tokens, profile-switcher keyboard behavior,
+  category icon types/components/rendering, frontend tests, `apps/web/dist/`,
+  and the FE-LEDGER-01 row/log only.
+- Work: Reopened the task for review blockers: light-theme accent/avatar
+  contrast, disclosure focus return and keyboard semantics, and structural
+  category emoji replacement with SVG icons.
+- Verification: pending focused contrast calculations, keyboard/browser checks,
+  typecheck, tests, build, refreshed committed `dist`, and diff checks.
+- Decisions: preserve API category `icon` strings while normalizing legacy
+  values to a production SVG icon vocabulary at the presentation boundary.
+- Blockers/risks: none.
+- Handoff: close all review findings, return FE-LEDGER-01 to `DONE`, and publish
+  exact verification results.
+
+### 2026-07-16 09:43 EDT — BE-11 — Codex / be11_contract_audit
+
+- Status: `IN PROGRESS`
+- Scope: transaction API schemas/exports, `apps/api/app/routers/transactions.py`,
+  `apps/api/app/main.py`, focused transaction API tests, and this workboard.
+- Work: Claim typed profile-nested transaction routes, static bulk
+  categorize/inclusion actions, reachable split/tag replacement, soft-delete/
+  restore lifecycle responses, and uniform 404/422 error mapping.
+- Verification: pending focused/full backend tests, Ruff, migration/OpenAPI
+  checks, `git diff --check`, and Graphify refresh.
+- Decisions: Preserve BE-10's transaction-neutral service boundaries and the
+  request-owned transaction for atomic bulk behavior; expose exact affected
+  counts and reject empty, duplicate, or over-500 bulk ID lists.
+- Blockers/risks: none.
+- Handoff: Implement and verify BE-11, then unblock FE-07.
+
+### 2026-07-16 09:51 EDT — BE-11 — Codex / be11_contract_audit
+
+- Status: `DONE`
+- Scope: `apps/api/app/schemas/transaction.py`, schema exports,
+  `apps/api/app/routers/transactions.py`, `apps/api/app/main.py`, transaction API
+  tests, the profile/account OpenAPI assertion, and this workboard.
+- Work: Added typed profile-nested transaction create/list/filter/get/update,
+  soft-delete/restore, split replacement, tag replacement, and discriminated
+  bulk categorize/spending-inclusion routes. Detail/list responses expose
+  `deleted_at`; detail responses include splits/tags; lifecycle responses report
+  explicit deleted state. Bulk requests reject empty, duplicate, non-positive,
+  or over-500 ID lists, return an exact affected count, distinguish manual
+  categorization from uncategorization, preflight profile scope, and remain
+  atomic through the request-owned transaction. Added uniform `SplitSumError`
+  422 mapping beside the existing non-disclosing 404/invalid-update handlers.
+- Verification: focused transaction API suite **10 passed**; full backend suite
+  **104 passed**; `ruff check app tests alembic` passed. Fresh migration
+  `upgrade head` reported revision 0005, then `downgrade 0004` and `upgrade head`
+  passed. OpenAPI exposes all six transaction path groups and the `/bulk` body
+  has the expected discriminator/oneOf mapping. `git diff --check` passed
+  (line-ending warnings only). Graphify refresh initially hit the known
+  protected pytest-temp ACL, then succeeded with approved access: **1,297
+  nodes, 2,113 edges, 145 communities**.
+- Decisions: `PATCH /bulk` uses `categorize` and `set_spending_inclusion`
+  actions; null category sets `uncategorized`, while a real category sets
+  `manual`. Bulk exclusion requires a readable reason and re-inclusion clears
+  it. Tag replacement deterministically case-insensitive-deduplicates via the
+  BE-10 service. Empty split/tag lists clear; non-empty splits retain BE-10's
+  two-or-more, same-sign, exact-cent invariant. Transaction `DELETE` is a soft
+  lifecycle action and therefore does not weaken the no-hard-delete contract
+  for profiles/accounts.
+- Blockers/risks: none.
+- Handoff: FE-07 is `READY`. Mirror the verified nested OpenAPI types, consume
+  `deleted_at`/detail splits/tags and bulk `updated_count`, and implement the
+  API-only Ledger transaction workspace from the prepared FE-07 handoff.
+
+### 2026-07-16 09:54 EDT — FE-LEDGER-01 review fixes — Codex / ledger_consolidation
+
+- Status: `DONE`
+- Scope: Ledger semantic colour tokens, `ProfileSwitcher`, category icon
+  types/rendering, narrow/mobile responsive hardening, focused frontend test,
+  `apps/web/dist/`, and this workboard.
+- Work: Closed the Ledger accessibility review. Darkened the light semantic
+  accent to `#0369a1`, added theme-specific on-accent foregrounds, and made
+  profile avatars/buttons use contrast-safe pairs. Replaced category emoji
+  choices and rendering with a consistent 17-name inline SVG system while
+  normalizing legacy API icon strings at the presentation boundary. Converted
+  the profile popup to a standard disclosure group with normal Tab navigation;
+  every close path now moves focus intentionally (Escape, selection, and
+  backdrop → trigger; Manage profiles → route main). Hardened 16px mobile text/
+  inputs, internal tab scrolling, and narrow layouts for 200% zoom.
+- Verification: computed light ratios: accent/white **5.93:1**, accent/app
+  background **5.27:1**, accent/14%-tint **4.83:1**, white/accent **5.93:1**,
+  and white/accent-2 **7.56:1**. Rendered Playwright checks confirmed the avatar
+  pair at **5.93:1**, **13/13** seeded category rows render SVGs with no emoji
+  text, Escape/selection/backdrop restore trigger focus, and Manage profiles
+  moves focus to `#main-content`. At 375px there is no page overflow; simulated
+  200% zoom (188 CSS px) also has **no document horizontal overflow**, while the
+  360px tab row scrolls inside its 173px container. Mobile body/input text is
+  16px. Final bundled-runtime `tsc --noEmit` passed; Vitest **4 files, 11 tests
+  passed** (including the disclosure focus regression test); Vite built **102
+  modules** and refreshed committed `dist`. Emoji search across category source
+  and `dist` returned no matches; scoped `git diff --check` passed with only
+  line-ending warnings.
+- Decisions: Legacy emoji values remain accepted as API data through numeric
+  code-point aliases, but no production structural control or rendered category
+  icon uses emoji. The simpler disclosure pattern avoids claiming application-
+  menu keyboard semantics for ordinary profile navigation.
+- Blockers/risks: none.
+- Handoff: FE-07 may now extend the settled Ledger AppShell/styles. Preserve the
+  verified contrast pairs, SVG icon language, intentional focus movement,
+  16px mobile controls, internally scrollable tabs, and 200%-zoom containment.
+
+### 2026-07-16 09:56 EDT — FE-07 — Codex / be11_contract_audit
+
+- Status: `IN PROGRESS`
+- Scope: `apps/web/src/features/transactions/`, minimal Ledger AppShell route/
+  navigation wiring, API client PUT/DELETE support, TanStack Table dependency,
+  frontend tests, committed `apps/web/dist/`, and this workboard.
+- Work: Build the API-only transaction workspace for the active profile with
+  search/filters, semantic paginated table and responsive cards, create/edit,
+  inline category, inclusion state, detail split/tag editing, bulk actions,
+  soft-delete trash/restore, and complete request states.
+- Verification: pending typecheck, Vitest, production build, rendered desktop/
+  tablet/mobile and 200%-zoom checks, light/dark contrast, keyboard/focus flow,
+  reduced motion, API-only/no-sample audit, diff check, and Graphify refresh.
+- Decisions: Preserve the settled Ledger semantic tokens, SVG icon language,
+  44px targets, intentional focus movement, and integer-cent API boundaries.
+  The required `ui-ux-pro-max` search script is still absent, so the fully read
+  skill's embedded design/accessibility rules drive implementation and QA.
+- Blockers/risks: none.
+- Handoff: Implement and verify FE-07, then unblock QA-03.
+
+### 2026-07-16 10:33 EDT — FE-07 — Codex / be11_contract_audit
+
+- Status: `DONE`
+- Scope: `apps/web/src/features/transactions/`, Ledger AppShell transaction nav/
+  route, API client PUT/DELETE support, `@tanstack/react-table` dependency and
+  lockfile, focused frontend tests, committed `apps/web/dist/`, and this board.
+- Work: Delivered the active-profile API-only Ledger workspace with debounced
+  search and composable account/category/type/date/inclusion/trash filters;
+  URL-persisted filters, sort, and pagination; sortable semantic desktop table
+  and responsive cards; inline category editing; explicit included/excluded
+  text; exact-cent create/edit; split and tag detail editing; confirmed bulk
+  categorize/include/exclude with affected counts and type-policy preflight;
+  soft-delete trash/restore; and complete loading, empty, error, retry, and no-
+  profile states. Profile switches clear every owned transient state and never
+  retain previous-profile transaction placeholder data.
+- Verification: bundled Node TypeScript check passed; final Vitest run passed
+  **8 files, 23 tests**, including the **3/3** focused modal/sign regressions;
+  Vite production build passed **113 modules** and refreshed committed assets
+  `index-CXL_zMtY.css` (26.87 kB) and `index-BmdDDuA2.js` (331.55 kB). Fresh
+  migrated SQLite + latest uvicorn on loopback exposed all **6** transaction
+  OpenAPI path groups. Direct live lifecycle verified two transactions, two
+  exact splits, two tags, bulk exact count, delete/trash, and restore; built
+  `/app/transactions` plus hashed assets returned 200 and contained no sample-
+  data runtime. Independent rendered QA on the latest build passed real UI
+  create/edit, exact two-way split, tag save, atomic bulk categorize, soft
+  delete, trash filter, restore, light/dark toggle, keyboard Add/Escape focus
+  return, and Detail→Edit modal focus. Semantic desktop table and mobile cards
+  had no document overflow at **1440×900, 768×900, 375×812**, or simulated
+  **200% zoom (720×450)**; reduced-motion transitions measured **0.00001s**;
+  browser console/page errors were zero. Scoped `git diff --check` passed with
+  line-ending warnings only. Final Graphify code refresh succeeded: **1,384
+  nodes, 2,349 edges, 142 communities**.
+- Decisions: Applied the fully read `ui-ux-pro-max` embedded rules because its
+  documented `search.py` remains absent: semantic theme tokens, contrast-safe
+  text-plus-state labels, SVG icon language, ≥44px targets, labelled controls,
+  modal traps/restoration, responsive containment, and reduced motion. Debit is
+  positive and credit negative at the form boundary; only purchases and cash
+  advances can be bulk-included; all amounts remain exact safe integer cents.
+- Blockers/risks: none. Documentation changes in this final log may be newer
+  than Graphify's semantic document extraction; code relationships are current.
+- Handoff: QA-03 is `READY` for the complete backend/frontend transaction-slice
+  validation pass. Do not reintroduce sample transactions or comparison UI.
+
+### 2026-07-16 10:11 EDT — BE-10/BE-11 contract correction — Codex / ledger_consolidation
+
+- Status: `IN PROGRESS`
+- Scope: `apps/api/app/schemas/transaction.py`, schema exports if required,
+  focused transaction API tests, and this workboard; FE-07 files and ownership
+  remain untouched.
+- Work: Add one centrally defined signed JavaScript-safe integer-cent bound to
+  every transaction and split API input/output schema boundary so JSON clients
+  cannot silently round persisted cent amounts.
+- Verification: pending focused/full backend pytest, Ruff, diff check, and
+  Graphify refresh.
+- Decisions: Keep the database `BigInteger` representation and all existing
+  nonzero, direction/sign, spending-inclusion, and exact split-sum rules. This
+  correction narrows only the interoperable HTTP amount range to
+  `±Number.MAX_SAFE_INTEGER`.
+- Blockers/risks: none.
+- Handoff: Verify rejection immediately outside both bounds plus valid boundary
+  round-trips, then record the completed correction without changing FE-07.
+
+### 2026-07-16 10:15 EDT — BE-10/BE-11 contract correction — Codex / ledger_consolidation
+
+- Status: `DONE`
+- Scope: `apps/api/app/schemas/transaction.py`,
+  `apps/api/tests/test_transaction_api.py`, this workboard, and the generated
+  Graphify refresh; no FE-07 file or status was changed.
+- Work: Added the shared `MAX_SAFE_CENTS = 2^53 - 1` and constrained
+  `CentAmount` type to transaction create/update/read and split input/read
+  boundaries. OpenAPI now publishes the signed minimum and maximum, preventing
+  JavaScript clients from silently rounding cent values while SQLite continues
+  to use `BigInteger`.
+- Verification: focused transaction API suite **13 passed**; full backend suite
+  **107 passed**; `ruff check app tests alembic` passed; scoped
+  `git diff --check` passed with line-ending warnings only. Tests reject both
+  `MAX_SAFE_CENTS + 1` and `-MAX_SAFE_CENTS - 1` on create, update, and split
+  replacement, and verify exact positive/negative boundary round-trips plus a
+  maximum-total split. Graphify's sandboxed refresh hit the known protected
+  pytest-temp ACL; the approved rerun succeeded with **1,378 nodes, 2,335
+  edges, and 139 communities**.
+- Decisions: No database migration or service-rule change is needed. Existing
+  nonzero/sign, spending-inclusion, and exact split-sum validation remains
+  authoritative inside the narrowed interoperable range.
+- Blockers/risks: none.
+- Handoff: FE-07 can rely on the generated OpenAPI bound or mirror
+  `Number.MAX_SAFE_INTEGER` at its amount-entry boundary; QA-03 should retain
+  the new backend boundary tests in its full regression run.
+
+### 2026-07-16 10:36 EDT — QA-03 — Codex / ledger_review
+
+- Status: `IN PROGRESS`
+- Scope: Independent cross-app validation only; no feature edits unless a transaction-slice defect is found; this workboard for claim and handoff.
+- Work: Validate fresh migration upgrade/current/downgrade/re-upgrade, full backend/frontend gates, transaction OpenAPI, exact-cent/split, inclusion, atomic bulk, isolation, soft delete/restore, committed dist, retired sample/comparison runtime, and Graphify health.
+- Verification: pending.
+- Decisions: rely on prior rendered/live records only after confirming the current final asset hashes; independently rerun non-rendered gates.
+- Blockers/risks: none.
+- Handoff: mark `DONE` only if all checks pass; otherwise reopen the owning task.
+
+### 2026-07-16 10:41 EDT — QA-03 — Codex / ledger_review
+
+- Status: `DONE`
+- Scope: Independent validation of the complete transactions slice; no feature implementation files were changed. This workboard was updated for task and milestone status.
+- Work: Validated the final backend, frontend, generated dist, OpenAPI contract, transaction domain behavior, retired runtime, prior live/rendered evidence, and Graphify output. M3 and M4 now meet their recorded exit conditions and are marked `DONE`.
+- Verification: A fresh disposable SQLite database upgraded from base to `0005_transaction_transfer_type` head, reported current, downgraded to `0004_transaction_models`, reported current, and re-upgraded to head successfully. Full backend pytest passed **107/107** using a workspace-local temp root after the sandbox hit the known protected system pytest-temp ACL; focused transaction rules/services/API/migration tests passed **26/26**; `ruff check app tests alembic` passed. OpenAPI exposes all **6** transaction path groups and exact-cent bounds of **±9,007,199,254,740,991** on create, update, read, and split schemas. The focused tests cover exact split sums and mismatch rejection, sign/direction and default-inclusion policy, filters, atomic bulk failure/counts, profile isolation, safe-cent rejection and round-trip boundaries, soft delete/trash/restore, tags, and transfer migration. Frontend TypeScript passed; Vitest passed **8 files / 23 tests**; Vite built **113 modules** and reproduced `index-CXL_zMtY.css` (**26.87 kB**) plus `index-BmdDDuA2.js` (**331.55 kB**). `dist/index.html` references both existing hashed assets; scoped `git diff --check` passed with line-ending warnings only. Static runtime scans found no sample/comparison files or text in `apps/web/src` or `apps/web/index.html`. The current asset hashes exactly match FE-07's recorded live lifecycle and independent rendered UI evidence, including Add/Edit, split/tag, bulk, delete/trash/restore, focus, responsive, theme, reduced-motion, and zero browser errors. Graphify reports **1,384 nodes, 2,349 edges, 142 communities, 0 dangling edges**, **34 hyperedges**, and **352 transaction-related nodes**; the focused transaction query resolves current services and acceptance tests.
+- Decisions: Accepted the prior live Playwright lifecycle and rendered UI review because they target the exact final asset hashes independently rebuilt here. Applied the fully read `ui-ux-pro-max` guidance to audit the recorded accessibility, interaction, responsive, and reduced-motion results; no UI defect was found. The initial system-temp pytest ACL error is environmental and was resolved by an isolated workspace-local `--basetemp`; it is not a product failure.
+- Blockers/risks: none. The newly appended workboard record may be newer than Graphify's semantic document extraction; its code relationships match the validated final implementation.
+- Handoff: Transactions slice validation is complete. No BE-10, BE-11, or FE-07 task needs reopening; proceed to the next dependency-ready Ledger feature without restoring comparison UI or sample transactions.
+
+### 2026-07-16 10:44 EDT — Stage 3 board expansion — Codex / ledger_consolidation
+
+- Status: `DONE`
+- Scope: planning-only update to this workboard; no implementation files or
+  task claims.
+- Work: Replaced the duplicated import backlog entries with dependency-ordered
+  BE-12 through QA-04 rows for persistence/contracts, safe extraction, the TD
+  parser, preview/commit services, typed APIs, the Ledger import workflow, and
+  the Stage 3 acceptance gate. Updated the current phase, dependency map, and
+  milestones after QA-03.
+- Verification: Confirmed QA-03 remains `DONE`; BE-12 and BE-13 are the only
+  `READY` Stage 3 tasks; BE-14, BE-15, BE-16, FE-08, and QA-04 remain `BLOCKED`
+  on their recorded dependencies. Reviewed the new rows for explicit profile
+  isolation, integer-cent reconciliation, atomicity, temporary-file cleanup,
+  log redaction, frontend `ui-ux-pro-max` use, and the prohibition on raw PDF or
+  full extracted-text persistence.
+- Decisions: BE-12 owns migration/import persistence files while BE-13/BE-14
+  own extraction/parser/fixture files, allowing safe parallel work. BE-15 is
+  the sole staging-to-final-transaction convergence point. M5 is open until
+  QA-04 validates the complete TD import flow.
+- Blockers/risks: Documentation-only changes may leave Graphify's semantic
+  document extraction stale; source-code graph relationships are unaffected.
+- Handoff: Two agents may independently claim BE-12 and BE-13. No later Stage 3
+  task should be claimed until its direct dependencies are `DONE`.
+
+### 2026-07-16 10:48 EDT — BE-13 — Codex / be11_contract_audit
+
+- Status: `IN PROGRESS`
+- Scope: `apps/api/app/importing/`, `apps/api/app/parsers/base.py` and parser
+  exports, `apps/api/requirements.txt`, focused importing tests, and this
+  workboard only.
+- Work: Claim safe, typed statement-parser contracts, streamed document
+  validation/extraction, exact reconciliation and exchange-rate primitives,
+  and privacy-preserving fingerprints.
+- Verification: pending focused/full pytest, Ruff, cleanup/cancellation and
+  privacy regression checks, `git diff --check`, and Graphify refresh.
+- Decisions: Keep BE-12 persistence/models/schemas/migration entirely outside
+  this task. Raw PDF bytes and full extracted text remain ephemeral; client
+  paths are never trusted or logged.
+- Blockers/risks: none.
+- Handoff: Complete BE-13 acceptance, then make BE-14 `READY` only if every
+  safety and verification gate passes.
+
+### 2026-07-16 — BE-12 — Codex / be10_transaction_services
+
+- Status: `IN PROGRESS`
+- Scope: import ORM models and Pydantic persistence schemas; model/schema
+  exports; Profile/Account/Transaction import relationships; Alembic revision
+  0006; focused model/schema/migration tests; this workboard.
+- Work: Claim profile-isolated import-batch, staging, warning, and final-link
+  persistence contracts with exact integer-cent and fixed-precision foreign-
+  exchange fields, indexed deduplication keys, and privacy-safe column surfaces.
+- Verification: pending focused/full pytest, 0005↔0006 migration cycles, Ruff,
+  Graphify refresh, schema privacy inspection, and `git diff --check`.
+- Decisions: BE-12 owns persistence only. Do not add document extraction,
+  parsers, reconciliation algorithms, temporary-file handling, preview/commit
+  services, routers, or fixtures owned by BE-13 through BE-16.
+- Blockers/risks: none.
+- Handoff: Complete and verify BE-12, then unblock the BE-12 side of BE-15.
+
+### 2026-07-16 11:07 EDT — BE-12 — Codex / be10_transaction_services
+
+- Status: `DONE`
+- Scope: Added profile-isolated import batch, staged transaction, warning, and
+  final transaction-link models; persistence schemas and exports; profile,
+  account, and transaction relationships; transaction import/foreign-currency
+  provenance; reversible Alembic revision 0006; focused regression tests.
+- Work: Enforced same-profile account/batch/staged/final ownership with
+  composite foreign keys; indexed file hash, logical statement key, and
+  profile/account fingerprints; retained only sanitized filenames and
+  structured row/warning/cent summaries. Added exact `NUMERIC(18,8)` exchange
+  rates and JavaScript-safe integer-cent constraints. Revision 0006 snapshots
+  and restores transaction splits/tags around SQLite table rebuilds so both
+  upgrade and downgrade preserve existing ledger history.
+- Verification: focused BE-12 suite `10 passed`; full API suite `142 passed`;
+  Ruff passed; SQLAlchemy mapper configuration passed with `SAWarning` promoted
+  to errors; 0005→0006→0005 preserved transactions, splits, and tags; schema
+  privacy inspection passed; `git diff --check` passed with only existing line-
+  ending warnings; `graphify update .` rebuilt 1,585 nodes / 2,752 edges.
+- Decisions: Import persistence stores no PDF bytes, extracted page text,
+  client paths, or full account numbers. Raw extraction remains ephemeral and
+  stays in BE-13/BE-14 scope.
+- Blockers/risks: none in BE-12. BE-15 remains blocked until BE-14 is complete;
+  its BE-12 dependency is now satisfied.
+- Handoff: BE-14 may consume these staging contracts; BE-15 may consume them
+  once all of its remaining dependencies are complete.
+
+### 2026-07-16 11:09 EDT — BE-13 — Codex / be11_contract_audit
+
+- Status: `DONE`
+- Scope: `apps/api/app/importing/`, the canonical parser base/exports,
+  `apps/api/requirements.txt`, focused importing tests, and this workboard;
+  BE-12 persistence files remained separately owned.
+- Work: Added issuer-neutral typed parser detection/metadata/transaction/
+  reconciliation contracts with strict runtime invariants and non-revealing
+  representations; exact signed-cent reconciliation with one-cent tolerance;
+  fixed eight-place positive finite Decimal exchange-rate parsing; streamed
+  SHA-256; and caller-keyed HMAC-SHA256 statement/row fingerprints that retain
+  deterministic occurrence indexes for legitimate repeated rows. Added strict
+  extension, MIME, PDF-magic, byte, page, extracted-character, and processing-
+  time limits; path-discarding filename sanitization with bidi/control removal
+  and long-digit redaction; actionable malformed/scanned PDF errors; and logs
+  restricted to generated document IDs and counts.
+- Verification: focused importing suite **26 passed**; full API suite **142
+  passed**; repository `ruff check app tests alembic` passed; `pip check` found
+  no broken requirements; scoped `git diff --check` passed with line-ending
+  warnings only. Real never-releasing child-process tests prove sync timeout and
+  async cancellation complete within bounds, terminate/join/kill the worker,
+  and leave no raw temp file. Independent privacy/security review and final
+  re-review are clean. Final approved Graphify refresh reports **1,586 nodes,
+  2,756 edges, and 167 communities**.
+- Decisions: PDF traversal runs in a spawned, terminable process rather than a
+  thread so compressed or malicious extraction is memory-isolated and can be
+  killed on timeout/cancellation on Windows. Fingerprints require caller-owned
+  local key material of at least 32 bytes; low-entropy transaction fields are
+  never exposed through an unkeyed digest. Full extracted text remains
+  ephemeral and is never logged or persisted.
+- Blockers/risks: none. This final workboard entry may be newer than Graphify's
+  semantic document extraction; final code relationships are current.
+- Handoff: BE-14 is `READY` to implement the TD parser using only synthetic or
+  redacted fixtures. It must provide occurrence indexes, pass a local HMAC key
+  at fingerprint call sites, preserve exact cents/Decimal exchange rates, and
+  never persist or log raw PDF/full extracted text.
+
+### 2026-07-16 11:12 EDT — BE-14 — Codex / be11_contract_audit
+
+- Status: `IN PROGRESS`
+- Scope: `apps/api/app/parsers/td.py`, parser exports,
+  `fixtures/statements/td/**`, `docs/parser-notes/td.md`, focused TD parser
+  tests, and this workboard only.
+- Work: Claim the versioned TD credit-card adapter and entirely synthetic PDF/
+  canonical-output fixture matrix covering page sections, continuations,
+  transaction types, exact money, occurrence indexing, and reconciliation.
+- Verification: pending focused/full pytest, Ruff, synthetic-fixture privacy
+  scan, unsupported/scanned-layout checks, `git diff --check`, independent
+  review, and Graphify refresh.
+- Decisions: No real or privately supplied statement content may enter the
+  workspace. BE-14 consumes BE-13 contracts without changing persistence,
+  import services, routes, or generic extraction primitives.
+- Blockers/risks: none.
+- Handoff: Complete and independently review the parser matrix; unblock BE-15
+  only if all layout, reconciliation, privacy, and regression gates pass.
+
+### 2026-07-16 11:13 EDT — BE-12 review corrections — Codex / be10_transaction_services
+
+- Status: `IN PROGRESS`
+- Scope: BE-12 import ORM ownership relationships and constraints, Alembic
+  revision 0006, focused persistence/migration tests, and this workboard.
+- Work: Reopen BE-12 for independent-review findings: bind every staged row to
+  its owning batch's selected account; bind each imported transaction/link to
+  the same profile and account as its batch; and make ORM profile deletion rely
+  on database cascades without nulling non-null import ownership fields.
+- Verification: pending database/ORM boundary regressions, focused/full pytest,
+  migration cycle, Ruff, mapper warning gate, Graphify refresh, independent
+  re-review, and `git diff --check`.
+- Decisions: Enforce these invariants in database composite keys, not only in
+  future BE-15 services. BE-15 stays `BLOCKED`; reopening BE-12 removes one
+  satisfied dependency while BE-14 remains incomplete.
+- Blockers/risks: none.
+- Handoff: Correct and verify the persistence contract, then request a clean
+  re-review before returning BE-12 to `DONE`.
+
+### 2026-07-16 11:33 EDT — BE-12 review corrections — Codex / be10_transaction_services
+
+- Status: `DONE`
+- Scope: Corrected BE-12 import ownership relationships/constraints, revision
+  0006, schema sanitization, persistence/migration regressions, and this board.
+- Work: Enforced transaction profile/account ownership and exact batch-account
+  ownership for staged/final imported rows with composite foreign keys. Import
+  links now separately bind the current batch/staged row and the linked
+  transaction's profile/account, allowing a prior-batch same-account duplicate
+  while rejecting wrong-account/cross-profile targets. ORM account/batch
+  relationships use `passive_deletes="all"` where database RESTRICT is
+  authoritative; profile deletion cascades without nulling ownership fields.
+  Revision 0006 normalizes legacy placeholder import IDs before DDL, preflights
+  incompatible ownership before any schema mutation, rejects control/bidi
+  filenames at schema and database boundaries, and restores split/tag backups
+  with fail-closed inserts rather than lossy ignore semantics.
+- Verification: final focused BE-12 suite **26 passed**; full API suite **172
+  passed**; repository Ruff passed; SQLAlchemy mapper configuration passed with
+  `SAWarning` promoted to errors. Migration tests cover 0005→0006→0005, exact
+  split IDs/amounts/timestamps and tag associations, legacy import-ID
+  normalization, no-partial-DDL failure/fix/retry, and composite FK/index
+  inspection. `git diff --check` passed with existing line-ending warnings
+  only. Final `graphify update .` completed with no topology delta after the
+  preceding rebuild (**1,653 nodes / 2,965 edges**).
+- Decisions: Current-batch provenance and duplicate-target ownership are
+  distinct invariants: a duplicate audit link may target an earlier or manual
+  transaction only when profile/account ownership matches the current batch.
+- Blockers/risks: none. Independent reviewer `/root/ledger_consolidation`
+  returned `CLEAN` after verifying all original P1/P2 findings and the final
+  duplicate-link correction. This appended log may be newer than Graphify's
+  semantic document extraction; code relationships are current.
+- Handoff: BE-15 is now `READY`; consume these database-enforced ownership
+  contracts without weakening them in preview/commit services.
+
+### 2026-07-16 11:35 EDT — BE-13 availability regression correction — Codex / be11_contract_audit
+
+- Status: `DONE`
+- Scope: The existing never-releasing extraction-worker regression in
+  `apps/api/tests/test_importing_primitives.py`; no extraction behavior changed.
+- Work: Replaced a scheduler-sensitive sub-750ms assertion with a hard 2.5s
+  availability bound that accommodates the documented one-second terminate/join
+  cleanup deadline while retaining the decisive child-dead and temp-empty
+  assertions.
+- Verification: The isolated timeout regression passed; two sequential full
+  backend suites passed **164/164** and **165/165** before concurrent BE-12
+  corrections landed. The worker still terminates and leaves no statement file.
+- Decisions: Test the documented bounded-cleanup contract rather than host
+  scheduling luck. No production deadline or security guarantee was relaxed.
+- Blockers/risks: none.
+- Handoff: Keep the child-dead and temp-empty assertions alongside the hard time
+  bound in future extraction availability tests.
+
+### 2026-07-16 11:35 EDT — BE-14 — Codex / be11_contract_audit
+
+- Status: `DONE`
+- Scope: `apps/api/app/parsers/td.py`, parser exports, the synthetic
+  `fixtures/statements/td/` corpus and generator, `docs/parser-notes/td.md`, TD
+  parser tests, and this workboard.
+- Work: Added the versioned, section-aware TD credit-card parser; exact signed-
+  cent amount grammar; period-safe transaction/posting-date inference including
+  cross-year leap days; post-continuation transaction classification; explicit
+  multiline description and all-or-nothing foreign-currency continuations;
+  deterministic occurrence indexes; and independent net, debit/credit,
+  purchases, interest, fees, and credits reconciliation. Malformed comma
+  grouping, incomplete/duplicate/conflicting foreign details, ambiguous rows,
+  unsupported layouts, and image-only documents all fail closed. The parser
+  consumes caller-owned HMAC boundaries and never owns or creates key material.
+- Verification: Final focused TD suite passed **14/14**; independent TD plus
+  importing review suite passed **40/40**; repository Ruff passed. Earlier
+  sequential full backend gates passed **164/164**, **165/165**, and **166/166**.
+  The post-review full run reached **168 passed** with only two failures in
+  concurrently reopened BE-12 `ImportTransactionLink.account_id` tests; no
+  BE-14 test failed. Deterministic regeneration left all **5** committed PDF/JSON
+  artifacts byte-identical. Extracted-text/golden/privacy tests and static scans
+  found no name, address, barcode, unmasked 12–19 digit identifier, or private
+  statement data. Scoped `git diff --check` passed with line-ending warnings
+  only. The final approved Graphify code refresh reported **1,656 nodes, 2,977
+  edges, and 168 communities**.
+- Decisions: Preserve issuer-specific section totals in a private metadata
+  subtype so equal-and-opposite section errors cannot cancel without expanding
+  the issuer-neutral persistence contract. Strict comma grouping and duplicate
+  continuation rejection favor review over silent monetary reinterpretation.
+- Blockers/risks: none in BE-14. Documentation appended after Graphify's code
+  extraction may remain semantically stale. BE-12 is separately `IN PROGRESS`,
+  so BE-15 remains `BLOCKED` despite completion of its BE-14 dependency.
+- Handoff: BE-15 may consume the TD parser only after BE-12 returns to `DONE`.
+  Independent adversarial re-review is clean for all four corrected findings:
+  section cancellation, continuation classification, malformed comma grouping,
+  and conflicting foreign continuations.
+
+### 2026-07-16 11:39 EDT — BE-15 — Codex / be10_transaction_services
+
+- Status: `IN PROGRESS`
+- Scope: `apps/api/app/services/imports.py`, service exports, the minimal import-
+  aware transaction-service extension, focused import-service tests, and this
+  workboard only.
+- Work: Claim profile/account-isolated preview staging, account suggestion and
+  explicit selection, exact and overlap duplicate decisions, occurrence-aware
+  fingerprints, and atomic/idempotent commit/cancel lifecycle services.
+- Verification: pending focused/full 172+ pytest, Ruff, mapper/migration gates,
+  privacy/log and rollback/cleanup regressions, `git diff --check`, independent
+  adversarial review, and Graphify refresh.
+- Decisions: Consume the completed BE-12/13/14 contracts without persisting raw
+  PDF bytes or extracted page text. Services flush but do not own the caller's
+  outer commit; commit failure isolation will be enforced within a savepoint.
+- Blockers/risks: none.
+- Handoff: Complete BE-15 and make BE-16 `READY` only after clean independent
+  review and all verification gates pass.
+
+### 2026-07-16 11:55 EDT — BE-15 — Codex / be10_transaction_services
+
+- Status: `DONE`
+- Scope: Added profile-isolated import preview/commit/cancel services and
+  exports, a minimal canonical imported-transaction creator, focused service
+  regressions, and the reviewed database fingerprint-claim correction in the
+  Transaction model/Alembic 0006.
+- Work: Preview now validates parser counts, exact cents/delta/status, and the
+  one-cent product tolerance before persisting only canonical candidates and
+  coded warnings. Profile-scoped writer claims serialize file/logical duplicate
+  decisions; account suggestions remain advisory while selection is explicit
+  and same-profile. Occurrence-aware HMAC fingerprints preserve repeated valid
+  rows. Exact imported matches alone auto-link; ambiguous normalized overlaps
+  become `needs_review`. Commit takes a database writer claim, rechecks exact
+  matches, uses a partial unique fingerprint index as the final concurrency
+  guard, retries unique races by linking the winner, and constructs its result
+  inside the same savepoint. Structured failure results persist `failed` while
+  leaving zero transactions/links. Commit is idempotent and writes `pdf_import`,
+  import ID, source-row reference, foreign provenance, and audit links.
+- Verification: focused import slice **68/68 passed**; final service/migration
+  correction suite **17/17 passed**; final full backend suite **187/187 passed**;
+  repository Ruff passed; mapper configuration passed with `SAWarning` promoted
+  to errors; 0005↔0006 migration/inspection passed including the partial unique
+  fingerprint index and child-history preservation; scoped `git diff --check`
+  passed with line-ending warnings only. True concurrent-session tests prove
+  two previews converge to original+blocked and two commits converge to one
+  transaction plus two links. Cleanup runs for success, missing/cross-profile,
+  cancel, and failure paths; privacy tests prove logs omit filename, page text,
+  and descriptions. Final Graphify refresh rebuilt **1,724 nodes / 3,253 edges /
+  169 communities**.
+- Decisions: Failed commits return a structured `failure_code="commit_failed"`
+  result instead of throwing after marking the batch, allowing the caller-owned
+  request transaction to durably commit the terminal failed state. Logger
+  failures are non-fatal and cannot alter ledger semantics. The partial unique
+  index applies only to non-null fingerprints, so manual rows remain unaffected
+  and legitimate repeated statement rows remain distinct through occurrence
+  indexes.
+- Blockers/risks: none. Independent adversarial re-review by
+  `/root/ledger_consolidation` is `CLEAN` after the concurrency, atomic-result,
+  durable-failure, cleanup, and reconciliation corrections. This final appended
+  workboard record is newer than Graphify's semantic document extraction; its
+  code relationships are current.
+- Handoff: BE-16 is `READY`. Its router must map structured commit failures to a
+  privacy-safe error response without raising past the request transaction, so
+  the `failed` terminal state commits; preserve the service cleanup and profile-
+  scoped conflict semantics.
+
+### 2026-07-16 11:58 EDT — BE-16 — Codex / be10_transaction_services
+
+- Status: `IN PROGRESS`
+- Scope: `apps/api/app/routers/imports.py`, router exports, `app/main.py`, a
+  pre-multipart import-body limit middleware, upload/fingerprint-key
+  configuration, typed import API schemas, focused API/OpenAPI tests, and this
+  workboard. The middleware is a recorded acceptance-driven expansion needed to
+  enforce the configured limit before Starlette spools an unbounded upload.
+- Work: Claim profile-nested preview/get/commit/cancel endpoints for one TD PDF,
+  with bounded extraction, structured privacy-safe responses, uniform scoped
+  errors, durable structured commit failure mapping, and cleanup guarantees.
+- Verification: pending focused/full backend pytest, Ruff, OpenAPI/privacy/
+  upload-boundary tests, migration/mapper gates, `git diff --check`, independent
+  adversarial review, and Graphify refresh.
+- Decisions: Preserve BE-15's request-owned transaction contract: a structured
+  `commit_failed` result will be returned as a response without raising through
+  the session dependency, so the terminal `failed` state is committed.
+- Blockers/risks: none.
+- Handoff: Complete BE-16 and make FE-08 `READY` only after every acceptance
+  gate and independent review pass.
+
+### 2026-07-16 — FE-MERIDIAN-01 claimed
+
+- Owner: Codex / `ledger_consolidation`
+- Scope: production AppShell and current API-backed feature styles/copy,
+  committed frontend distribution, ADR 0002, and current workboard direction.
+- Work: Claimed the ready frontend task after the product owner's direct
+  decision to supersede Ledger styling with Meridian. The existing comparison
+  harness, prototype runtimes, and sample data remain retired.
+- Decisions: Preserve every live API route and use the existing `--lg-*`
+  feature-token names as temporary compatibility aliases to one Meridian token
+  system; do not restore the deleted Meridian prototype.
+- Verification: Read this workboard in full; queried Graphify before source
+  inspection; read `ui-ux-pro-max` in full. Its optional `scripts/search.py`
+  helper is absent, so embedded accessibility, responsive, theme, and motion
+  guidance will be applied directly and recorded at completion.
+
+### 2026-07-16 12:08 EDT — FE-MERIDIAN-01 — Codex / ledger_consolidation
+
+- Status: `NEEDS REVIEW`
+- Scope: Production AppShell, current dashboard/settings/transaction copy,
+  shared feature-token compatibility, frontend metadata/distribution, ADR 0002,
+  current workboard direction, and Graphify refresh.
+- Work: Superseded Ledger's terminal-style chrome with one Meridian blue-violet
+  system across the existing API-backed application. Added rounded translucent
+  navigation, softer live-data surfaces, theme-aware semantic tokens, and a
+  working Dashboard-to-Transactions action; retained current profile, account,
+  category, transaction, theme, health, and navigation behavior. Updated the
+  product decision without restoring the comparison harness, prototype routes,
+  or synthetic runtime data.
+- Verification: `npm run typecheck` passed; Vitest **8 files / 23 tests passed**;
+  `npm run build` passed (**113 modules**) and refreshed `dist`; static runtime
+  scan found no comparison/prototype/sample imports; scoped `git diff --check`
+  passed with line-ending warnings only. The `ui-ux-pro-max` checks confirm
+  visible 3px focus, semantic controls/SVG icons, ≥44px interactive targets,
+  375/520/768/1000 responsive breakpoints, mobile 16px form text, reduced-
+  motion override, and theme-separated tokens. Computed foreground contrast is
+  **5.09:1–16.83:1** for core light/dark text and primary actions. Graphify
+  refreshed to **1,790 nodes / 3,397 edges / 171 communities**.
+- Decisions: Existing `--lg-*` feature variables remain as compatibility aliases
+  to Meridian semantic values until feature CSS can be mechanically renamed;
+  no Ledger palette or styling remains behind those names.
+- Blockers/risks: The required in-app rendered QA at 375/768/1440, 200% zoom,
+  light/dark, focus, and reduced motion could not run because the browser runtime
+  returned zero available browser targets. Source checks passed, but this task
+  cannot honestly be marked `DONE` until that visual gate is completed. This
+  final workboard entry is newer than Graphify's semantic documentation pass;
+  the refreshed code relationships are current.
+- Handoff: Open the built app in an available in-app browser, render Dashboard
+  and Transactions at 375/768/1440 in light/dark, verify keyboard focus and 200%
+  zoom without horizontal page overflow, and then move FE-MERIDIAN-01 to `DONE`.
+
+### 2026-07-16 12:14 EDT — FE-MERIDIAN-01 rendered acceptance — Codex / root
+
+- Status: `DONE`
+- Scope: Rendered acceptance of the built Meridian production application; no
+  source changes beyond this task-status update.
+- Work: Closed the remaining visual gate against the refreshed production
+  distribution while preserving the API-backed routes and retired prototype/
+  sample-data boundary.
+- Verification: Local Edge/Playwright rendered **375/768/1440** in both light
+  and dark themes with the correct Meridian title/brand, no page-level
+  horizontal overflow, and zero visible controls undersized in both dimensions.
+  At 200% CSS zoom there was no horizontal page overflow. Reduced motion
+  computed to **0.00001s**; the first Tab reached the visibly outlined “Skip to
+  content” link; “View transactions” navigated to `/app/transactions`.
+  Screenshots and JSON evidence are in ignored `output/playwright/meridian-*`.
+- Decisions: FE-MERIDIAN-01 meets its full acceptance contract; the production
+  UI is Meridian and the old Meridian prototype remains retired.
+- Blockers/risks: none.
+- Handoff: Build new frontend features against the live Meridian production
+  shell and semantic tokens; do not restore comparison or sample-data routes.
+
+### 2026-07-16 12:16 EDT — BE-16 — Codex / be10_transaction_services
+
+- Status: `DONE`
+- Scope: Added the typed profile-nested import routes, safe response schemas,
+  upload and extraction configuration, persistent fingerprint-key handling,
+  pre-parser request-body limiting middleware, multipart dependency, focused
+  API tests, and this workboard handoff. A narrow BE-15 duplicate-query
+  correction permits a cancelled original statement to be retried even when a
+  blocked-duplicate audit attempt exists.
+- Work: Implemented preview, detail, commit, and cancel endpoints for one TD PDF
+  per preview. Uploads are bounded before multipart completion, always closed,
+  and processed through the BE-15 services. Duplicate preview attempts persist
+  their reference before returning `409`; injected commit failures return a
+  structured `500` without rolling back the durable failed import state.
+  Responses omit file hashes, logical keys, fingerprints, raw PDF content, and
+  extracted text. Error mappings cover `413`, `415`, readable `422`, `409`,
+  uniform profile-scoped `404`, and privacy-safe `500` responses.
+- Verification: Focused import API **9/9**, API/service slice **24/24**, and full
+  backend **196/196** passed. Ruff, `pip check`, mapper warnings-as-errors,
+  OpenAPI four-path/status/404 schema checks, migration tests, and scoped diff
+  checks passed. Lifecycle/privacy, malicious filename, temp cleanup, rollback,
+  duplicate/cancel/idempotence, and cross-profile isolation checks passed. The
+  ASGI limiter preserves CORS and does not consume the final chunk after the cap.
+  Windows binary exclusive key writes passed a 64-key stress check. Final
+  independent review: **CLEAN/APPROVE**. Graphify refreshed to **1,815 nodes /
+  3,435 edges / 175 communities**.
+- Decisions: The maximum request envelope is the configured file limit plus a
+  configurable 64 KiB multipart allowance; extraction limits remain exact.
+  The fingerprint key is persisted beside the database by default and is never
+  logged. Structured commit-failure responses are returned inside the request
+  transaction so the failed lifecycle state commits.
+- Blockers/risks: none. This documentation entry is newer than the semantic
+  graph refresh; the AST-derived code graph is current.
+- Handoff: `FE-08` is `READY`. Submit multipart fields `statement` and
+  `account_id`; handle `409`, `413`, `415`, `422`, and structured `500`; require
+  explicit acknowledgement for a needs-review commit; clear transient file
+  state after cancel or commit. Coordinate minimal AppShell changes with the
+  completed Meridian restyle and apply the mandatory `ui-ux-pro-max` workflow.
+
+### 2026-07-16 12:25 EDT — FE-08 — Codex / ledger_consolidation
+
+- Status: `IN PROGRESS`
+- Scope: `apps/web/src/features/imports/**`, focused frontend API/component
+  tests, minimal Meridian AppShell route/top-action styles, committed `dist`,
+  Graphify refresh, and this workboard.
+- Work: Claimed the now-ready Meridian statement-import workflow against the
+  completed BE-16 contract. Implement one transient browser-memory PDF flow from
+  select/drop through preview, review acknowledgement, commit/cancel, and a
+  Transactions success handoff.
+- Verification: pending typecheck, Vitest, build/dist, API error-contract tests,
+  transient-file persistence scan, rendered 375/768/1440 light/dark/focus/zoom/
+  reduced-motion checks, independent review, diff check, and Graphify refresh.
+- Decisions: Submit only multipart `statement` + `account_id`; never place File,
+  PDF bytes, or preview data in localStorage, IndexedDB, fixtures, or sample
+  runtime modules. Clear File state after cancel and successful commit.
+- Blockers/risks: `ui-ux-pro-max` was reread in full and its embedded rules are
+  active, but the required optional `scripts/search.py` remains absent.
+- Handoff: Complete FE-08 and seek independent review before moving it to DONE.
+
+### 2026-07-16 12:30 EDT — FE-08 — Codex / ledger_consolidation
+
+- Status: `NEEDS REVIEW`
+- Scope: Added the Meridian Import Statement route and top action, typed import
+  API/client contract, transient PDF workflow, focused tests, refreshed frontend
+  distribution, Graphify output, and this handoff.
+- Work: The top Import action now opens `/app/imports`. The profile-scoped flow
+  accepts one selected/dropped PDF plus an active account, previews the live
+  backend response, displays issuer suggestion, type counts, reconciliation,
+  warnings, candidate/duplicate states, gates `needs_review` commits behind an
+  explicit acknowledgement, supports cancel, and links successful commits to
+  Transactions. Multipart contains only `statement` and `account_id`. Structured
+  `409`, `413`, `415`, `422`, and terminal `500` outcomes receive actionable UI;
+  blocked duplicates are retrieved as cancellable previews. `File` exists only
+  in React state and is cleared after cancel, successful commit, profile change,
+  and terminal failed commit; no file/preview persistence or sample runtime data
+  was added.
+- Verification: `npm run typecheck` passed; focused import/client **18/18** and
+  full frontend **10 files / 34 tests** passed. Tests cover exact multipart
+  fields, blocked `409` recovery, `413`/`415`/`422` guidance, structured `500`
+  metadata and terminal cleanup, cancel/commit cleanup, acknowledgement, success
+  link, and actual focus after async mounted transitions. `npm run build` passed
+  (**116 modules**) and refreshed `dist`; scoped `git diff --check` passed with
+  line-ending warnings only. Graphify refreshed to **1,858 nodes / 3,517 edges /
+  182 communities**.
+- UI/UX skill checks: `ui-ux-pro-max` was read in full; because its optional
+  search helper is absent, its embedded rules guided the implementation. Source
+  checks confirm semantic labels/alerts/status, keyboard-native controls,
+  state-driven visible focus, SVG rather than emoji action icons, ≥44px action
+  targets, mobile 16px select text, breakpoints at 1000/768/520, Meridian semantic
+  light/dark tokens, and the existing global reduced-motion override. The File
+  target is also a full-card label for pointer and touch use.
+- Decisions: A persisted duplicate `409` is converted into its safe structured
+  detail so the user can inspect and cancel it. A durable failed commit is
+  terminal and cannot be cancelled by the backend, so the client releases the
+  File/preview and preserves a focused diagnostic with retry guidance.
+- Blockers/risks: Required rendered 375/768/1440 light/dark, 200%-zoom, focus,
+  reduced-motion, and top-navigation acceptance remains with root's local
+  Edge/Playwright path because this agent has no in-app browser target. An
+  independent read-only reviewer is active; neither gate has been pre-claimed.
+- Handoff: Root performs rendered acceptance and independent review returns
+  CLEAN/APPROVE; then move FE-08 to `DONE` and unblock QA-04.
+
+### 2026-07-16 12:33 EDT — FE-08 rendered acceptance — Codex / root
+
+- Status: `NEEDS REVIEW`
+- Scope: Rendered acceptance of the built Meridian Import Statement workflow;
+  no source changes beyond recording this evidence.
+- Work: Exercised the top Import navigation and complete select-PDF, preview,
+  needs-review acknowledgement, commit-success, and Transactions handoff using
+  mocked responses that match the live BE-16 wire contract.
+- Verification: Local Edge/Playwright passed **375/768/1440** in light and dark
+  with no page-level horizontal overflow. The top Import action navigated to
+  `/app/imports`; keyboard focus was visibly outlined; preview and success
+  headings received focus after async transitions. Commit remained disabled
+  until acknowledgement and then rendered a three-created success result. At
+  200% CSS zoom there was no page overflow; reduced motion computed to
+  **0.00001s**. The only 1×1 control was the intentionally visually hidden
+  native file input whose associated drop-label target is large. Mobile, dark
+  tablet, full-preview, success, and zoom screenshots were visually clean.
+  Evidence is in ignored `output/playwright/fe08-*`.
+- Decisions: The visually hidden native file input is accessible through its
+  semantic large label/drop target and is not a target-size defect.
+- Blockers/risks: Independent source/contract/test review is still active.
+- Handoff: Move FE-08 to `DONE` and unblock QA-04 only after the reviewer returns
+  CLEAN/APPROVE.
+
+### 2026-07-16 12:37 EDT — FE-08 independent review fixes — Codex / ledger_consolidation
+
+- Status: `NEEDS REVIEW`
+- Scope: Native File release, narrow-layout containment, focused regressions,
+  refreshed distribution/Graphify output, and independent re-review.
+- Work: Reset the native file input as well as React state after Remove, invalid
+  selection, and profile change, which releases the DOM-held File and permits
+  selecting the same file again. Added `min-width`/width containment to the
+  account field and wrapping for maximum-length preview filenames and account
+  suggestions so valid backend values cannot force narrow-page overflow.
+- Verification: Focused import/client **20/20** and full frontend **10 files /
+  36 tests** passed. New DOM regressions prove `input.files` clears after Remove
+  and profile switch and the same File can be reselected. `npm run build` passed
+  (**116 modules**) and refreshed `dist` to `index-DGPe-2ZY.css` and
+  `index-Bmm5CWk_.js`; scoped diff check remained clean except line-ending
+  warnings. Graphify refreshed to **1,869 nodes / 3,530 edges / 186
+  communities**. Independent re-review: **CLEAN/APPROVE** with no remaining
+  source, wire-contract, automated-test, or UI source findings.
+- Decisions: Both React state and the browser-owned native input value form the
+  transient-file privacy boundary and must be cleared together.
+- Blockers/risks: Root is running one narrow rendered follow-up on the rebuilt
+  distribution using maximum-length unbroken account/filename values at 375px
+  and 200% zoom. All previously required rendered gates passed before these
+  containment-only fixes.
+- Handoff: If the long-value rendered check reports no page overflow, mark FE-08
+  `DONE` and unblock QA-04.
+
+### 2026-07-16 12:39 EDT — FE-08 final rendered recheck — Codex / root
+
+- Status: `DONE`
+- Scope: Post-review narrow-layout containment acceptance on the final rebuilt
+  distribution and task closure.
+- Work: Rendered the final Import preview with a 100-character unbroken account
+  display name and a 255-character unbroken filename/suggestion matching valid
+  backend maximums.
+- Verification: At 375px the page measured **375/375** scroll/client width; at
+  200% CSS zoom it measured **1440/1440**. Neither case had page-level horizontal
+  overflow, and visual inspection confirmed wrapping stayed inside cards and the
+  suggestion surface. Evidence is in ignored `output/playwright/fe08-long-*`.
+  Together with the earlier full rendered matrix, automated **36/36**, refreshed
+  dist, and independent **CLEAN/APPROVE**, every FE-08 acceptance gate passes.
+- Decisions: FE-08 is complete; QA-04 is now `READY`.
+- Blockers/risks: none. This final workboard-only entry is newer than the
+  semantic Graphify documentation pass; AST-derived code relationships are
+  current at **1,869 nodes / 3,530 edges / 186 communities**.
+- Handoff: Claim QA-04 and execute its cross-app Stage 3 validation matrix.
+
+### 2026-07-16 16:20 EDT — QA-04 — Codex / be11_contract_audit
+
+- Status: `IN PROGRESS`
+- Scope: Cross-app Stage 3 validation only; disposable migration/database/temp
+  artifacts, loopback runtime and browser evidence, and this workboard. Feature
+  source will remain unchanged unless validation proves a defect.
+- Work: Claimed the complete import-framework/TD vertical-slice release gate:
+  fresh migration cycle, full backend/frontend gates, adversarial lifecycle and
+  privacy matrix, loopback binding, and complete Import-button browser flow.
+- Verification: pending. `ui-ux-pro-max` was reread in full; its optional
+  `scripts/search.py` design-system helper is absent, so the accepted Meridian
+  system and the skill's embedded keyboard/focus, target-size, responsive,
+  theme, zoom, reduced-motion, form-feedback, and accessibility checks govern
+  rendered QA.
+- Decisions: Use only committed synthetic TD fixtures. No private statement is
+  in scope, and no real statement data will be opened or persisted.
+- Blockers/risks: none.
+- Handoff: Run the complete QA-04 matrix and record exact pass/fail evidence.
