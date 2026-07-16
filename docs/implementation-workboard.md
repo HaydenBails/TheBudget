@@ -157,13 +157,28 @@ rules N/A here, and full verification before `DONE`.
 | FE-06 | Category management UI for the active profile. | FE-05, BE-08 | `apps/web/src/features/categories/` | List seeded defaults + custom categories (grouped, sorted), create (name/colour/icon/excluded), edit, archive/restore — all scoped to the active profile; validation + empty/error states; keyboard + light/dark checks. | `DONE` | Claude Opus 4.8 |
 | QA-02 | Validate the categories slice. | BE-08, FE-06 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, seeding-on-create, and category profile-isolation scenarios pass. | `DONE` | Claude Opus 4.8 |
 
+### Transactions slice (M3 → M-ledger)
+
+Expanded 2026-07-16 after the categories slice passed QA. This is a larger slice;
+it is split into schema → services → routes → UI. Money is integer cents and the
+spending-inclusion policy follows `docs/decisions/0003-money-and-accounting.md`.
+Split child amounts must sum to the parent amount. All rows are profile-scoped
+and soft-deleted (restorable), never hard-deleted.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-09 | Transaction/split/tag schema: ORM models, Pydantic schemas, migration, and a split-sum domain validator. | BE-07 | `apps/api/app/models/{transaction,transaction_split,tag}.py`, `schemas/transaction.py`, `services/transactions_rules.py` (split-sum + default inclusion), `models/__init__`, `schemas/__init__`, `alembic/versions/`, backend tests | Transaction is profile+account scoped (signed `amount_cents`, type/status/source enums, `included_in_spending`, nullable `category_id`, soft-delete `deleted_at`); split rows reference a category and sum-check against the parent; tags are unique per profile with a many-to-many link; migration applies/reverses from the prior head; split-sum + default-inclusion helpers unit-tested; pytest + ruff pass. | `DONE` | Claude Opus 4.8 |
+| BE-10 | Transaction services: profile-scoped create/list/filter/update, split + tag management, soft delete/restore, spending-inclusion policy. | BE-09 | `apps/api/app/services/transactions.py`, backend tests | CRUD + filtering (account/category/type/date/included/search) scoped to profile; splits validated to sum to the parent; soft delete hides from default lists and metrics; cross-profile access → not-found; archive/restore-equivalent (soft delete) covered; pytest passes. | `READY` | — |
+| BE-11 | Typed transaction API routes (incl. bulk categorize/exclude) nested under the profile. | BE-10 | `apps/api/app/routers/transactions.py`, `app/main.py`, API tests | List/create/get/patch/soft-delete/restore + a bulk endpoint; validation 422; missing/cross-profile 404; OpenAPI contains routes; pytest passes. | `BLOCKED` | — |
+| FE-07 | Transactions workspace UI (TanStack Table) for the active profile. | FE-06, BE-11 | `apps/web/src/features/transactions/` | Virtualized/paginated table scoped to the active profile: search + filters, inline category assignment, included/excluded display, soft delete + restore; loading/empty/error states; keyboard + light/dark checks. | `BLOCKED` | — |
+| QA-03 | Validate the transactions slice. | BE-11, FE-07 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, split-sum + inclusion rules, and transaction profile-isolation scenarios pass. | `BLOCKED` | — |
+
 ## Later-stage backlog
 
-Do not claim these until the categories slice is complete and the board has been
-expanded with equivalent acceptance detail.
+Do not claim these until the transactions slice is complete and the board has
+been expanded with equivalent acceptance detail.
 
-1. Core transaction, split, tag, import, budget, recurring-series, and rule
-   schemas.
+1. Statement import framework (temporary upload → staging → preview → commit).
 3. Production TanStack transaction grid using API-backed data.
 4. Temporary upload/staging/preview/commit import framework.
 5. TD parser and reconciliation fixtures.
@@ -998,3 +1013,39 @@ expanded with equivalent acceptance detail.
   money-inclusion rules from `docs/decisions/0003-money-and-accounting.md`),
   which is substantially larger and should be expanded into its own BE/FE task
   rows before implementation.
+
+### 2026-07-16 — board expansion (transactions slice) + BE-09 — Claude Opus 4.8
+
+- Added the transactions slice rows (BE-09/10/11, FE-07, QA-03) with acceptance
+  detail; moved the import framework down the backlog.
+- **BE-09 — Status: `DONE`.**
+- Scope: `apps/api/app/models/{transaction,transaction_split,tag}.py` (+
+  `models/__init__`, Profile `transactions`/`tags` relationships),
+  `schemas/transaction.py` (+ `schemas/__init__`),
+  `services/transactions_rules.py` + `errors.SplitSumError` (+ `services/__init__`),
+  `alembic/versions/0004_transaction_models.py`, `tests/test_transaction_rules.py`;
+  updated the migration test's head-table set.
+- Work: Added the profile+account-scoped `Transaction` model (signed
+  `amount_cents` BigInteger; type/direction/categorization_status/source CHECKs;
+  `included_in_spending`; nullable `category_id` ON DELETE SET NULL; soft-delete
+  `deleted_at`; indexes on `(profile_id, account_id)` and `(profile_id, date)`),
+  `TransactionSplit` (category + cents, cascade), and `Tag` + `TransactionTag`
+  (unique per profile, m2m). Pydantic create/update/read schemas. Pure domain
+  rules: `validate_splits_sum` (exact integer-cents equality → `SplitSumError`)
+  and `default_included_for_type` (purchase/refund included; payment/transfer/
+  cash-advance/fee/interest/income excluded, per ADR 0003). Reversible migration
+  0004.
+- Verification: migration `upgrade head → downgrade -1 → upgrade head` (incl.
+  0004) succeeds; `ruff` clean; `pytest` — **84 passed** (3 new: inclusion
+  policy, split-sum exact/mismatch, and an ORM round-trip persisting a
+  transaction with two splits that sum to the parent). Fixed a `date`
+  field-name/type shadowing bug in both the model and the schema by aliasing
+  `datetime.date`.
+- Decisions: `recurring_series_id` and `import_id` are plain nullable ints for
+  now (their tables arrive in later slices); no FK yet. Splits/tags have no HTTP
+  surface until BE-10/BE-11.
+- Blockers/risks: none.
+- Handoff: BE-10 is `READY` — build profile-scoped transaction services
+  (create/list+filter/update, split + tag management using
+  `validate_splits_sum`, soft delete/restore, and default inclusion via
+  `default_included_for_type`) with isolation + soft-delete tests.

@@ -28,6 +28,10 @@ def test_profile_account_migration_upgrade_downgrade_cycle(
             "alembic_version",
             "categories",
             "profiles",
+            "tags",
+            "transaction_splits",
+            "transaction_tags",
+            "transactions",
         }
     finally:
         engine.dispose()

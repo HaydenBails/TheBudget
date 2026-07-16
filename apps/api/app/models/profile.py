@@ -12,6 +12,8 @@ from app.models.base import Base, TimestampMixin
 if TYPE_CHECKING:
     from app.models.account import Account
     from app.models.category import Category
+    from app.models.tag import Tag
+    from app.models.transaction import Transaction
 
 
 class Profile(TimestampMixin, Base):
@@ -34,6 +36,16 @@ class Profile(TimestampMixin, Base):
         passive_deletes=True,
     )
     categories: Mapped[list[Category]] = relationship(
+        back_populates="profile",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    transactions: Mapped[list[Transaction]] = relationship(
+        back_populates="profile",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    tags: Mapped[list[Tag]] = relationship(
         back_populates="profile",
         cascade="all, delete-orphan",
         passive_deletes=True,

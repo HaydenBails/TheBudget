@@ -19,7 +19,11 @@ from app.services.categories import (
     seed_default_categories,
     update_category,
 )
-from app.services.errors import InvalidUpdateError, ResourceNotFoundError
+from app.services.errors import (
+    InvalidUpdateError,
+    ResourceNotFoundError,
+    SplitSumError,
+)
 from app.services.profiles import (
     archive_profile,
     create_profile,
@@ -29,11 +33,18 @@ from app.services.profiles import (
     restore_profile,
     update_profile,
 )
+from app.services.transactions_rules import (
+    default_included_for_type,
+    validate_splits_sum,
+)
 
 __all__ = [
     "InvalidUpdateError",
     "ResourceNotFoundError",
+    "SplitSumError",
     "archive_account",
+    "default_included_for_type",
+    "validate_splits_sum",
     "archive_category",
     "archive_profile",
     "create_account",
