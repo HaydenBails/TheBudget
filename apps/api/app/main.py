@@ -21,7 +21,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import settings
 from app.db import dispose_database
-from app.routers import accounts, health, profiles
+from app.routers import accounts, categories, health, profiles
 from app.services import InvalidUpdateError, ResourceNotFoundError
 
 logger = logging.getLogger("spending_tracker.api")
@@ -62,6 +62,7 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(profiles.router)
 app.include_router(accounts.router)
+app.include_router(categories.router)
 
 
 @app.exception_handler(ResourceNotFoundError)

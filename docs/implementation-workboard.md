@@ -153,8 +153,8 @@ rules N/A here, and full verification before `DONE`.
 | ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
 | --- | --- | --- | --- | --- | --- | --- |
 | BE-07 | Category domain: ORM model, schemas, migration, profile-scoped services, and idempotent default-category seeding (auto-seeded on profile creation). | BE-03 | `apps/api/app/models/category.py`, `apps/api/app/schemas/category.py`, `apps/api/app/services/categories.py`, seed helper, `services/profiles.py` (seed hook), `models/__init__`, `schemas/__init__`, `services/__init__`, `alembic/versions/`, backend tests | Category is profile-scoped (FK + index) with slug/name/color/icon/parent/excluded/is_default/sort_order/archived; migration applies from the prior head and reverses; creating a profile seeds the 13 defaults idempotently; cross-profile reads/writes return not-found; archive/restore covered; pytest + ruff pass. | `DONE` | Claude Opus 4.8 |
-| BE-08 | Typed category API routes nested under the owning profile. | BE-07 | `apps/api/app/routers/categories.py`, `apps/api/app/routers/__init__.py`, `apps/api/app/main.py`, API tests | `GET/POST /profiles/{id}/categories`, `GET/PATCH /profiles/{id}/categories/{categoryId}`, `POST .../archive|restore`; happy paths, field-specific 422s, missing/cross-profile 404, OpenAPI contains routes; pytest passes. | `READY` | — |
-| FE-06 | Category management UI for the active profile. | FE-05, BE-08 | `apps/web/src/features/categories/` | List seeded defaults + custom categories (grouped, sorted), create (name/colour/icon/excluded), edit, archive/restore — all scoped to the active profile; validation + empty/error states; keyboard + light/dark checks. | `BLOCKED` | — |
+| BE-08 | Typed category API routes nested under the owning profile. | BE-07 | `apps/api/app/routers/categories.py`, `apps/api/app/routers/__init__.py`, `apps/api/app/main.py`, API tests | `GET/POST /profiles/{id}/categories`, `GET/PATCH /profiles/{id}/categories/{categoryId}`, `POST .../archive|restore`; happy paths, field-specific 422s, missing/cross-profile 404, OpenAPI contains routes; pytest passes. | `DONE` | Claude Opus 4.8 |
+| FE-06 | Category management UI for the active profile. | FE-05, BE-08 | `apps/web/src/features/categories/` | List seeded defaults + custom categories (grouped, sorted), create (name/colour/icon/excluded), edit, archive/restore — all scoped to the active profile; validation + empty/error states; keyboard + light/dark checks. | `READY` | — |
 | QA-02 | Validate the categories slice. | BE-08, FE-06 | Cross-app review; avoid feature edits unless defects are found | Migrations, backend tests/lint, frontend typecheck/test/build, seeding-on-create, and category profile-isolation scenarios pass. | `BLOCKED` | — |
 
 ## Later-stage backlog
@@ -918,3 +918,28 @@ expanded with equivalent acceptance detail.
 - Handoff: BE-08 is `READY` — add nested `/profiles/{id}/categories` routes
   (list/create/get/patch/archive/restore) mirroring the accounts router, wire
   into `main`, and add API tests (happy path, 422, cross-profile 404, OpenAPI).
+
+### 2026-07-16 — BE-08 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/api/app/routers/categories.py`, `apps/api/app/main.py` (import +
+  include_router), `apps/api/tests/test_category_api.py`.
+- Work: Added nested category routes under the owning profile —
+  `GET/POST /profiles/{id}/categories`, `GET/PATCH
+  /profiles/{id}/categories/{categoryId}`, and `POST .../archive|restore` —
+  mirroring the accounts router and reusing the shared 404/422 service-error
+  mapping in `main`.
+- Verification: `ruff check app tests alembic` — pass; `pytest` — **81 passed**
+  (6 new API tests: seeded defaults exposed on a new profile, custom create,
+  patch + archive/restore, cross-profile 404 on GET and PATCH, field-specific
+  422 on bad colour, and OpenAPI contains the category paths).
+- Decisions: none beyond mirroring the accounts contract; categories are
+  archive/restore, not hard delete.
+- Blockers/risks: none.
+- Handoff: FE-06 is `READY` — build the categories management UI under
+  `apps/web/src/features/categories/`, scoped to the active profile via
+  `useCurrentProfile()`, consuming these routes. Category wire types: integer
+  ids, snake_case (`profile_id`, `excluded_from_spending`, `is_default`,
+  `sort_order`, `is_archived`, `parent_id`); create body is
+  `{name, color, icon?, parent_id?, excluded_from_spending?}` (slug is server-
+  derived). Distinguish default vs custom; keep archive/restore.
