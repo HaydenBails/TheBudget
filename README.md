@@ -43,12 +43,49 @@ TheBudget/
     e2e/          End-to-end tests (future)
 ```
 
-## Prerequisites
+## Run the app — Python only, no Node.js required
 
-- **Node.js** 20+ (tested on 22)
+The web UI is **pre-built and committed** (`apps/web/dist/`) and served by the
+FastAPI backend, so you can run the whole app with just Python — one process,
+one URL, no Node.js to install.
+
+**Prerequisite:** Python 3.11+ only.
+
+```bash
+./scripts/start-app.sh          # macOS / Linux
+```
+
+```powershell
+./scripts/start-app.ps1         # Windows PowerShell
+```
+
+That creates the virtualenv, installs backend dependencies, runs migrations,
+starts the server on **http://127.0.0.1:8787**, and opens your browser. The app
+and its local API are served together on that one address. Or do it by hand:
+
+```bash
+cd apps/api
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m alembic upgrade head
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8787
+# then open http://127.0.0.1:8787
+```
+
+Everything below is only needed if you want to **develop the frontend** (which
+does use Node as a build tool). Running the app does not.
+
+---
+
+## Developer prerequisites (frontend build only)
+
+- **Node.js** 20+ (tested on 22) — only to rebuild the UI; not needed to run it
 - **Python** 3.11+ (plan targets 3.12/3.13; 3.11 runs the current backend here)
 
-## Quick start (frontend)
+> After changing anything under `apps/web/`, rebuild the committed UI with
+> `cd apps/web && npm run build` so the Python-served app reflects your changes.
+
+## Quick start (frontend dev server)
 
 ```bash
 cd apps/web

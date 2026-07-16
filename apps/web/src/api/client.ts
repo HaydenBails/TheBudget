@@ -1,8 +1,13 @@
 // Typed local API client for the FastAPI backend. Local-first: the base URL
 // defaults to loopback and can be overridden with VITE_API_BASE at build time.
 
+// In a production build the app is served by the FastAPI backend on the same
+// origin, so the API base is empty (relative). Under the Vite dev server the app
+// runs on a different port, so it targets the local API explicitly. Either can be
+// overridden with VITE_API_BASE at build time.
 export const API_BASE = (
-  (import.meta.env.VITE_API_BASE as string | undefined) ?? 'http://127.0.0.1:8787'
+  (import.meta.env.VITE_API_BASE as string | undefined) ??
+  (import.meta.env.DEV ? 'http://127.0.0.1:8787' : '')
 ).replace(/\/$/, '');
 
 export interface FieldError {

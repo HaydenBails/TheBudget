@@ -86,4 +86,10 @@ require 3.12+). The DB lives at a configurable local path (`ST_DATABASE_PATH`);
 - Work on the designated feature branch; keep `main` updated via the same
   commits when asked. Do not push to `main` directly without explicit approval.
 - End commit messages with the repo's Co-Authored-By/Claude-Session trailers.
-- Do not commit `node_modules/`, `.venv/`, `*.db`, or build output.
+- Do not commit `node_modules/`, `.venv/`, or `*.db`.
+- **Exception — `apps/web/dist/` IS committed** so the app runs with Python only
+  (no Node): the FastAPI backend serves the pre-built UI on the same origin
+  (`http://127.0.0.1:8787`). After any `apps/web/**` change, run
+  `cd apps/web && npm run build` and commit the refreshed `dist/`. In production
+  builds the API base is same-origin (relative); under the Vite dev server it
+  targets `127.0.0.1:8787`.

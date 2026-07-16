@@ -19,8 +19,8 @@ def test_health_returns_ok() -> None:
     }
 
 
-def test_root_returns_metadata() -> None:
-    response = client.get("/")
+def test_metadata_endpoint() -> None:
+    response = client.get("/api")
     assert response.status_code == 200
     body = response.json()
     assert body["name"] == "spending-tracker-api"

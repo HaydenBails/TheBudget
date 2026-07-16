@@ -5,6 +5,12 @@ dist-ssr/
 *.local
 .vite/
 
+# EXCEPTION: the built web UI is committed so the app runs with Python only
+# (no Node needed to run it). Rebuild with `npm run build` in apps/web when the
+# frontend changes.
+!/apps/web/dist/
+!/apps/web/dist/**
+
 # Python
 __pycache__/
 *.py[cod]

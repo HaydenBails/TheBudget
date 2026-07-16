@@ -1049,3 +1049,37 @@ been expanded with equivalent acceptance detail.
   (create/list+filter/update, split + tag management using
   `validate_splits_sum`, soft delete/restore, and default inclusion via
   `default_included_for_type`) with isolation + soft-delete tests.
+
+### 2026-07-16 — DX-01 (run without Node.js) — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/api/app/main.py` (serve pre-built UI + move metadata to `/api`),
+  `apps/api/tests/test_health.py`, `apps/web/src/api/client.ts` (same-origin API
+  base in production), `apps/web/dist/**` (committed build), `.gitignore`
+  (un-ignore `apps/web/dist`), `scripts/start-app.{sh,ps1}`, `README.md`,
+  `CLAUDE.md`, this workboard.
+- Work: The product owner cannot install/run Node.js. Node is only a build tool;
+  its output is static files. So the FastAPI backend now serves the pre-built
+  React app (`apps/web/dist/`) on the same origin — the whole app runs as a
+  single **Python-only** process on `http://127.0.0.1:8787`, no Node required to
+  run it. API routes are registered first and take precedence; a GET catch-all
+  serves built assets or falls back to `index.html` for client-side routes (only
+  active when `dist/index.html` exists, with a path-traversal guard). Service
+  metadata moved from `/` to `/api` so `/` serves the app. The frontend API base
+  is now same-origin (relative) in production builds and `127.0.0.1:8787` under
+  the Vite dev server. Added `scripts/start-app.{sh,ps1}` (venv + deps +
+  migrate + open browser + uvicorn) and reframed the README so the Python-only
+  run is the primary path; Node is documented as dev-only.
+- Verification: backend `pytest` **84 passed** and `ruff` clean with `dist/`
+  present (SPA guard active). Live Python-only run (uvicorn on 8787, no Node):
+  `/` and `/app/profiles` → `index.html` (200); the JS asset → 200
+  `text/javascript`; `/health` + `/api` + `POST /profiles` work same-origin; a
+  headless browser loaded `/app/profiles`, showed a green **API connected** chip,
+  rendered a profile created via the API, and logged **no page errors**.
+- Decisions: `apps/web/dist/` is committed (documented exception in `.gitignore`
+  and `CLAUDE.md`); it must be rebuilt (`npm run build`) and re-committed after
+  any `apps/web/**` change. Assumes Python 3.11+ is available (the user's blocker
+  was Node specifically).
+- Exception: direct product-owner DX request, not a pre-existing READY row —
+  completed and recorded here without claiming an implementation task. Does not
+  change the transactions-slice plan; BE-10 remains `READY`.

@@ -14,10 +14,11 @@ from __future__ import annotations
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 from app.config import settings
 from app.db import dispose_database
@@ -91,11 +92,29 @@ async def invalid_update_handler(
     )
 
 
-@app.get("/", tags=["meta"], summary="Service metadata")
-def root() -> dict[str, str]:
+@app.get("/api", tags=["meta"], summary="Service metadata")
+def service_metadata() -> dict[str, str]:
     """Return basic identifying metadata for the service."""
     return {
         "name": settings.app_name,
         "version": settings.version,
         "status": "ok",
     }
+
+
+# --- Serve the pre-built web UI (so the app runs with Python only, no Node) ----
+# The React app is built to `apps/web/dist/` and committed. When present, the
+# backend serves it on the same origin, so the whole app is one local process.
+# API routes above are registered first and always take precedence; this SPA
+# fallback only handles asset files and client-side routes (e.g. /app/...).
+_WEB_DIST = Path(__file__).resolve().parents[3] / "apps" / "web" / "dist"
+
+if (_WEB_DIST / "index.html").is_file():
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def serve_web_app(full_path: str) -> FileResponse:
+        """Serve a built asset if it exists, else the SPA entry (index.html)."""
+        candidate = (_WEB_DIST / full_path).resolve()
+        if full_path and _WEB_DIST in candidate.parents and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(_WEB_DIST / "index.html")
