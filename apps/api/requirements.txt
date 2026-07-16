@@ -1,11 +1,17 @@
-# Spending Tracker API — runtime dependencies (Stage 0 placeholder)
-# Pin to reasonable recent versions. Keep this minimal until later stages.
+# Spending Tracker API — runtime dependencies.
+#
+# Version ranges (not hard pins) so pip installs prebuilt wheels for whatever
+# Python you have, INCLUDING Python 3.14 — no C/Rust compiler required. (The old
+# hard pins predated 3.14 and forced a from-source build of pydantic-core, which
+# needs Rust + a C++ linker.) `uvicorn` is used WITHOUT the [standard] extra to
+# avoid the C-compiled httptools/uvloop; the pure-Python default server is fine
+# for local use.
 
-fastapi==0.115.6
-uvicorn[standard]==0.34.0
-pydantic==2.10.5
-pydantic-settings==2.7.1
-SQLAlchemy==2.0.36
-alembic==1.14.0
-pdfplumber==0.11.5
-python-multipart==0.0.20
+fastapi>=0.115,<1
+uvicorn>=0.34,<1
+pydantic>=2.11,<3
+pydantic-settings>=2.7,<3
+SQLAlchemy>=2.0.36,<2.1
+alembic>=1.14,<2
+pdfplumber>=0.11.5,<0.12
+python-multipart>=0.0.20,<0.1

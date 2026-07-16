@@ -56,3 +56,6 @@ test-results/
 
 # Temporary statement uploads (never persisted)
 tmp-uploads/
+
+# Test/QA artifacts (screenshots, scratch scripts) — never committed.
+output/

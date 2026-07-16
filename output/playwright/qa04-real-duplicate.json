@@ -1,9 +1,0 @@
-{
-  "rowsBefore": 8,
-  "rowsAfter": 8,
-  "fileCountAfterCancel": 0,
-  "duplicateBlocked": true,
-  "errors": [
-    "Failed to load resource: the server responded with a status of 409 (Conflict)"
-  ]
-}
