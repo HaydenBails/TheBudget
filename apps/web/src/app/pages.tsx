@@ -19,6 +19,8 @@ import { useTransactions } from '../features/transactions/api';
 import { formatCad } from '../features/transactions/money';
 import { useBudgets } from '../features/budgets/api';
 import { budgetLevel, type BudgetLevel } from '../features/budgets/budgetMath';
+import { useRecurringSeries } from '../features/recurring/api';
+import { monthlyCostCents, CADENCE_LABEL, type RecurringSeries } from '../features/recurring/types';
 import type { Transaction, TransactionFilters } from '../features/transactions/types';
 import type { Category } from '../features/categories/types';
 import type { Account } from '../features/accounts/types';
@@ -95,6 +97,7 @@ export function DashboardPage() {
   const txnsQuery = useTransactions(currentProfileId, filters);
   const allTx = txnsQuery.data ?? [];
   const budgetsQuery = useBudgets(currentProfileId, curYM);
+  const recurringQuery = useRecurringSeries(currentProfileId);
 
   const catById = useMemo(
     () => new Map<number, Category>((categories.data ?? []).map((c) => [c.id, c])),
@@ -153,6 +156,14 @@ export function DashboardPage() {
   const hasProfile = currentProfileId != null;
   const isEmpty = !txnsQuery.isLoading && !txnsQuery.isError && allTx.length === 0;
   const catTotal = model.byCategory.reduce((s, c) => s + c.cents, 0);
+
+  const tracked = (recurringQuery.data ?? []).filter(
+    (s) => s.status === 'keep' || s.status === 'review',
+  );
+  const recurringMonthly = tracked.reduce((s, r) => s + monthlyCostCents(r), 0);
+  const upcoming = [...tracked]
+    .sort((a, b) => (a.next_expected_date < b.next_expected_date ? -1 : 1))
+    .slice(0, 4);
 
   if (!hasProfile) {
     return (
@@ -217,7 +228,13 @@ export function DashboardPage() {
             </div>
             <StatCard icon="↑" label="Available to save" value={formatDollars(model.available)} foot="Income − spending" tone={model.available < 0 ? 'neg' : 'accent'} />
             <StatCard icon="◈" label="Income" value={formatDollars(model.income)} foot="This month" />
-            <StatCard icon="↻" label="Upcoming recurring" value="—" foot="Detection coming soon" muted />
+            <StatCard
+              icon="↻"
+              label="Recurring / mo"
+              value={tracked.length > 0 ? formatDollars(recurringMonthly) : '—'}
+              foot={tracked.length > 0 ? `${tracked.length} subscription${tracked.length === 1 ? '' : 's'}` : 'None detected yet'}
+              muted={tracked.length === 0}
+            />
             <StatCard icon="⊘" label="Excluded activity" value={formatDollars(model.excluded)} foot="Payments · fees · transfers" />
           </section>
 
@@ -279,12 +296,8 @@ export function DashboardPage() {
               spentByCategory={model.byCategory}
               catById={catById}
             />
-            <Card title="Upcoming recurring" meta="—">
-              <div className="dash-mini-empty">
-                <p>Subscriptions and repeating charges will surface here once detection lands.</p>
-                <span className="dash-soon">Coming soon</span>
-              </div>
-            </Card>
+            <UpcomingRecurringCard upcoming={upcoming} catById={catById} />
+
             <Card title="Largest purchases" meta={monthLabel(curYM)}>
               {model.largest.length === 0 ? (
                 <p className="dash-empty">No purchases yet this month.</p>
@@ -386,6 +399,47 @@ function BudgetCard({
         {categoryBudgets.map(({ budget, spent }) => {
           const cat = catById.get(budget.category_id as number);
           return <DashBudgetBar key={budget.id} name={cat?.name ?? 'Category'} color={cat?.color} spent={spent} limit={budget.limit_cents} />;
+        })}
+      </ul>
+    </Card>
+  );
+}
+
+function UpcomingRecurringCard({
+  upcoming,
+  catById,
+}: {
+  upcoming: RecurringSeries[];
+  catById: Map<number, Category>;
+}) {
+  if (upcoming.length === 0) {
+    return (
+      <Card title="Upcoming recurring" meta="Not set up">
+        <div className="dash-mini-empty">
+          <p>Detect subscriptions and repeating charges from your transactions to see what's due next.</p>
+          <Link className="app-btn primary" to="/app/recurring">Detect recurring</Link>
+        </div>
+      </Card>
+    );
+  }
+  return (
+    <Card title="Upcoming recurring" meta={<Link className="dash-card-link" to="/app/recurring">Manage</Link>}>
+      <ul className="dash-rows">
+        {upcoming.map((s) => {
+          const cat = s.category_id != null ? catById.get(s.category_id) : undefined;
+          const color = cat?.color ?? '#8a90a6';
+          return (
+            <li key={s.id} className="dash-txrow">
+              <span className="dash-caticon sm" style={{ color, background: `color-mix(in srgb, ${color} 16%, transparent)` }}>
+                <CategoryIcon name={cat?.icon} />
+              </span>
+              <div className="dash-txmeta">
+                <div className="dash-txname">{s.display_name}</div>
+                <div className="dash-txsub">{CADENCE_LABEL[s.cadence]} · next {formatDay(s.next_expected_date)}</div>
+              </div>
+              <span className="dash-txamt">{formatCad(s.amount_cents)}</span>
+            </li>
+          );
         })}
       </ul>
     </Card>

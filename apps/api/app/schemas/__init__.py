@@ -23,6 +23,12 @@ from app.schemas.imports import (
     ImportWarningResponse,
 )
 from app.schemas.profile import ProfileCreate, ProfileRead, ProfileUpdate
+from app.schemas.recurring import (
+    RecurringDetectResult,
+    RecurringSeriesRead,
+    RecurringSeriesUpdate,
+    RecurringStatus,
+)
 from app.schemas.transaction import (
     SplitInput,
     SplitRead,
@@ -73,6 +79,10 @@ __all__ = [
     "ProfileCreate",
     "ProfileRead",
     "ProfileUpdate",
+    "RecurringDetectResult",
+    "RecurringSeriesRead",
+    "RecurringSeriesUpdate",
+    "RecurringStatus",
     "SplitInput",
     "SplitRead",
     "TagCreate",

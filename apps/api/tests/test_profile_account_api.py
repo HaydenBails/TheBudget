@@ -230,6 +230,7 @@ def test_openapi_contains_typed_routes_and_no_hard_delete(api_client: TestClient
         if path.startswith("/profiles")
         and "/transactions" not in path
         and "/budgets" not in path
+        and "/recurring" not in path
     }
     assert all("delete" not in operations for operations in profile_account_paths.values())
     assert schema["components"]["schemas"]["AccountRead"]["properties"][

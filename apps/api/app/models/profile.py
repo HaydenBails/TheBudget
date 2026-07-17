@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from app.models.budget import Budget
     from app.models.category import Category
     from app.models.import_batch import ImportBatch
+    from app.models.recurring_series import RecurringSeries
     from app.models.tag import Tag
     from app.models.transaction import Transaction
 
@@ -43,6 +44,11 @@ class Profile(TimestampMixin, Base):
         passive_deletes=True,
     )
     budgets: Mapped[list[Budget]] = relationship(
+        back_populates="profile",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+    recurring_series: Mapped[list[RecurringSeries]] = relationship(
         back_populates="profile",
         cascade="all, delete-orphan",
         passive_deletes=True,

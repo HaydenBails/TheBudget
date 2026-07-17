@@ -246,6 +246,22 @@ exchange rates parsed as fixed-precision Decimal.
 | --- | --- | --- | --- | --- | --- | --- |
 | BE-AMEX-01 | Section-aware Amex credit-card parser, synthetic fixture matrix, and issuer-detecting parser resolver. | BE-14, BE-16 | `apps/api/app/parsers/amex.py`, `apps/api/app/parsers/{__init__,resolver}.py`, `apps/api/app/routers/imports.py` (resolver swap), `fixtures/statements/amex/**`, `apps/api/tests/test_amex_parser.py`, `apps/api/tests/test_parser_resolver.py` | Amex parser implements `detect`/`extract_metadata`/`extract_transactions`/`reconcile`: recognises the AMEX issuer + a section-aware layout (Payments-and-Credits vs New-Charges), preserves transaction dates and raw descriptions, stores charged CAD as integer cents, handles payments/refunds/fees/interest and a foreign-currency continuation, and reconciles net + debit/credit sections within one cent. A resolver picks the matching parser by detection confidence; unknown issuers raise a readable unsupported error. Synthetic fixtures + expected canonical JSON + manifest cover the matrix; no real statement/number/address is committed. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 
+### Recurring charges slice (product plan §12)
+
+Claimed 2026-07-17 at the product owner's direct request to keep building
+features. Implements recurring-charge / subscription detection end-to-end
+(product goal #3) and turns the dashboard's last "Coming soon" card real.
+Additive/disjoint from QA-04: a new `recurring_series` model/service/router,
+migration `0008`, a pure detection-rules module, and a frontend
+`features/recurring/` feature plus the dashboard upcoming-recurring card. The
+existing (already-present) nullable `transactions.recurring_series_id` column is
+linked by the detection service.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-RECUR-01 | Recurring-series domain + deterministic detection + typed API. | BE-11 | `apps/api/app/services/recurring_rules.py`, `apps/api/app/models/recurring_series.py`, `apps/api/app/schemas/recurring.py`, `apps/api/app/services/recurring.py`, model/schema/service exports, `apps/api/app/routers/recurring.py`, `app/main.py`, `alembic/versions/0008_recurring_series.py`, backend tests | Detection is a pure, unit-tested function: groups included debit purchases by normalized merchant, recognises weekly/biweekly/monthly/quarterly/annual cadence with interval + amount tolerances, ignores irregular frequent merchants (groceries/dining), and assigns high/medium/low confidence (≥3 consistent = high, 2 = low). Series are profile-scoped with cadence, expected amount/range, next-expected date, confidence, rationale, status (keep/review/cancel/ended/ignored) and confirmed flag. `POST .../recurring/detect` syncs idempotently and links matched transactions; list/get/patch scoped to profile; cross-profile access not-found. Migration applies/reverses from 0007. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
+| FE-RECUR-01 | Recurring-charges UI + dashboard upcoming-recurring card. | BE-RECUR-01, FE-07 | `apps/web/src/features/recurring/`, `apps/web/src/app/{AppShell.tsx,pages.tsx,dashboard.css}`, `apps/web/dist/` | A Recurring page runs detection, lists detected series with cadence, monthly + annualized cost, next-expected date, confidence, and a keep/review/cancel + confirm workflow. The dashboard "Upcoming recurring" card shows the next expected charges (real data) and links to the page. Keyboard/focus, light/dark, responsive checks pass; typecheck/build pass and committed `dist` refreshed. | `DONE` | Claude Opus 4.8 |
+
 ## Later-stage backlog
 
 Do not claim these until M5 passes QA-04 and the board has been expanded with
@@ -2265,3 +2281,62 @@ equivalent dependencies, file ownership, privacy criteria, and verification.
   frontend affordance surfacing which issuer parser handled a preview.
 - Handoff: A follow-up can add multi-file/mixed-issuer preview batching and,
   separately, the CIBC parser once representative synthetic samples exist.
+
+### 2026-07-17 — BE-RECUR-01 / FE-RECUR-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope (backend): `apps/api/app/services/recurring_rules.py` (new pure
+  detection), `models/recurring_series.py` (+ Profile relationship + exports),
+  `schemas/recurring.py` (+ exports), `services/recurring.py` (+ exports),
+  `routers/recurring.py`, `app/main.py`, `alembic/versions/0008_recurring_series.py`,
+  `tests/test_recurring_rules.py`, `tests/test_recurring_api.py`, and the two
+  pre-existing tests asserting the full table set / no-hard-delete surface.
+  Scope (frontend): `apps/web/src/features/recurring/**` (types, api,
+  RecurringPage, recurring.css), `app/AppShell.tsx` (nav/route/icon),
+  `app/pages.tsx` (dashboard metric + upcoming-recurring card),
+  `app/dashboard.css`, refreshed `apps/web/dist/`.
+- Work: Implemented recurring-charge / subscription detection end-to-end
+  (product plan §12). Detection is a pure, unit-tested heuristic: it groups a
+  profile's included debit purchases by a normalized merchant key, recognises
+  weekly/biweekly/monthly/quarterly/annual cadence within interval tolerances,
+  requires every gap to be within half a period (so irregular frequent
+  merchants like groceries/dining are excluded), and grades confidence
+  (≥3 consistent + stable amounts = high; ≥3 = medium; 2 = low). Variable
+  amounts (utilities) are still detected and reported as a range. `RecurringSeries`
+  is profile-scoped with cadence, expected amount + range, next-expected date,
+  confidence, rationale, status (keep/review/cancel/ended/ignored per §12.3),
+  confirmed flag, and reminder lead days. `POST .../recurring/detect` syncs
+  idempotently, preserves user decisions on re-run, and re-links matched
+  transactions via the existing `transactions.recurring_series_id`. The Recurring
+  page runs detection and shows each series with monthly + annualized cost,
+  next-due countdown, confidence badge, rationale, and a keep/review/cancel/
+  ignore + confirm workflow; the dashboard's former "Coming soon" upcoming-
+  recurring card and metric are now real (est. monthly total + next charges).
+- Verification: Backend — migration up/down/up from 0007 clean; recurring rules
+  + API **16/16**; full backend suite **240 passed** (was 224); Ruff clean.
+  Frontend — `npm run typecheck` clean, `npm run test` **36/36**, `npm run build`
+  ok and `dist` refreshed. End-to-end against a live loopback backend: seeded
+  Netflix/Spotify (monthly, high), Hydro (monthly, varying → medium range), a
+  biweekly gym, plus irregular grocery noise; detection found the four
+  subscriptions and correctly ignored the groceries. Recurring page and
+  dashboard verified in light and dark at 1440px; the last dashboard "Coming
+  soon" placeholder is gone.
+- Decisions: Detection considers only `included_in_spending` debit purchases
+  (payments/fees/refunds/transfers are not subscriptions). On each detect run
+  all profile transaction links are cleared and re-established so links match
+  the current ledger. Re-detection never overrides a user status once
+  `confirmed_by_user` or a terminal state (cancel/ended/ignored). Recurring
+  DELETE is a hard delete (targets, not ledger rows), so the no-hard-delete
+  OpenAPI test now also excludes `/recurring`.
+- ui-ux checks (skill/graphify unavailable — see FE-01 exception): real
+  `<button>` toggles with `aria-pressed`, confidence always paired with a text
+  label, ≥34px status targets, visible focus, light/dark via tokens, and a
+  wrap-based responsive card.
+- Exception: Direct product-owner request ("take on next features") ahead of the
+  QA-04 gate; recorded as an exception like BE-AMEX-01. Scope is additive and
+  disjoint from QA-04's validation surface.
+- Blockers/risks: none. In-app reminders, missing-charge detection, and folding
+  confirmed recurring into the §11.2 available-to-save formula remain future
+  work (§12.4).
+- Handoff: A follow-up can wire confirmed recurring + expected income into
+  available-to-save and add reminder surfacing before expected charges.

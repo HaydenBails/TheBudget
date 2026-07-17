@@ -33,6 +33,7 @@ def test_profile_account_migration_upgrade_downgrade_cycle(
             "import_transaction_links",
             "import_warnings",
             "profiles",
+            "recurring_series",
             "tags",
             "transaction_splits",
             "transaction_tags",
