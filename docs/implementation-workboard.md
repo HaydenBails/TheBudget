@@ -322,6 +322,26 @@ dashboard available-to-save wiring.
   document rather than the PDF text pipeline; `preview_import` only needs
   `sha256` + `sanitized_filename`, so persistence/dedupe/commit are fully reused.
 
+### 2026-07-17 — FE-REVIEW-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/src/features/review/` (ReviewPage, review.css),
+  `app/AppShell.tsx` (Review nav/route/icon), `app/pages.tsx` +
+  `app/dashboard.css` (uncategorized nudge), `apps/web/dist/`. Frontend-only —
+  the transaction update API already supported it.
+- Work: Added the quick categorize / review queue (the P0 gap from the UI
+  audit). A focused Review page shows one uncategorized charge at a time —
+  merchant, account, date, amount — with a grid of clickable category chips.
+  Clicking (or pressing 1–9) assigns the category (`categorization_status:
+  manual`) and advances; S skips, U/Backspace undoes. A progress bar and
+  "all caught up" state complete the loop, and the dashboard shows a
+  "N transactions need a category — Review now" nudge when any are pending.
+- Verification: typecheck, 36 tests, build pass; dist refreshed. Verified
+  end-to-end against a live backend: seeded 7 uncategorized purchases, clicked a
+  chip → queue advanced and the transaction persisted with a category and
+  `manual` status; category names, keyboard hints, and the dashboard nudge
+  render in light and dark.
+
 ## Later-stage backlog
 
 Do not claim these until M5 passes QA-04 and the board has been expanded with

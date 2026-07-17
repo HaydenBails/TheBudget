@@ -181,6 +181,7 @@ export function DashboardPage() {
     .reduce((s, r) => s + r.amount_cents, 0);
   const availableToSave = model.income + expectedRemainingIncome - model.spent - recurringDue;
   const availableIsEstimate = expectedRemainingIncome > 0 || recurringDue > 0;
+  const uncategorizedCount = allTx.filter((t) => t.category_id == null && t.deleted_at == null).length;
 
   if (!hasProfile) {
     return (
@@ -222,6 +223,16 @@ export function DashboardPage() {
             <Link className="app-btn" to="/app/imports">Import a statement</Link>
           </div>
         </section>
+      )}
+
+      {!isEmpty && uncategorizedCount > 0 && (
+        <Link className="dash-nudge" to="/app/review">
+          <span className="dash-nudge-ico" aria-hidden>✓</span>
+          <span className="dash-nudge-text">
+            <b>{uncategorizedCount} transaction{uncategorizedCount === 1 ? '' : 's'}</b> need a category
+          </span>
+          <span className="dash-nudge-cta">Review now →</span>
+        </Link>
       )}
 
       {!isEmpty && (
