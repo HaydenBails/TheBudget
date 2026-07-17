@@ -28,6 +28,7 @@ def test_profile_account_migration_upgrade_downgrade_cycle(
             "alembic_version",
             "budgets",
             "categories",
+            "income_schedules",
             "import_batches",
             "import_staged_transactions",
             "import_transaction_links",

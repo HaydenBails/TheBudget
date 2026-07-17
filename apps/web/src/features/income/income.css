@@ -1,0 +1,27 @@
+/* Income schedules — Meridian token system. */
+
+.inc-summary { display: flex; gap: var(--lg-space-6); padding: 14px 18px; margin-bottom: var(--lg-space-4); flex-wrap: wrap; }
+.inc-summary > div { display: flex; flex-direction: column; gap: 2px; }
+.inc-summary-k { font-size: 11.5px; color: var(--lg-muted); font-weight: var(--lg-font-weight-medium); }
+.inc-summary-v { font-size: 20px; font-weight: var(--lg-font-weight-bold); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+.inc-form { margin-bottom: var(--lg-space-4); }
+.inc-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--lg-space-4); }
+.inc-field { display: flex; flex-direction: column; gap: 6px; }
+.inc-money { display: inline-flex; align-items: center; gap: 4px; padding-left: 10px; background: var(--lg-panel); border: 1px solid var(--lg-border); border-radius: var(--lg-radius-md); color: var(--lg-faint); }
+.inc-money:focus-within { border-color: var(--lg-accent); }
+.inc-money .pf-input { border: 0; background: transparent; padding-left: 2px; }
+.inc-money .pf-input:focus { outline: none; }
+.inc-form-actions { display: flex; gap: 10px; margin-top: 14px; }
+
+.inc-list { list-style: none; margin: 0 0 var(--lg-space-5); padding: 0; display: flex; flex-direction: column; gap: var(--lg-space-4); }
+.inc-row { display: flex; align-items: center; gap: 16px; padding: 15px 18px; flex-wrap: wrap; }
+.inc-paused { opacity: .68; }
+.inc-meta { flex: 1; min-width: 160px; }
+.inc-name { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: var(--lg-font-weight-semibold); }
+.inc-sub { font-size: 12.5px; color: var(--lg-muted); margin-top: 2px; }
+.inc-badge { font-size: 10.5px; font-weight: var(--lg-font-weight-bold); letter-spacing: .03em; text-transform: uppercase; color: var(--lg-warm); background: color-mix(in srgb, var(--lg-warm) 16%, transparent); padding: 2px 8px; border-radius: var(--lg-radius-pill); }
+.inc-amt { text-align: right; flex: 0 0 auto; }
+.inc-amt-v { font-size: 18px; font-weight: var(--lg-font-weight-bold); font-variant-numeric: tabular-nums; color: var(--lg-positive); }
+.inc-amt-v span { font-size: 11.5px; color: var(--lg-faint); font-weight: var(--lg-font-weight-medium); }
+.inc-actions { display: flex; gap: 8px; flex-wrap: wrap; }

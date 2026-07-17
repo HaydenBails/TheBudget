@@ -22,6 +22,13 @@ from app.schemas.imports import (
     ImportWarningRead,
     ImportWarningResponse,
 )
+from app.schemas.income import (
+    IncomeOccurrenceRead,
+    IncomeScheduleCreate,
+    IncomeScheduleRead,
+    IncomeScheduleUpdate,
+    IncomeSummaryRead,
+)
 from app.schemas.profile import ProfileCreate, ProfileRead, ProfileUpdate
 from app.schemas.recurring import (
     RecurringDetectResult,
@@ -59,6 +66,11 @@ __all__ = [
     "CategoryRead",
     "CategoryUpdate",
     "IssuerCode",
+    "IncomeOccurrenceRead",
+    "IncomeScheduleCreate",
+    "IncomeScheduleRead",
+    "IncomeScheduleUpdate",
+    "IncomeSummaryRead",
     "ImportBatchCreate",
     "ImportBatchRead",
     "ImportCancelResponse",

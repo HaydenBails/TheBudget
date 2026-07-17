@@ -8,6 +8,7 @@ from app.models.import_batch import ImportBatch
 from app.models.import_staged_transaction import ImportStagedTransaction
 from app.models.import_transaction_link import ImportTransactionLink
 from app.models.import_warning import ImportWarning
+from app.models.income_schedule import IncomeSchedule
 from app.models.profile import Profile
 from app.models.recurring_series import RecurringSeries
 from app.models.tag import Tag, TransactionTag
@@ -20,6 +21,7 @@ __all__ = [
     "Budget",
     "Category",
     "ImportBatch",
+    "IncomeSchedule",
     "ImportStagedTransaction",
     "ImportTransactionLink",
     "ImportWarning",

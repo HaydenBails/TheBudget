@@ -21,6 +21,7 @@ import { useBudgets } from '../features/budgets/api';
 import { budgetLevel, type BudgetLevel } from '../features/budgets/budgetMath';
 import { useRecurringSeries } from '../features/recurring/api';
 import { monthlyCostCents, CADENCE_LABEL, type RecurringSeries } from '../features/recurring/types';
+import { useIncomeOccurrences } from '../features/income/api';
 import type { Transaction, TransactionFilters } from '../features/transactions/types';
 import type { Category } from '../features/categories/types';
 import type { Account } from '../features/accounts/types';
@@ -98,6 +99,11 @@ export function DashboardPage() {
   const allTx = txnsQuery.data ?? [];
   const budgetsQuery = useBudgets(currentProfileId, curYM);
   const recurringQuery = useRecurringSeries(currentProfileId);
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const monthStartISO = `${curYM}-01`;
+  const monthEndISO = `${curYM}-${pad(monthEnd.getDate())}`;
+  const todayISO = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const incomeOccQuery = useIncomeOccurrences(currentProfileId, monthStartISO, monthEndISO);
 
   const catById = useMemo(
     () => new Map<number, Category>((categories.data ?? []).map((c) => [c.id, c])),
@@ -165,6 +171,17 @@ export function DashboardPage() {
     .sort((a, b) => (a.next_expected_date < b.next_expected_date ? -1 : 1))
     .slice(0, 4);
 
+  // Available to save (§11.2): recorded + still-due income, minus spending and
+  // confirmed recurring charges still expected (and not yet posted) this month.
+  const expectedRemainingIncome = (incomeOccQuery.data ?? [])
+    .filter((o) => o.occurrence_date > todayISO)
+    .reduce((s, o) => s + o.amount_cents, 0);
+  const recurringDue = tracked
+    .filter((s) => s.next_expected_date > todayISO && s.next_expected_date <= monthEndISO)
+    .reduce((s, r) => s + r.amount_cents, 0);
+  const availableToSave = model.income + expectedRemainingIncome - model.spent - recurringDue;
+  const availableIsEstimate = expectedRemainingIncome > 0 || recurringDue > 0;
+
   if (!hasProfile) {
     return (
       <>
@@ -226,7 +243,13 @@ export function DashboardPage() {
                 {formatDollars(model.income)} income
               </span>
             </div>
-            <StatCard icon="↑" label="Available to save" value={formatDollars(model.available)} foot="Income − spending" tone={model.available < 0 ? 'neg' : 'accent'} />
+            <StatCard
+              icon="↑"
+              label={availableIsEstimate ? 'Available to save (est.)' : 'Available to save'}
+              value={formatDollars(availableToSave)}
+              foot={availableIsEstimate ? 'Income + due − spend − recurring' : 'Income − spending'}
+              tone={availableToSave < 0 ? 'neg' : 'accent'}
+            />
             <StatCard icon="◈" label="Income" value={formatDollars(model.income)} foot="This month" />
             <StatCard
               icon="↻"

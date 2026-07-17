@@ -262,6 +262,38 @@ linked by the detection service.
 | BE-RECUR-01 | Recurring-series domain + deterministic detection + typed API. | BE-11 | `apps/api/app/services/recurring_rules.py`, `apps/api/app/models/recurring_series.py`, `apps/api/app/schemas/recurring.py`, `apps/api/app/services/recurring.py`, model/schema/service exports, `apps/api/app/routers/recurring.py`, `app/main.py`, `alembic/versions/0008_recurring_series.py`, backend tests | Detection is a pure, unit-tested function: groups included debit purchases by normalized merchant, recognises weekly/biweekly/monthly/quarterly/annual cadence with interval + amount tolerances, ignores irregular frequent merchants (groceries/dining), and assigns high/medium/low confidence (≥3 consistent = high, 2 = low). Series are profile-scoped with cadence, expected amount/range, next-expected date, confidence, rationale, status (keep/review/cancel/ended/ignored) and confirmed flag. `POST .../recurring/detect` syncs idempotently and links matched transactions; list/get/patch scoped to profile; cross-profile access not-found. Migration applies/reverses from 0007. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 | FE-RECUR-01 | Recurring-charges UI + dashboard upcoming-recurring card. | BE-RECUR-01, FE-07 | `apps/web/src/features/recurring/`, `apps/web/src/app/{AppShell.tsx,pages.tsx,dashboard.css}`, `apps/web/dist/` | A Recurring page runs detection, lists detected series with cadence, monthly + annualized cost, next-expected date, confidence, and a keep/review/cancel + confirm workflow. The dashboard "Upcoming recurring" card shows the next expected charges (real data) and links to the page. Keyboard/focus, light/dark, responsive checks pass; typecheck/build pass and committed `dist` refreshed. | `DONE` | Claude Opus 4.8 |
 
+### Income schedules slice (product plan §10, §11.2)
+
+Claimed 2026-07-17 at the product owner's direct request ("start income").
+Implements manual income schedules and folds forecast + recorded income into the
+dashboard available-to-save estimate (§11.2). Additive/disjoint from QA-04: a new
+`income_schedule` model/service/router, migration `0009`, a pure
+occurrence-generation module, a frontend `features/income/` feature, and the
+dashboard available-to-save wiring.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-INCOME-01 | Income-schedule domain + forecast occurrences + typed API. | BE-11 | `apps/api/app/services/income_rules.py`, `apps/api/app/models/income_schedule.py`, `apps/api/app/schemas/income.py`, `apps/api/app/services/income.py`, exports, `apps/api/app/routers/income.py`, `app/main.py`, `alembic/versions/0009_income_schedules.py`, backend tests | Profile-scoped income schedule (name, net amount cents, weekly/biweekly/monthly frequency, start/optional-end date, active/paused, notes). A pure, unit-tested generator produces forecast occurrences for a date range without persisting infinite records. `GET .../income/occurrences?date_from=&date_to=` returns forecast occurrences; CRUD scoped to profile; cross-profile not-found. Migration applies/reverses from 0008. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
+| FE-INCOME-01 | Income UI + dashboard available-to-save wiring. | BE-INCOME-01, FE-07 | `apps/web/src/features/income/`, `apps/web/src/app/{AppShell.tsx,pages.tsx,dashboard.css}`, `apps/web/dist/` | An Income page manages schedules (create/edit/pause/delete) showing per-month forecast, monthly-equivalent, and expected-vs-recorded income. The dashboard available-to-save uses recorded + expected-remaining income minus spending minus confirmed upcoming recurring, labelled an estimate. Keyboard/focus, light/dark, responsive checks pass; typecheck/build pass and `dist` refreshed. | `DONE` | Claude Opus 4.8 |
+
+### 2026-07-17 — BE-INCOME-01 / FE-INCOME-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Work: Implemented manual income schedules (§10) and folded forecast + recorded
+  income into the dashboard available-to-save estimate (§11.2). New pure
+  occurrence generator (`income_rules.py`), profile-scoped `IncomeSchedule`
+  model/service/router (CRUD + `occurrences` + `summary`), migration `0009`, and
+  a frontend Income feature + nav entry. Available-to-save now = recorded income
+  + still-due forecast income − spending − confirmed recurring due before period
+  end, labelled "(est.)" when it includes forecast terms.
+- Verification: 16 new backend tests; full suite **256 passed**; Ruff clean.
+  Frontend typecheck/36 tests/build pass; `dist` refreshed. Verified end-to-end:
+  biweekly + monthly schedules forecast correctly for the month; dashboard
+  available-to-save computed $4,596 = 2,100 recorded + 3,000 due − 504 spend − 0
+  recurring. Light + dark verified.
+- Follow-up finding: the flat top nav now overflows at 1440px with 9 items
+  (Categories/Settings pushed off) — to be addressed in the UI audit.
+
 ## Later-stage backlog
 
 Do not claim these until M5 passes QA-04 and the board has been expanded with
