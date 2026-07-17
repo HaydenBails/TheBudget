@@ -115,7 +115,8 @@ def test_create_applies_policy_and_validates_owned_references(session: Session) 
     )
 
     assert purchase.included_in_spending is True
-    assert refund.included_in_spending is False
+    # Refunds are included so their negative amount offsets net spending.
+    assert refund.included_in_spending is True
     savings = next(c for c in list_categories(session, owner.id) if c.slug == "savings")
     excluded_purchase = create_transaction(
         session,

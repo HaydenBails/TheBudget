@@ -264,9 +264,10 @@ def update_transaction(
     if changes.get("included_in_spending") is True and candidate_type not in {
         "purchase",
         "cash_advance",
+        "refund",
     }:
         raise InvalidUpdateError(
-            "only purchases and cash advances may be explicitly included in spending"
+            "only purchases, cash advances, and refunds may be explicitly included in spending"
         )
     if "type" in changes and "included_in_spending" not in changes:
         changes["included_in_spending"] = default_included_for_type(candidate_type)

@@ -11,9 +11,11 @@ from collections.abc import Iterable
 from app.services.errors import InvalidUpdateError, SplitSumError
 
 # Types that count toward core spending by default (product plan §7.2).
-# Refunds offset their linked/assigned category in reporting but are not new
-# included expenses. Every non-purchase type is excluded by default.
-_DEFAULT_INCLUDED_TYPES = frozenset({"purchase"})
+# Purchases are positive outflows; refunds are negative (credit) amounts that
+# offset their assigned category, so both are "included" and net spending is
+# purchases minus refunds. Payments, transfers, fees, interest, and income are
+# excluded from spending.
+_DEFAULT_INCLUDED_TYPES = frozenset({"purchase", "refund"})
 
 
 def default_included_for_type(transaction_type: str) -> bool:

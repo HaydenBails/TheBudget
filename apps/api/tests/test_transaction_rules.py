@@ -37,9 +37,10 @@ def session(tmp_path: Path) -> Iterator[Session]:
 
 
 def test_default_inclusion_policy() -> None:
+    # Purchases (positive) and refunds (negative) net into spending.
     assert default_included_for_type("purchase") is True
+    assert default_included_for_type("refund") is True
     for excluded in (
-        "refund",
         "payment",
         "transfer",
         "cash_advance",
