@@ -14,6 +14,23 @@
 .dash-sub p { margin: 5px 0 0; color: var(--lg-muted); font-size: 13px; }
 .dash-sub p b { color: var(--lg-text); font-weight: var(--lg-font-weight-semibold); }
 .dash-sub-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.dash-period { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; background: var(--lg-panel); border: 1px solid var(--lg-border); border-radius: var(--lg-radius-pill); padding: 3px; box-shadow: var(--lg-shadow-control); }
+.dash-period-btn {
+  padding: 6px 12px; min-height: 32px;
+  font-size: 12.5px; font-weight: var(--lg-font-weight-semibold);
+  color: var(--lg-muted); background: transparent;
+  border: 0; border-radius: var(--lg-radius-pill); cursor: pointer; white-space: nowrap;
+}
+.dash-period-btn:hover { color: var(--lg-text); }
+.dash-period-btn.active { color: var(--lg-on-accent); background: linear-gradient(135deg, var(--mrd-accent), var(--mrd-accent-2)); }
+.dash-period-btn:focus-visible { outline: 3px solid color-mix(in srgb, var(--lg-accent) 45%, transparent); outline-offset: 1px; }
+.dash-period-select {
+  min-height: 32px; padding: 0 8px; margin-left: 2px;
+  font-size: 12.5px; font-weight: var(--lg-font-weight-semibold);
+  color: var(--lg-muted); background: var(--lg-panel-2);
+  border: 1px solid var(--lg-border); border-radius: var(--lg-radius-pill); cursor: pointer;
+}
+@media (max-width: 640px) { .dash-period { width: 100%; justify-content: flex-start; } }
 .dash-chip {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 12px;

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Area,
@@ -55,6 +55,60 @@ const outflow = (t: Transaction) => t.amount_cents;
 /** Display amount: money out shows negative, money in shows positive. */
 const displayAmount = (t: Transaction) => -t.amount_cents;
 
+interface DashRange {
+  fromISO: string;
+  toISO: string;
+  label: string;
+  cmpFromISO: string | null;
+  cmpToISO: string | null;
+  cmpLabel: string | null;
+}
+const isoStart = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-01`;
+function isoEnd(d: Date) {
+  const e = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  return `${e.getFullYear()}-${pad(e.getMonth() + 1)}-${pad(e.getDate())}`;
+}
+
+/** Turn a period id (this/last/l3m/ytd/all or "YYYY-MM") into a date range + comparison. */
+function computeRange(period: string, now: Date, minDate: string, maxDate: string): DashRange {
+  const y = now.getFullYear();
+  const m = now.getMonth();
+  const monthRange = (curM: Date, prevM: Date, label: string): DashRange => ({
+    fromISO: isoStart(curM), toISO: isoEnd(curM), label,
+    cmpFromISO: isoStart(prevM), cmpToISO: isoEnd(prevM), cmpLabel: shortMonth(monthKey(prevM)),
+  });
+  if (period === 'this') return monthRange(new Date(y, m, 1), new Date(y, m - 1, 1), 'this month');
+  if (period === 'last') return monthRange(new Date(y, m - 1, 1), new Date(y, m - 2, 1), monthLabel(monthKey(new Date(y, m - 1, 1))));
+  if (period === 'l3m') {
+    return {
+      fromISO: isoStart(new Date(y, m - 2, 1)), toISO: isoEnd(new Date(y, m, 1)), label: 'the last 3 months',
+      cmpFromISO: isoStart(new Date(y, m - 5, 1)), cmpToISO: isoEnd(new Date(y, m - 3, 1)), cmpLabel: 'prev 3 mo',
+    };
+  }
+  if (period === 'ytd') {
+    return {
+      fromISO: isoStart(new Date(y, 0, 1)), toISO: isoEnd(new Date(y, m, 1)), label: `${y} so far`,
+      cmpFromISO: isoStart(new Date(y - 1, 0, 1)), cmpToISO: isoEnd(new Date(y - 1, m, 1)), cmpLabel: `${y - 1}`,
+    };
+  }
+  if (period === 'all') {
+    return {
+      fromISO: minDate || isoStart(new Date(y, m, 1)), toISO: maxDate || isoEnd(new Date(y, m, 1)),
+      label: 'all time', cmpFromISO: null, cmpToISO: null, cmpLabel: null,
+    };
+  }
+  const [yy, mm] = period.split('-').map(Number);
+  return monthRange(new Date(yy, mm - 1, 1), new Date(yy, mm - 2, 1), monthLabel(period));
+}
+
+const PERIOD_PRESETS: { id: string; label: string }[] = [
+  { id: 'this', label: 'This month' },
+  { id: 'last', label: 'Last month' },
+  { id: 'l3m', label: '3 months' },
+  { id: 'ytd', label: 'Year to date' },
+  { id: 'all', label: 'All time' },
+];
+
 function PageHead({ title, subtitle }: { title: string; subtitle: string }) {
   return <div className="app-head"><div><h1>{title}</h1><p>{subtitle}</p></div></div>;
 }
@@ -76,27 +130,39 @@ export function DashboardPage() {
 
   const now = new Date();
   const curYM = monthKey(now);
-  const prevYM = monthKey(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+  const [period, setPeriod] = useState('this');
 
-  // Pull a wide window so we can compute trend + month-over-month in the client.
-  const filters = useMemo<TransactionFilters>(() => {
-    const from = new Date(now.getFullYear(), now.getMonth() - 5, 1);
-    const to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-    return {
-      accountId: null,
-      categoryId: null,
-      type: null,
-      dateFrom: `${from.getFullYear()}-${pad(from.getMonth() + 1)}-01`,
-      dateTo: `${to.getFullYear()}-${pad(to.getMonth() + 1)}-${pad(to.getDate())}`,
-      includedInSpending: null,
-      search: '',
-      includeDeleted: false,
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentProfileId]);
+  // Pull all transactions so any period (YTD, all time, a specific month) works.
+  const filters = useMemo<TransactionFilters>(() => ({
+    accountId: null,
+    categoryId: null,
+    type: null,
+    dateFrom: '',
+    dateTo: '',
+    includedInSpending: null,
+    search: '',
+    includeDeleted: false,
+  }), []);
 
   const txnsQuery = useTransactions(currentProfileId, filters);
   const allTx = txnsQuery.data ?? [];
+
+  const availableMonths = useMemo(() => {
+    const set = new Set(allTx.map((t) => ymOf(t.date)));
+    return [...set].sort().reverse();
+  }, [allTx]);
+  const dateBounds = useMemo(() => {
+    if (allTx.length === 0) return { min: '', max: '' };
+    const dates = allTx.map((t) => t.date);
+    return { min: dates.reduce((a, b) => (a < b ? a : b)), max: dates.reduce((a, b) => (a > b ? a : b)) };
+  }, [allTx]);
+  const range = useMemo(
+    () => computeRange(period, now, dateBounds.min, dateBounds.max),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [period, dateBounds.min, dateBounds.max],
+  );
+  const isCurrentMonth = period === 'this';
+
   const budgetsQuery = useBudgets(currentProfileId, curYM);
   const recurringQuery = useRecurringSeries(currentProfileId);
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -115,26 +181,25 @@ export function DashboardPage() {
   );
 
   const model = useMemo(() => {
-    const inMonth = (t: Transaction, ym: string) => ymOf(t.date) === ym;
-    const spentIn = (ym: string) =>
-      allTx.filter((t) => t.included_in_spending && inMonth(t, ym)).reduce((s, t) => s + outflow(t), 0);
+    const inRange = (t: Transaction, from: string, to: string) => t.date >= from && t.date <= to;
+    const spentIn = (from: string, to: string) =>
+      allTx.filter((t) => t.included_in_spending && inRange(t, from, to)).reduce((s, t) => s + outflow(t), 0);
 
-    const spent = spentIn(curYM);
-    const prevSpent = spentIn(prevYM);
-    const mom = prevSpent !== 0 ? (spent - prevSpent) / Math.abs(prevSpent) : 0;
+    const spent = spentIn(range.fromISO, range.toISO);
+    const prevSpent = range.cmpFromISO ? spentIn(range.cmpFromISO, range.cmpToISO as string) : 0;
+    const mom = range.cmpFromISO && prevSpent !== 0 ? (spent - prevSpent) / Math.abs(prevSpent) : 0;
 
+    const inSel = (t: Transaction) => inRange(t, range.fromISO, range.toISO);
     const income = allTx
-      .filter((t) => inMonth(t, curYM) && t.type === 'income')
+      .filter((t) => inSel(t) && t.type === 'income')
       .reduce((s, t) => s + Math.abs(t.amount_cents), 0);
     const excluded = allTx
-      .filter((t) => inMonth(t, curYM) && !t.included_in_spending && t.type !== 'income')
+      .filter((t) => inSel(t) && !t.included_in_spending && t.type !== 'income')
       .reduce((s, t) => s + Math.abs(t.amount_cents), 0);
-    const available = income - spent;
 
-    // by category (current month spending)
     const catMap = new Map<number, number>();
     for (const t of allTx) {
-      if (!t.included_in_spending || !inMonth(t, curYM) || t.category_id == null) continue;
+      if (!t.included_in_spending || !inSel(t) || t.category_id == null) continue;
       catMap.set(t.category_id, (catMap.get(t.category_id) ?? 0) + outflow(t));
     }
     const byCategory = [...catMap.entries()]
@@ -142,22 +207,28 @@ export function DashboardPage() {
       .filter((x) => x.cents > 0)
       .sort((a, b) => b.cents - a.cents);
 
-    // trend: last 6 months
+    // trend: six months ending at the selected period's end month.
+    const endD = new Date(`${range.toISO}T00:00:00`);
     const months: string[] = [];
-    for (let i = 5; i >= 0; i--) months.push(monthKey(new Date(now.getFullYear(), now.getMonth() - i, 1)));
-    const trend = months.map((ym) => ({ ym, label: shortMonth(ym), cents: Math.max(0, spentIn(ym)) }));
+    for (let i = 5; i >= 0; i--) months.push(monthKey(new Date(endD.getFullYear(), endD.getMonth() - i, 1)));
+    const trend = months.map((ym) => ({
+      ym,
+      label: shortMonth(ym),
+      cents: Math.max(0, spentIn(`${ym}-01`, isoEnd(new Date(`${ym}-01T00:00:00`)))),
+    }));
 
     const largest = allTx
-      .filter((t) => t.included_in_spending && inMonth(t, curYM) && t.direction === 'debit')
+      .filter((t) => t.included_in_spending && inSel(t) && t.direction === 'debit')
       .sort((a, b) => b.amount_cents - a.amount_cents)
       .slice(0, 4);
 
-    const recent = [...allTx]
+    const recent = allTx
+      .filter(inSel)
       .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id))
       .slice(0, 6);
 
-    return { spent, mom, income, excluded, available, byCategory, trend, largest, recent, prevSpent };
-  }, [allTx, curYM, prevYM, now]);
+    return { spent, mom, income, excluded, byCategory, trend, largest, recent, prevSpent };
+  }, [allTx, range]);
 
   const hasProfile = currentProfileId != null;
   const isEmpty = !txnsQuery.isLoading && !txnsQuery.isError && allTx.length === 0;
@@ -179,8 +250,10 @@ export function DashboardPage() {
   const recurringDue = tracked
     .filter((s) => s.next_expected_date > todayISO && s.next_expected_date <= monthEndISO)
     .reduce((s, r) => s + r.amount_cents, 0);
-  const availableToSave = model.income + expectedRemainingIncome - model.spent - recurringDue;
-  const availableIsEstimate = expectedRemainingIncome > 0 || recurringDue > 0;
+  const availableToSave = isCurrentMonth
+    ? model.income + expectedRemainingIncome - model.spent - recurringDue
+    : model.income - model.spent;
+  const availableIsEstimate = isCurrentMonth && (expectedRemainingIncome > 0 || recurringDue > 0);
   const uncategorizedCount = allTx.filter((t) => t.category_id == null && t.deleted_at == null).length;
 
   if (!hasProfile) {
@@ -204,13 +277,33 @@ export function DashboardPage() {
         <div>
           <h1>Dashboard</h1>
           <p>
-            Your money in <b>{monthLabel(curYM)}</b> · {allTx.length} transactions ·{' '}
+            Your money over <b>{range.label}</b> · {allTx.length} transactions ·{' '}
             {accounts.data?.length ?? 0} account{(accounts.data?.length ?? 0) === 1 ? '' : 's'}
           </p>
         </div>
-        <div className="dash-sub-controls">
-          <Link className="dash-chip" to="/app/transactions"><span className="dash-chip-k">View</span> Transactions</Link>
-          <span className="dash-chip"><span className="dash-chip-k">Period</span> {monthLabel(curYM)}</span>
+        <div className="dash-period" role="group" aria-label="Dashboard period">
+          {PERIOD_PRESETS.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              className={`dash-period-btn ${period === p.id ? 'active' : ''}`}
+              aria-pressed={period === p.id}
+              onClick={() => setPeriod(p.id)}
+            >
+              {p.label}
+            </button>
+          ))}
+          <select
+            className="dash-period-select"
+            aria-label="Pick a specific month"
+            value={availableMonths.includes(period) ? period : ''}
+            onChange={(e) => e.target.value && setPeriod(e.target.value)}
+          >
+            <option value="">Month…</option>
+            {availableMonths.map((ym) => (
+              <option key={ym} value={ym}>{monthLabel(ym)}</option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -238,19 +331,19 @@ export function DashboardPage() {
       {!isEmpty && (
         <>
           {/* metric row */}
-          <section className="dash-metrics" aria-label="This month">
+          <section className="dash-metrics" aria-label={`Spending over ${range.label}`}>
             <div className="dash-hero">
-              <span className="dash-hero-k">Spent this month</span>
+              <span className="dash-hero-k">Spent {isCurrentMonth ? 'this month' : range.label}</span>
               <div className="dash-hero-main">
                 <span className="dash-hero-v">{formatDollars(model.spent)}</span>
-                {model.prevSpent > 0 && (
+                {range.cmpFromISO && model.prevSpent > 0 && (
                   <span className={`dash-delta ${model.mom > 0 ? 'up' : 'down'}`}>
                     {model.mom > 0 ? '▲' : '▼'} {Math.abs(model.mom * 100).toFixed(1)}%
                   </span>
                 )}
               </div>
               <span className="dash-hero-foot">
-                {model.prevSpent > 0 ? `vs ${formatDollars(model.prevSpent)} in ${shortMonth(prevYM)} · ` : ''}
+                {range.cmpFromISO && model.prevSpent > 0 ? `vs ${formatDollars(model.prevSpent)} (${range.cmpLabel}) · ` : ''}
                 {formatDollars(model.income)} income
               </span>
             </div>
@@ -261,7 +354,7 @@ export function DashboardPage() {
               foot={availableIsEstimate ? 'Income + due − spend − recurring' : 'Income − spending'}
               tone={availableToSave < 0 ? 'neg' : 'accent'}
             />
-            <StatCard icon="◈" label="Income" value={formatDollars(model.income)} foot="This month" />
+            <StatCard icon="◈" label="Income" value={formatDollars(model.income)} foot={isCurrentMonth ? 'This month' : range.label} />
             <StatCard
               icon="↻"
               label="Recurring / mo"
@@ -332,9 +425,9 @@ export function DashboardPage() {
             />
             <UpcomingRecurringCard upcoming={upcoming} catById={catById} />
 
-            <Card title="Largest purchases" meta={monthLabel(curYM)}>
+            <Card title="Largest purchases" meta={range.label}>
               {model.largest.length === 0 ? (
-                <p className="dash-empty">No purchases yet this month.</p>
+                <p className="dash-empty">No purchases in this period.</p>
               ) : (
                 <ul className="dash-rows">
                   {model.largest.map((t) => <TxRow key={t.id} t={t} category={t.category_id != null ? catById.get(t.category_id) : undefined} />)}
