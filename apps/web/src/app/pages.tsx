@@ -17,9 +17,12 @@ import { useCategories } from '../features/categories/api';
 import { CategoryIcon } from '../features/categories/CategoryIcon';
 import { useTransactions } from '../features/transactions/api';
 import { formatCad } from '../features/transactions/money';
+import { useBudgets } from '../features/budgets/api';
+import { budgetLevel, type BudgetLevel } from '../features/budgets/budgetMath';
 import type { Transaction, TransactionFilters } from '../features/transactions/types';
 import type { Category } from '../features/categories/types';
 import type { Account } from '../features/accounts/types';
+import type { Budget } from '../features/budgets/types';
 import './dashboard.css';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -91,6 +94,7 @@ export function DashboardPage() {
 
   const txnsQuery = useTransactions(currentProfileId, filters);
   const allTx = txnsQuery.data ?? [];
+  const budgetsQuery = useBudgets(currentProfileId, curYM);
 
   const catById = useMemo(
     () => new Map<number, Category>((categories.data ?? []).map((c) => [c.id, c])),
@@ -267,14 +271,14 @@ export function DashboardPage() {
             </Card>
           </section>
 
-          {/* budgets (placeholder) + recurring (placeholder) + largest (real) */}
+          {/* budgets (real) + recurring (placeholder) + largest (real) */}
           <section className="dash-grid-3">
-            <Card title="Category budgets" meta="Not set up">
-              <div className="dash-mini-empty">
-                <p>Set monthly limits per category to track progress here.</p>
-                <span className="dash-soon">Coming soon</span>
-              </div>
-            </Card>
+            <BudgetCard
+              budgets={budgetsQuery.data ?? []}
+              overallSpent={model.spent}
+              spentByCategory={model.byCategory}
+              catById={catById}
+            />
             <Card title="Upcoming recurring" meta="—">
               <div className="dash-mini-empty">
                 <p>Subscriptions and repeating charges will surface here once detection lands.</p>
@@ -323,6 +327,71 @@ export function DashboardPage() {
   );
 }
 
+const budgetBarClass: Record<BudgetLevel, string> = { ok: 'ok', warn: 'warn', high: 'high', over: 'over' };
+
+function DashBudgetBar({ name, color, spent, limit }: { name: string; color?: string; spent: number; limit: number }) {
+  const level = budgetLevel(spent, limit);
+  const pct = limit > 0 ? Math.min(100, Math.max(0, (spent / limit) * 100)) : 0;
+  const pctLabel = limit > 0 ? Math.round((spent / limit) * 100) : 0;
+  return (
+    <li className="dash-budget">
+      <div className="dash-budget-top">
+        <span className="dash-budget-name">{color && <span className="dash-dot" style={{ background: color }} />}{name}</span>
+        <span className="dash-budget-num">{formatDollars(spent)} / {formatDollars(limit)}</span>
+      </div>
+      <div className={`dash-budget-bar ${budgetBarClass[level]}`} role="progressbar" aria-valuenow={pctLabel} aria-valuemin={0} aria-valuemax={100} aria-label={`${name}: ${pctLabel}% of budget used`}>
+        <span style={{ width: `${pct}%` }} />
+      </div>
+    </li>
+  );
+}
+
+function BudgetCard({
+  budgets,
+  overallSpent,
+  spentByCategory,
+  catById,
+}: {
+  budgets: Budget[];
+  overallSpent: number;
+  spentByCategory: { id: number; cents: number }[];
+  catById: Map<number, Category>;
+}) {
+  const spentMap = new Map(spentByCategory.map((c) => [c.id, c.cents]));
+  const overall = budgets.find((b) => b.category_id == null);
+  const categoryBudgets = budgets
+    .filter((b) => b.category_id != null)
+    .map((b) => {
+      const spent = spentMap.get(b.category_id as number) ?? 0;
+      return { budget: b, spent, ratio: b.limit_cents > 0 ? spent / b.limit_cents : 0 };
+    })
+    .sort((a, b) => b.ratio - a.ratio)
+    .slice(0, 4);
+
+  if (!overall && categoryBudgets.length === 0) {
+    return (
+      <Card title="Category budgets" meta="Not set up">
+        <div className="dash-mini-empty">
+          <p>Set monthly limits and track your progress against them here.</p>
+          <Link className="app-btn primary" to="/app/budgets">Set budgets</Link>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card title="Budgets" meta={<Link className="dash-card-link" to="/app/budgets">Manage</Link>}>
+      <ul className="dash-budget-list">
+        {overall && <DashBudgetBar name="All spending" spent={overallSpent} limit={overall.limit_cents} />}
+        {categoryBudgets.map(({ budget, spent }) => {
+          const cat = catById.get(budget.category_id as number);
+          return <DashBudgetBar key={budget.id} name={cat?.name ?? 'Category'} color={cat?.color} spent={spent} limit={budget.limit_cents} />;
+        })}
+      </ul>
+    </Card>
+  );
+}
+
 function StatCard({ icon, label, value, foot, tone, muted }: { icon: string; label: string; value: string; foot: string; tone?: 'accent' | 'neg'; muted?: boolean }) {
   return (
     <div className={`dash-stat ${muted ? 'muted' : ''}`}>
@@ -334,7 +403,7 @@ function StatCard({ icon, label, value, foot, tone, muted }: { icon: string; lab
   );
 }
 
-function Card({ title, meta, children }: { title: string; meta?: string; children: React.ReactNode }) {
+function Card({ title, meta, children }: { title: string; meta?: React.ReactNode; children: React.ReactNode }) {
   return (
     <div className="app-card dash-card">
       <div className="dash-card-head"><h2>{title}</h2>{meta && <span className="dash-card-meta">{meta}</span>}</div>

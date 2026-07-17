@@ -149,6 +149,21 @@ a.dash-chip:hover { color: var(--lg-accent-2); border-color: var(--lg-accent); }
   border-radius: var(--lg-radius-pill);
 }
 
+/* ---- dashboard budget bars ----------------------------------------------- */
+.dash-budget-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 13px; }
+.dash-budget { display: flex; flex-direction: column; gap: 6px; }
+.dash-budget-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.dash-budget-name { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: var(--lg-font-weight-semibold); }
+.dash-budget-num { font-size: 12px; color: var(--lg-muted); font-variant-numeric: tabular-nums; }
+.dash-budget-bar { height: 8px; border-radius: 999px; background: var(--lg-panel-3); overflow: hidden; }
+.dash-budget-bar > span { display: block; height: 100%; border-radius: 999px; background: var(--lg-accent); transition: width .25s ease; }
+@media (prefers-reduced-motion: reduce) { .dash-budget-bar > span { transition: none; } }
+.dash-budget-bar.ok > span { background: var(--lg-positive); }
+.dash-budget-bar.warn > span { background: #d0910f; }
+.dash-budget-bar.high > span { background: var(--lg-warm); }
+.dash-budget-bar.over > span { background: var(--lg-negative); }
+@media (prefers-color-scheme: dark) { .dash-budget-bar.warn > span { background: #e8b64a; } }
+
 /* ---- compact rows (largest purchases) ------------------------------------ */
 .dash-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
 .dash-caticon {

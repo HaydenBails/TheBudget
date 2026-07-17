@@ -23,8 +23,21 @@ from fastapi.responses import FileResponse, JSONResponse
 from app.config import settings
 from app.db import dispose_database
 from app.middleware import ImportBodyLimitMiddleware
-from app.routers import accounts, categories, health, imports, profiles, transactions
-from app.services import InvalidUpdateError, ResourceNotFoundError, SplitSumError
+from app.routers import (
+    accounts,
+    budgets,
+    categories,
+    health,
+    imports,
+    profiles,
+    transactions,
+)
+from app.services import (
+    InvalidUpdateError,
+    ResourceConflictError,
+    ResourceNotFoundError,
+    SplitSumError,
+)
 
 logger = logging.getLogger("spending_tracker.api")
 
@@ -68,6 +81,7 @@ app.include_router(health.router)
 app.include_router(profiles.router)
 app.include_router(accounts.router)
 app.include_router(categories.router)
+app.include_router(budgets.router)
 app.include_router(transactions.router)
 app.include_router(imports.router)
 
@@ -94,6 +108,19 @@ async def invalid_update_handler(
 
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": str(exc)},
+    )
+
+
+@app.exception_handler(ResourceConflictError)
+async def resource_conflict_handler(
+    _request: Request,
+    exc: ResourceConflictError,
+) -> JSONResponse:
+    """Map a uniquely constrained duplicate to a 409 conflict."""
+
+    return JSONResponse(
+        status_code=status.HTTP_409_CONFLICT,
         content={"detail": str(exc)},
     )
 

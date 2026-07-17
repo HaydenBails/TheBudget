@@ -9,16 +9,18 @@ import { ProfileSwitcher } from '../features/profiles/ProfileSwitcher';
 import { ProfilesPage } from '../features/profiles/ProfilesPage';
 import { AccountsPage } from '../features/accounts/AccountsPage';
 import { CategoriesPage } from '../features/categories/CategoriesPage';
+import { BudgetsPage } from '../features/budgets/BudgetsPage';
 import { TransactionsPage } from '../features/transactions/TransactionsPage';
 import { ImportPage } from '../features/imports/ImportPage';
 import { DashboardPage, SettingsPage } from './pages';
 import './app.css';
 
-type IconName = 'dashboard' | 'transactions' | 'profiles' | 'accounts' | 'categories' | 'settings' | 'import' | 'sun' | 'moon';
+type IconName = 'dashboard' | 'transactions' | 'profiles' | 'accounts' | 'categories' | 'budgets' | 'settings' | 'import' | 'sun' | 'moon';
 
 const NAV: { to: string; label: string; icon: IconName }[] = [
   { to: '/app/dashboard', label: 'Dashboard', icon: 'dashboard' },
   { to: '/app/transactions', label: 'Transactions', icon: 'transactions' },
+  { to: '/app/budgets', label: 'Budgets', icon: 'budgets' },
   { to: '/app/profiles', label: 'Profiles', icon: 'profiles' },
   { to: '/app/accounts', label: 'Accounts', icon: 'accounts' },
   { to: '/app/categories', label: 'Categories', icon: 'categories' },
@@ -32,6 +34,7 @@ function Icon({ name }: { name: IconName }) {
     profiles: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></>,
     accounts: <><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20M6 15h4" /></>,
     categories: <><path d="M20.6 13.6 11 4H4v7l9.6 9.6a2 2 0 0 0 2.8 0l4.2-4.2a2 2 0 0 0 0-2.8Z" /><circle cx="7.5" cy="7.5" r=".5" /></>,
+    budgets: <><path d="M3 3v18h18" /><rect x="7" y="12" width="3" height="6" rx="1" /><rect x="12" y="8" width="3" height="10" rx="1" /><rect x="17" y="5" width="3" height="13" rx="1" /></>,
     settings: <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.2 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H2.4v-4h.1A1.7 1.7 0 0 0 4.2 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 8.6 4.2a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V2.4h4v.1A1.7 1.7 0 0 0 15 4.2a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 8.6a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4h.1v4h-.1a1.7 1.7 0 0 0-1.7 1Z" /></>,
     import: <><path d="M12 3v12m0-12L7 8m5-5 5 5" /><path d="M4 14v6h16v-6" /></>,
     sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" /></>,
@@ -92,6 +95,7 @@ export function AppShell() {
               <Route path="profiles" element={<ProfilesPage />} />
               <Route path="accounts" element={<AccountsPage />} />
               <Route path="categories" element={<CategoriesPage />} />
+              <Route path="budgets" element={<BudgetsPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="*" element={<Navigate to="dashboard" replace />} />
             </Routes>

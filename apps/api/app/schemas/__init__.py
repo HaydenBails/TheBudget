@@ -1,6 +1,7 @@
 """Typed API schemas for the profile/account vertical slice."""
 
 from app.schemas.account import AccountCreate, AccountRead, AccountUpdate, IssuerCode
+from app.schemas.budget import BudgetCreate, BudgetRead, BudgetUpdate
 from app.schemas.category import CategoryCreate, CategoryRead, CategoryUpdate
 from app.schemas.imports import (
     ImportBatchCreate,
@@ -45,6 +46,9 @@ __all__ = [
     "AccountCreate",
     "AccountRead",
     "AccountUpdate",
+    "BudgetCreate",
+    "BudgetRead",
+    "BudgetUpdate",
     "CategoryCreate",
     "CategoryRead",
     "CategoryUpdate",

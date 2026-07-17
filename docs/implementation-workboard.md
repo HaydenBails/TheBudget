@@ -210,6 +210,22 @@ non-reversible fingerprints may persist.
 | QA-04 | Validate the complete Stage 3 import framework and TD vertical slice. | BE-16, FE-08 | Cross-app validation only; avoid feature edits unless defects are found | Fresh migration cycle; Ruff/full pytest; frontend typecheck/test/build; loopback-only run; synthetic TD fixture matrix reconciles within one cent. Private supplied samples may run only from an ignored external path. Verify re-import creates zero duplicates, identical legitimate rows survive occurrence indexing, profile isolation, needs-review acknowledgement, malicious/oversize/scanned inputs, cancel/parser/database-failure cleanup, atomic rollback, log redaction, and absence of raw PDF/full extracted text in the database and temporary storage after terminal operations. Browser-test the complete Import-button workflow. | `IN PROGRESS` | Codex / be11_contract_audit |
 | OPS-CLEAN-01 | Remove generated backend test artifacts accidentally retained in the API tree and prevent recurrence. | — | `apps/api/` generated test/cache directories; repository `.gitignore`; this workboard | Delete only disposable pytest/cache/database/key artifacts; preserve API source, tests, migrations, data, and `.venv`; add scoped ignore rules; verify no matching generated directories remain and tracked API files are limited to intentional source/project files. | `DONE` | Codex / root |
 
+### Budgets slice (product plan §11)
+
+Added 2026-07-17 after the rich Meridian dashboard landed with "Coming soon"
+placeholders for Category budgets. This vertical slice implements monthly
+budgets (overall + per category) end-to-end. File ownership is disjoint from
+the in-flight QA-04 import validation: it adds a new `budget` model, schema,
+service, router, migration `0007`, and a frontend `features/budgets/` feature
+plus the dashboard budgets card. Money is integer cents; every row is
+profile-scoped; uniqueness follows the plan's "one overall budget per
+profile/month" and "one category budget per profile/category/month" rules.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-BUDGET-01 | Budget domain + typed profile-nested budget API. | BE-08, BE-11 | `apps/api/app/models/budget.py`, `apps/api/app/schemas/budget.py`, `apps/api/app/services/budgets.py`, model/schema/service exports, `apps/api/app/routers/budgets.py`, `app/main.py`, `alembic/versions/0007_budget_models.py`, backend tests | Budget is profile-scoped with nullable `category_id` (NULL = overall), `period_month` (`YYYY-MM`), and positive `limit_cents`. Partial unique indexes enforce one overall budget per profile/month and one category budget per profile/category/month; a duplicate returns 409. A category budget's category must belong to the profile. List filters by month; cross-profile access returns not-found. Migration applies/reverses from 0006. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
+| FE-BUDGET-01 | Budgets management UI + dashboard budgets card. | BE-BUDGET-01, FE-07 | `apps/web/src/features/budgets/`, `apps/web/src/app/{AppShell.tsx,pages.tsx,dashboard.css}`, `apps/web/dist/` | A Budgets page lists the active month's overall + per-category budgets, sets/edits/removes limits, and shows progress (amount + %) with 75/90/100% threshold states computed from live transactions. The dashboard "Category budgets" card shows real progress bars (top categories) and links to Budgets. Keyboard/focus, light/dark, and responsive checks pass; typecheck/build pass and committed `dist` is refreshed. | `DONE` | Claude Opus 4.8 |
+
 ## Later-stage backlog
 
 Do not claim these until M5 passes QA-04 and the board has been expanded with
@@ -2134,3 +2150,51 @@ equivalent dependencies, file ownership, privacy criteria, and verification.
 - Blockers/risks: none.
 - Handoff: Future backend tests must use ignored scratch roots matching the new
   patterns and must not add generated databases or fingerprint keys to Git.
+
+### 2026-07-17 — BE-BUDGET-01 / FE-BUDGET-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope (backend): `apps/api/app/models/budget.py`, `models/{__init__,profile}.py`,
+  `schemas/budget.py`, `schemas/__init__.py`, `services/budgets.py`,
+  `services/{__init__,errors}.py`, `routers/budgets.py`, `app/main.py`,
+  `alembic/versions/0007_budget_models.py`, `tests/test_budget_api.py`, and the
+  two pre-existing tests that assert the full table set / no-hard-delete surface.
+  Scope (frontend): `apps/web/src/features/budgets/**` (types, api, budgetMath,
+  BudgetsPage, budgets.css), `app/AppShell.tsx` (Budgets nav/route/icon),
+  `app/pages.tsx` (dashboard Budgets card) and `app/dashboard.css`, refreshed
+  `apps/web/dist/`.
+- Work: Implemented monthly budgets end-to-end (product plan §11). A `Budget` is
+  profile-scoped with a nullable `category_id` (NULL = the single overall budget)
+  and a `YYYY-MM` `period_month`; money is a positive integer-cent `limit_cents`.
+  Two partial unique indexes enforce one overall budget per profile/month and one
+  category budget per profile/category/month; a duplicate returns a new 409
+  `ResourceConflictError`. The service validates that a category budget's category
+  belongs to the profile (uniform 404 otherwise) and keeps cross-profile reads
+  not-found. The Budgets page sets/updates/removes limits, has a month selector,
+  and shows progress bars with 75/90/100% threshold states computed from live
+  transactions (signed-cents convention, `included_in_spending` only). The
+  dashboard's former "Coming soon" Category-budgets card now shows real progress
+  bars (worst-utilised first) with a Manage link. Recurring stays "Coming soon"
+  (not built).
+- Verification: Backend — migration up/down/up from 0006 clean; `test_budget_api`
+  13/13; full backend suite **209 passed**; `ruff check app tests alembic` clean.
+  Frontend — `npm run typecheck` clean, `npm run test` **36/36**, `npm run build`
+  ok and `dist` refreshed. Rendered end-to-end against a live loopback backend
+  serving the built dist (fresh migrated DB, seeded profile + budgets in varied
+  states): Budgets page and dashboard card verified in light and dark at 1440px
+  and at 390px (no horizontal overflow); progress colours match ok/warn/high/over.
+- Decisions: Budgets are forward-looking targets, so DELETE is a hard delete
+  (unlike profiles/accounts/categories); the no-hard-delete OpenAPI test now
+  excludes `/budgets` alongside the existing `/transactions` exclusion. Progress
+  is computed client-side from already-loaded transactions rather than a new
+  server aggregate, matching the dashboard's existing approach.
+- ui-ux checks (skill/graphify unavailable — see FE-01 exception): labelled money
+  inputs, real `<button>`s, `role="progressbar"` with aria-value/label, colour
+  always paired with a text level ("On track"/"Over budget"), visible focus,
+  light+dark via tokens, `prefers-reduced-motion` on bar transitions, and a
+  fluid wrap-based responsive row.
+- Blockers/risks: none. Recurring-charge detection and the "expected income /
+  confirmed recurring" terms of the available-to-save formula (§11.2) remain
+  future work; the dashboard hero available-to-save is currently income − spend.
+- Handoff: A future slice can add recurring detection (turning the last "Coming
+  soon" card real) and fold expected-income/recurring into available-to-save.

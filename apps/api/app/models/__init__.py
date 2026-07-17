@@ -2,6 +2,7 @@
 
 from app.models.account import Account
 from app.models.base import Base
+from app.models.budget import Budget
 from app.models.category import Category
 from app.models.import_batch import ImportBatch
 from app.models.import_staged_transaction import ImportStagedTransaction
@@ -15,6 +16,7 @@ from app.models.transaction_split import TransactionSplit
 __all__ = [
     "Account",
     "Base",
+    "Budget",
     "Category",
     "ImportBatch",
     "ImportStagedTransaction",

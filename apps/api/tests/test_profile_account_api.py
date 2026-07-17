@@ -222,10 +222,14 @@ def test_openapi_contains_typed_routes_and_no_hard_delete(api_client: TestClient
     assert {"get", "patch"} <= paths[
         "/profiles/{profile_id}/accounts/{account_id}"
     ].keys()
+    # Budgets are forward-looking targets that legitimately support hard delete,
+    # like transactions' soft-delete DELETE; profiles/accounts/categories do not.
     profile_account_paths = {
         path: operations
         for path, operations in paths.items()
-        if path.startswith("/profiles") and "/transactions" not in path
+        if path.startswith("/profiles")
+        and "/transactions" not in path
+        and "/budgets" not in path
     }
     assert all("delete" not in operations for operations in profile_account_paths.values())
     assert schema["components"]["schemas"]["AccountRead"]["properties"][
