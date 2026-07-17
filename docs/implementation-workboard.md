@@ -294,6 +294,34 @@ dashboard available-to-save wiring.
 - Follow-up finding: the flat top nav now overflows at 1440px with 9 items
   (Categories/Settings pushed off) — to be addressed in the UI audit.
 
+### 2026-07-17 — BE-AMEX-XLSX-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/api/app/importing/spreadsheet.py` (new .xlsx stager +
+  `ExtractedWorkbook`), `app/parsers/amex_excel.py` (new), parser/importing
+  exports, `app/routers/imports.py` (route .xlsx uploads to the Excel parser,
+  PDF unchanged), `requirements.txt` (openpyxl), `fixtures/statements/amex/`
+  (synthetic .xlsx fixture + generator + expected JSON), backend tests, and the
+  frontend Import page (accept .xlsx, copy). Product-owner requested importing
+  their Amex Excel exports.
+- Work: Added Excel statement import for the Amex "Transaction Details" workbook
+  export. A bounded openpyxl stager validates `.xlsx` extension + ZIP magic,
+  streams to a server-owned temp file (deleted on exit), and reads a capped cell
+  grid. `AmexExcelParser` maps rows to canonical candidates — charges are
+  positive debits, payments/credits negative, foreign spend (`"22,50 EUR"` +
+  exchange rate) parsed with European decimals — and reconciles net + debit/
+  credit sections against the Summary sheet within one cent. The preview route
+  auto-routes `.xlsx` to the Excel parser and leaves PDFs on the resolver.
+- Verification: 12 new tests (parser + import API); full backend suite **268
+  passed**; Ruff clean. Frontend typecheck/36 tests/build pass; dist refreshed.
+  Verified end-to-end against the owner's two real Amex Excel files (kept
+  entirely out of the repo, per the no-real-statements rule): both reconciled to
+  $0.00 and committed into the ledger; the Import UI previews and imports a real
+  workbook with the filename auto-redacted. The committed fixture is synthetic.
+- Decisions: Excel is structured, so it uses a parallel `ExtractedWorkbook`
+  document rather than the PDF text pipeline; `preview_import` only needs
+  `sha256` + `sanitized_filename`, so persistence/dedupe/commit are fully reused.
+
 ## Later-stage backlog
 
 Do not claim these until M5 passes QA-04 and the board has been expanded with

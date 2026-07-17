@@ -46,7 +46,7 @@ const preview: ImportPreview = {
 async function renderAndPreview(user: ReturnType<typeof userEvent.setup>, result: ImportPreview = preview) {
   vi.mocked(importApi.previewStatement).mockResolvedValue(result);
   render(<MemoryRouter><ImportPage /></MemoryRouter>);
-  const input = screen.getByLabelText(/Choose or drop a PDF statement/i) as HTMLInputElement;
+  const input = screen.getByLabelText(/Choose or drop a statement/i) as HTMLInputElement;
   await user.upload(input, new File(['pdf'], 'statement.pdf', { type: 'application/pdf' }));
   await user.click(screen.getByRole('button', { name: 'Preview statement' }));
   return screen.findByRole('heading', { name: result.duplicate_decision.startsWith('blocked_') ? 'Duplicate statement blocked' : 'Review before import' });
@@ -70,7 +70,7 @@ describe('ImportPage', () => {
     const alert = await screen.findByRole('alert');
     await waitFor(() => expect(alert).toHaveFocus());
     expect(screen.queryByText('statement.pdf')).not.toBeInTheDocument();
-    expect(screen.getByText('Choose or drop a PDF statement')).toBeInTheDocument();
+    expect(screen.getByText('Choose or drop a statement')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Cancel import' })).not.toBeInTheDocument();
   });
 
@@ -82,7 +82,7 @@ describe('ImportPage', () => {
     const user = userEvent.setup();
     vi.mocked(importApi.previewStatement).mockRejectedValue(new ApiError('Preview rejected.', status));
     render(<MemoryRouter><ImportPage /></MemoryRouter>);
-    await user.upload(screen.getByLabelText(/Choose or drop a PDF statement/i), new File(['pdf'], 'statement.pdf', { type: 'application/pdf' }));
+    await user.upload(screen.getByLabelText(/Choose or drop a statement/i), new File(['pdf'], 'statement.pdf', { type: 'application/pdf' }));
     await user.click(screen.getByRole('button', { name: 'Preview statement' }));
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent(guidance);
@@ -96,7 +96,7 @@ describe('ImportPage', () => {
     await user.click(screen.getByRole('button', { name: 'Cancel import' }));
     await waitFor(() => expect(importApi.cancelStatement).toHaveBeenCalledWith(1, 11));
     expect(screen.queryByText('statement.pdf')).not.toBeInTheDocument();
-    expect(screen.getByText('Choose or drop a PDF statement')).toBeInTheDocument();
+    expect(screen.getByText('Choose or drop a statement')).toBeInTheDocument();
   });
 
   it('clears the File, focuses success, and links to Transactions after commit', async () => {
@@ -128,7 +128,7 @@ describe('ImportPage', () => {
   it('releases the native input File on Remove and permits selecting the same file again', async () => {
     const user = userEvent.setup();
     render(<MemoryRouter><ImportPage /></MemoryRouter>);
-    const input = screen.getByLabelText(/Choose or drop a PDF statement/i) as HTMLInputElement;
+    const input = screen.getByLabelText(/Choose or drop a statement/i) as HTMLInputElement;
     const file = new File(['pdf'], 'statement.pdf', { type: 'application/pdf' });
     await user.upload(input, file);
     expect(input.files).toHaveLength(1);
@@ -142,12 +142,12 @@ describe('ImportPage', () => {
   it('releases the native input File when the current profile changes', async () => {
     const user = userEvent.setup();
     const view = render(<MemoryRouter><ImportPage /></MemoryRouter>);
-    const input = screen.getByLabelText(/Choose or drop a PDF statement/i) as HTMLInputElement;
+    const input = screen.getByLabelText(/Choose or drop a statement/i) as HTMLInputElement;
     await user.upload(input, new File(['pdf'], 'statement.pdf', { type: 'application/pdf' }));
     expect(input.files).toHaveLength(1);
     profileState.id = 2;
     view.rerender(<MemoryRouter><ImportPage /></MemoryRouter>);
     await waitFor(() => expect(input.files).toHaveLength(0));
-    expect(screen.getByText('Choose or drop a PDF statement')).toBeInTheDocument();
+    expect(screen.getByText('Choose or drop a statement')).toBeInTheDocument();
   });
 });

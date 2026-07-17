@@ -1,12 +1,14 @@
 """Statement parser interfaces and issuer implementations."""
 
 from app.parsers.amex import AmexCreditCardParser
+from app.parsers.amex_excel import AmexExcelParser
 from app.parsers.base import StatementParser
 from app.parsers.resolver import available_parsers, resolve_parser
 from app.parsers.td import TdCreditCardParser
 
 __all__ = [
     "AmexCreditCardParser",
+    "AmexExcelParser",
     "StatementParser",
     "TdCreditCardParser",
     "available_parsers",

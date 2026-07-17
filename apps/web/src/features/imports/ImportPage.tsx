@@ -10,8 +10,13 @@ import './imports.css';
 
 type BusyAction = 'preview' | 'commit' | 'cancel' | null;
 
-function isPdf(file: File) {
-  return file.name.toLowerCase().endsWith('.pdf') && (!file.type || file.type === 'application/pdf');
+const XLSX_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+function isSupportedStatement(file: File) {
+  const name = file.name.toLowerCase();
+  if (name.endsWith('.pdf')) return !file.type || file.type === 'application/pdf';
+  if (name.endsWith('.xlsx')) return !file.type || file.type === XLSX_TYPE || file.type === 'application/octet-stream';
+  return false;
 }
 
 function amount(value: number | null) {
@@ -76,10 +81,10 @@ export function ImportPage() {
     setSuccess(null);
     setAcknowledged(false);
     if (next == null && fileInput.current) fileInput.current.value = '';
-    if (next && !isPdf(next)) {
+    if (next && !isSupportedStatement(next)) {
       setFile(null);
       if (fileInput.current) fileInput.current.value = '';
-      setError('Choose one PDF statement. Scans and image files are not supported.');
+      setError('Choose one PDF or Amex Excel (.xlsx) statement. Scans and image files are not supported.');
       return;
     }
     setFile(next);
@@ -143,7 +148,7 @@ export function ImportPage() {
 
   if (success) {
     return <section className="im-page" aria-labelledby="im-success-title">
-      <div className="app-head"><div><p className="im-eyebrow">Import complete</p><h1 id="im-success-title" ref={resultHeading} tabIndex={-1}>Transactions added</h1><p>The PDF has been released from browser memory.</p></div></div>
+      <div className="app-head"><div><p className="im-eyebrow">Import complete</p><h1 id="im-success-title" ref={resultHeading} tabIndex={-1}>Transactions added</h1><p>The statement file has been released from browser memory.</p></div></div>
       <div className="app-card im-success" role="status">
         <div className="im-success-mark" aria-hidden="true">✓</div>
         <div><strong>{success.created_count} created</strong><p>{success.linked_duplicate_count} exact duplicate{success.linked_duplicate_count === 1 ? '' : 's'} linked without creating another transaction.</p></div>
@@ -158,18 +163,18 @@ export function ImportPage() {
   const suggested = accounts.find((item) => item.id === preview?.suggested_account_id);
 
   return <section className="im-page" aria-labelledby="im-title">
-    <div className="app-head"><div><p className="im-eyebrow">Local statement import</p><h1 id="im-title">Import statement</h1><p>{profile.currentProfile.name} · One text-based TD PDF at a time</p></div></div>
+    <div className="app-head"><div><p className="im-eyebrow">Local statement import</p><h1 id="im-title">Import statement</h1><p>{profile.currentProfile.name} · TD/Amex PDF or Amex Excel (.xlsx) · one file at a time</p></div></div>
 
     {error && <div className="im-alert" role="alert" tabIndex={-1} ref={errorBox}><strong>Import needs attention</strong><span>{error}</span></div>}
 
     {!preview && <div className="im-layout">
       <div className="app-card im-upload-card">
-        <div className="im-step"><span>1</span><div><h2>Select a PDF</h2><p>The file stays in temporary browser memory and is never saved by Meridian.</p></div></div>
+        <div className="im-step"><span>1</span><div><h2>Select a statement</h2><p>The file stays in temporary browser memory and is never saved by Meridian.</p></div></div>
         <label className={`im-drop ${dragging ? 'dragging' : ''}`} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); chooseFile(event.dataTransfer.files[0] ?? null); }}>
-          <input ref={fileInput} type="file" accept="application/pdf,.pdf" onChange={(event) => chooseFile(event.target.files?.[0] ?? null)} />
+          <input ref={fileInput} type="file" accept="application/pdf,.pdf,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onChange={(event) => chooseFile(event.target.files?.[0] ?? null)} />
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v5h14v-5" /></svg>
-          <strong>{file ? file.name : 'Choose or drop a PDF statement'}</strong>
-          <span>{file ? `${Math.max(1, Math.ceil(file.size / 1024)).toLocaleString()} KB selected` : 'Text-based TD statements · one file per import'}</span>
+          <strong>{file ? file.name : 'Choose or drop a statement'}</strong>
+          <span>{file ? `${Math.max(1, Math.ceil(file.size / 1024)).toLocaleString()} KB selected` : 'Text-based PDF or Amex Excel (.xlsx) · one file per import'}</span>
         </label>
         {file && <button className="im-text-button" type="button" onClick={() => chooseFile(null)}>Remove selected file</button>}
       </div>
@@ -178,7 +183,7 @@ export function ImportPage() {
         <div className="im-step"><span>2</span><div><h2>Choose the account</h2><p>Selection is explicit; Meridian will show its issuer-based suggestion after preview.</p></div></div>
         {accountsQuery.isLoading ? <p role="status">Loading accounts…</p> : accountsQuery.isError ? <div className="im-inline-error" role="alert">Accounts could not be loaded. <button type="button" onClick={() => accountsQuery.refetch()}>Try again</button></div> : accounts.length === 0 ? <div className="im-empty"><p>Create an active account before importing.</p><Link className="app-btn" to="/app/accounts">Manage accounts</Link></div> : <label className="im-field">Account<select value={accountId ?? ''} onChange={(event) => setAccountId(Number(event.target.value))}>{accounts.map((item) => <option key={item.id} value={item.id}>{item.display_name} · {item.issuer}{item.last4 ? ` •••• ${item.last4}` : ''}</option>)}</select></label>}
         <button className="app-btn primary im-preview-button" type="button" disabled={!file || accountId == null || busy != null} onClick={createPreview}>{busy === 'preview' ? 'Reading statement…' : 'Preview statement'}</button>
-        <p className="im-privacy">Raw PDF bytes and full extracted text are never stored in the database.</p>
+        <p className="im-privacy">Raw file bytes and full extracted content are never stored in the database.</p>
       </div>
     </div>}
 

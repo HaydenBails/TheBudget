@@ -11,13 +11,13 @@ from sqlalchemy.orm import Session
 
 from app.config import load_or_create_import_fingerprint_key, settings
 from app.db import get_session
-from app.importing import DocumentLimits, stage_pdf_async
+from app.importing import DocumentLimits, stage_pdf_async, stage_spreadsheet_async
 from app.importing.errors import (
     DocumentTooLargeError,
     ImportingError,
     UnsupportedDocumentError,
 )
-from app.parsers import resolve_parser
+from app.parsers import AmexExcelParser, resolve_parser
 from app.schemas import (
     ImportCancelResponse,
     ImportCommitRequest,
@@ -39,6 +39,14 @@ from app.services import (
 router = APIRouter(prefix="/profiles/{profile_id}/imports", tags=["imports"])
 SessionDependency = Annotated[Session, Depends(get_session)]
 logger = logging.getLogger("spending_tracker.imports")
+
+
+def _looks_like_spreadsheet(filename: str, content_type: str) -> bool:
+    """Route .xlsx uploads to the Excel path; everything else stays PDF."""
+
+    if filename.casefold().endswith(".xlsx"):
+        return True
+    return "spreadsheetml" in content_type.casefold()
 
 
 def get_import_document_limits() -> DocumentLimits:
@@ -87,31 +95,52 @@ async def post_import_preview(
     limits: LimitsDependency,
     fingerprint_key: FingerprintKeyDependency,
 ):
-    """Safely stage one credit-card PDF (issuer auto-detected) and persist its preview."""
+    """Stage one credit-card statement (PDF or Amex .xlsx) and persist its preview."""
 
     statement = statements[0]
+    filename = statement.filename or "statement.pdf"
+    content_type = statement.content_type or ""
     temp_root = settings.import_temp_root
     if temp_root is not None:
         temp_root = temp_root.expanduser().resolve()
         temp_root.mkdir(parents=True, exist_ok=True)
     try:
-        async with stage_pdf_async(
-            statement,
-            filename=statement.filename or "statement.pdf",
-            content_type=statement.content_type or "",
-            limits=limits,
-            temp_root=temp_root,
-            logger=logger,
-        ) as document:
-            result = preview_import(
-                session,
-                profile_id,
-                account_id,
-                document,
-                resolve_parser(document),
-                fingerprint_key=fingerprint_key,
+        if _looks_like_spreadsheet(filename, content_type):
+            async with stage_spreadsheet_async(
+                statement,
+                filename=filename,
+                content_type=content_type,
+                limits=limits,
+                temp_root=temp_root,
                 logger=logger,
-            )
+            ) as document:
+                result = preview_import(
+                    session,
+                    profile_id,
+                    account_id,
+                    document,
+                    AmexExcelParser(),
+                    fingerprint_key=fingerprint_key,
+                    logger=logger,
+                )
+        else:
+            async with stage_pdf_async(
+                statement,
+                filename=filename,
+                content_type=content_type,
+                limits=limits,
+                temp_root=temp_root,
+                logger=logger,
+            ) as document:
+                result = preview_import(
+                    session,
+                    profile_id,
+                    account_id,
+                    document,
+                    resolve_parser(document),
+                    fingerprint_key=fingerprint_key,
+                    logger=logger,
+                )
         response = _preview_response(
             result.batch,
             suggested_account_id=result.suggested_account_id,
