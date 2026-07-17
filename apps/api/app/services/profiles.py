@@ -24,11 +24,13 @@ def create_profile(session: Session, values: ProfileCreate) -> Profile:
     """
 
     from app.services.categories import seed_default_categories
+    from app.services.merchant_rules import seed_default_merchant_rules
 
     profile = Profile(**values.model_dump())
     session.add(profile)
     session.flush()
     seed_default_categories(session, profile.id)
+    seed_default_merchant_rules(session, profile.id)
     return profile
 
 

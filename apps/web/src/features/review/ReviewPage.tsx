@@ -5,6 +5,7 @@ import { useAccounts } from '../accounts/api';
 import { useCategories } from '../categories/api';
 import { CategoryIcon } from '../categories/CategoryIcon';
 import { useTransactions, useUpdateTransaction } from '../transactions/api';
+import { useApplyRules, useLearnRules } from './rulesApi';
 import { formatCad } from '../transactions/money';
 import type { Transaction, TransactionFilters } from '../transactions/types';
 import type { Category } from '../categories/types';
@@ -39,6 +40,8 @@ export function ReviewPage() {
   const categories = useCategories(currentProfileId, false);
   const accounts = useAccounts(currentProfileId, false);
   const update = useUpdateTransaction(currentProfileId ?? 0);
+  const applyRules = useApplyRules(currentProfileId ?? 0);
+  const learnRules = useLearnRules(currentProfileId ?? 0);
 
   const [queue, setQueue] = useState<Transaction[] | null>(null);
   const [index, setIndex] = useState(0);
@@ -79,6 +82,10 @@ export function ReviewPage() {
   const skip = useCallback(() => {
     if (current) setIndex((i) => i + 1);
   }, [current]);
+
+  const autoCategorize = useCallback(() => {
+    applyRules.mutate(undefined, { onSuccess: () => setQueue(null) });
+  }, [applyRules]);
 
   const undo = useCallback(() => {
     if (history.length === 0) return;
@@ -139,8 +146,19 @@ export function ReviewPage() {
     <>
       <div className="app-head">
         <div><h1>Review &amp; categorize</h1><p>Assign a category to each new charge for <b>{currentProfile?.name}</b>.</p></div>
-        {total > 0 && !done && <span className="rv-count">{Math.min(index + 1, total)} of {total}</span>}
+        <div className="rv-head-actions">
+          {!done && (
+            <button type="button" className="app-btn" disabled={applyRules.isPending} onClick={autoCategorize}>
+              {applyRules.isPending ? 'Applying…' : '✨ Auto-categorize'}
+            </button>
+          )}
+          {total > 0 && !done && <span className="rv-count">{Math.min(index + 1, total)} of {total}</span>}
+        </div>
       </div>
+
+      {applyRules.data && applyRules.data.categorized > 0 && (
+        <div className="rv-applied" role="status">Auto-categorized {applyRules.data.categorized} charge{applyRules.data.categorized === 1 ? '' : 's'} from your rules.</div>
+      )}
 
       {total > 0 && (
         <div className="rv-progress" aria-hidden><span style={{ width: `${Math.round((index / total) * 100)}%` }} /></div>
@@ -153,7 +171,15 @@ export function ReviewPage() {
           <p>{total === 0
             ? 'Every transaction already has a category. Import a statement or add transactions, then come back.'
             : `You categorized ${history.length} transaction${history.length === 1 ? '' : 's'} this session.`}</p>
+          {learnRules.data && (learnRules.data.created + learnRules.data.updated) > 0 && (
+            <p className="rv-learned" role="status">Remembered {learnRules.data.created + learnRules.data.updated} merchant{(learnRules.data.created + learnRules.data.updated) === 1 ? '' : 's'} — they'll auto-categorize next time.</p>
+          )}
           <div className="app-placeholder-actions">
+            {history.length > 0 && (
+              <button type="button" className="app-btn" disabled={learnRules.isPending} onClick={() => learnRules.mutate()}>
+                {learnRules.isPending ? 'Saving…' : 'Remember my choices'}
+              </button>
+            )}
             <button type="button" className="app-btn" onClick={() => { setQueue(null); txns.refetch(); }}>Check for more</button>
             <Link className="app-btn primary" to="/app/transactions">View all transactions</Link>
           </div>

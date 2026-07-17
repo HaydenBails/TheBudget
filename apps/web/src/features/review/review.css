@@ -1,6 +1,9 @@
 /* Review & categorize — a focused one-card-at-a-time queue. */
 
+.rv-head-actions { display: flex; align-items: center; gap: 12px; }
 .rv-count { font-family: var(--lg-font-mono, ui-monospace); font-size: 13px; font-weight: var(--lg-font-weight-bold); color: var(--lg-muted); font-variant-numeric: tabular-nums; }
+.rv-applied { max-width: 720px; margin: 0 auto var(--lg-space-4); padding: 10px 14px; font-size: 13px; color: var(--lg-positive); background: color-mix(in srgb, var(--lg-positive) 12%, transparent); border: 1px solid color-mix(in srgb, var(--lg-positive) 30%, transparent); border-radius: var(--lg-radius-md); }
+.rv-learned { font-size: 13px; color: var(--lg-accent-2); margin: 0 0 6px; }
 
 .rv-progress { height: 6px; border-radius: 999px; background: var(--lg-panel-3); overflow: hidden; margin-bottom: var(--lg-space-5); }
 .rv-progress > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--mrd-accent), var(--mrd-accent-2)); transition: width .2s ease; }

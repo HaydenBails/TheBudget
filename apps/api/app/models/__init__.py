@@ -9,6 +9,7 @@ from app.models.import_staged_transaction import ImportStagedTransaction
 from app.models.import_transaction_link import ImportTransactionLink
 from app.models.import_warning import ImportWarning
 from app.models.income_schedule import IncomeSchedule
+from app.models.merchant_rule import MerchantRule
 from app.models.profile import Profile
 from app.models.recurring_series import RecurringSeries
 from app.models.tag import Tag, TransactionTag
@@ -25,6 +26,7 @@ __all__ = [
     "ImportStagedTransaction",
     "ImportTransactionLink",
     "ImportWarning",
+    "MerchantRule",
     "Profile",
     "RecurringSeries",
     "Tag",

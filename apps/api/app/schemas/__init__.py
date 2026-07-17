@@ -29,6 +29,13 @@ from app.schemas.income import (
     IncomeScheduleUpdate,
     IncomeSummaryRead,
 )
+from app.schemas.merchant_rule import (
+    MerchantRuleApplyResult,
+    MerchantRuleCreate,
+    MerchantRuleLearnResult,
+    MerchantRuleRead,
+    MerchantRuleUpdate,
+)
 from app.schemas.profile import ProfileCreate, ProfileRead, ProfileUpdate
 from app.schemas.recurring import (
     RecurringDetectResult,
@@ -71,6 +78,11 @@ __all__ = [
     "IncomeScheduleRead",
     "IncomeScheduleUpdate",
     "IncomeSummaryRead",
+    "MerchantRuleApplyResult",
+    "MerchantRuleCreate",
+    "MerchantRuleLearnResult",
+    "MerchantRuleRead",
+    "MerchantRuleUpdate",
     "ImportBatchCreate",
     "ImportBatchRead",
     "ImportCancelResponse",

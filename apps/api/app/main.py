@@ -30,6 +30,7 @@ from app.routers import (
     health,
     imports,
     income,
+    merchant_rules,
     profiles,
     recurring,
     transactions,
@@ -87,6 +88,7 @@ app.include_router(budgets.router)
 app.include_router(transactions.router)
 app.include_router(recurring.router)
 app.include_router(income.router)
+app.include_router(merchant_rules.router)
 app.include_router(imports.router)
 
 
