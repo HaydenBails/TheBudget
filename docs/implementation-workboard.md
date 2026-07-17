@@ -226,12 +226,33 @@ profile/month" and "one category budget per profile/category/month" rules.
 | BE-BUDGET-01 | Budget domain + typed profile-nested budget API. | BE-08, BE-11 | `apps/api/app/models/budget.py`, `apps/api/app/schemas/budget.py`, `apps/api/app/services/budgets.py`, model/schema/service exports, `apps/api/app/routers/budgets.py`, `app/main.py`, `alembic/versions/0007_budget_models.py`, backend tests | Budget is profile-scoped with nullable `category_id` (NULL = overall), `period_month` (`YYYY-MM`), and positive `limit_cents`. Partial unique indexes enforce one overall budget per profile/month and one category budget per profile/category/month; a duplicate returns 409. A category budget's category must belong to the profile. List filters by month; cross-profile access returns not-found. Migration applies/reverses from 0006. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 | FE-BUDGET-01 | Budgets management UI + dashboard budgets card. | BE-BUDGET-01, FE-07 | `apps/web/src/features/budgets/`, `apps/web/src/app/{AppShell.tsx,pages.tsx,dashboard.css}`, `apps/web/dist/` | A Budgets page lists the active month's overall + per-category budgets, sets/edits/removes limits, and shows progress (amount + %) with 75/90/100% threshold states computed from live transactions. The dashboard "Category budgets" card shows real progress bars (top categories) and links to Budgets. Keyboard/focus, light/dark, and responsive checks pass; typecheck/build pass and committed `dist` is refreshed. | `DONE` | Claude Opus 4.8 |
 
+### Amex parser slice (backlog item 1 — first half)
+
+Claimed 2026-07-17 at the product owner's direct request to work on Amex
+statement import, ahead of the QA-04 gate (recorded as an exception in the
+progress log, like prior direct-request tasks). Scope is the **section-aware
+Amex credit-card parser and privacy-safe synthetic fixtures**, plus a small
+**parser resolver** so preview auto-detects the issuer (TD or Amex) instead of
+hardcoding TD. Multi-file import and mixed-issuer *batching* remain future
+work. File ownership is additive/disjoint: a new parser, new fixtures, a
+resolver, and a one-line router swap; it does not change the TD parser or the
+import persistence/services.
+
+All privacy rules from Stage 3 apply: fixtures are entirely synthetic/redacted,
+no real statement content, no full account numbers, integer cents only, and
+exchange rates parsed as fixed-precision Decimal.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-AMEX-01 | Section-aware Amex credit-card parser, synthetic fixture matrix, and issuer-detecting parser resolver. | BE-14, BE-16 | `apps/api/app/parsers/amex.py`, `apps/api/app/parsers/{__init__,resolver}.py`, `apps/api/app/routers/imports.py` (resolver swap), `fixtures/statements/amex/**`, `apps/api/tests/test_amex_parser.py`, `apps/api/tests/test_parser_resolver.py` | Amex parser implements `detect`/`extract_metadata`/`extract_transactions`/`reconcile`: recognises the AMEX issuer + a section-aware layout (Payments-and-Credits vs New-Charges), preserves transaction dates and raw descriptions, stores charged CAD as integer cents, handles payments/refunds/fees/interest and a foreign-currency continuation, and reconciles net + debit/credit sections within one cent. A resolver picks the matching parser by detection confidence; unknown issuers raise a readable unsupported error. Synthetic fixtures + expected canonical JSON + manifest cover the matrix; no real statement/number/address is committed. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
+
 ## Later-stage backlog
 
 Do not claim these until M5 passes QA-04 and the board has been expanded with
 equivalent dependencies, file ownership, privacy criteria, and verification.
 
-1. Amex section-aware parser, multi-file import, and mixed-issuer reliability.
+1. Amex parser: **section-aware parser claimed as BE-AMEX-01 (2026-07-17)**;
+   multi-file import and mixed-issuer batching remain.
 2. CIBC discovery gate and parser after representative private samples exist.
 3. Categorization, merchant normalization, and remembered rules.
 
@@ -2198,3 +2219,49 @@ equivalent dependencies, file ownership, privacy criteria, and verification.
   future work; the dashboard hero available-to-save is currently income − spend.
 - Handoff: A future slice can add recurring detection (turning the last "Coming
   soon" card real) and fold expected-income/recurring into available-to-save.
+
+### 2026-07-17 — BE-AMEX-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/api/app/parsers/amex.py` (new), `apps/api/app/parsers/resolver.py`
+  (new), `apps/api/app/parsers/__init__.py` (exports), `apps/api/app/routers/imports.py`
+  (resolver swap + issuer-neutral docstring), `fixtures/statements/amex/**`
+  (generator, three synthetic PDFs, expected canonical JSON, manifest),
+  `apps/api/tests/test_amex_parser.py` (new), `apps/api/tests/test_parser_resolver.py`
+  (new). The TD parser and import persistence/services were left untouched.
+- Work: Implemented the section-aware American Express credit-card parser
+  (backlog item 1, first half). Amex groups rows under "Payments and Credits"
+  and "New Charges" headings with a single transaction date per row, so the
+  parser tracks the active section and derives sign from it (credits = inflow,
+  charges = outflow; an explicit negative inside charges is a refund). It
+  preserves dates and raw descriptions, stores charged CAD as integer cents,
+  classifies payments/refunds/fees/interest, merges multi-line and
+  foreign-currency continuations (Decimal exchange rate), and reconciles net +
+  debit/credit sections within a one-cent tolerance. Added a `resolve_parser`
+  registry that runs each parser's deterministic `detect` and returns the
+  highest-confidence match; the preview route now auto-selects the issuer
+  instead of hardcoding TD. Unknown issuers raise a readable unsupported error;
+  no-text documents raise the scanned-document error.
+- Verification: `test_amex_parser` + `test_parser_resolver` **15/15**; full
+  backend suite **224 passed** (was 209); `ruff check app tests` clean.
+  End-to-end against a live loopback backend: previewed the synthetic Amex PDF
+  through `POST /profiles/{id}/imports/preview` — resolver selected
+  `amex_credit_card`, 8 rows staged with correct types/signs/foreign-currency/
+  occurrence indices, reconciliation delta 0, `validated`; committed it into the
+  ledger (8 transactions); a TD statement still routed to `td_credit_card` with
+  delta 0 (no regression). Fixture privacy assertions pass (no 12–19 digit runs,
+  masked `XXXX-XXXXXX-X1007`, `SYNTHETIC` corpus, no address tokens).
+- Decisions: Kept small parse/date helpers local to `amex.py` rather than
+  sharing them out of `td.py`, preserving the plan's per-parser file ownership.
+  The resolver's registration order is the deterministic tie-breaker for equal
+  confidence. Amex rows carry no posting date, so `posted_date` is `None`.
+- Exception: This was a direct product-owner request ("work on the import
+  feature for Amex statements") made ahead of the QA-04 gate that the backlog
+  notes normally require; recorded here as an exception, consistent with prior
+  direct-request tasks (GOV-01/02, GRAPH-01). Scope was kept additive and
+  disjoint from QA-04's validation surface.
+- Blockers/risks: none for the parser. Multi-file import and mixed-issuer
+  *batching* (the rest of backlog item 1) remain future work, as does a
+  frontend affordance surfacing which issuer parser handled a preview.
+- Handoff: A follow-up can add multi-file/mixed-issuer preview batching and,
+  separately, the CIBC parser once representative synthetic samples exist.

@@ -1,0 +1,72 @@
+%PDF-1.4
+% synthetic fixture
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 4 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
+endobj
+5 0 obj
+<< /Length 479 >>
+stream
+BT /F1 9 Tf 50 750 Td 13 TL
+(AMERICAN EXPRESS) Tj T*
+(COBALT CARD) Tj T*
+(ACCOUNT NUMBER XXXX-XXXXXX-X1007) Tj T*
+(STATEMENT PERIOD JUNE 1, 2026 TO JUNE 30, 2026) Tj T*
+(ACCOUNT SUMMARY) Tj T*
+(PREVIOUS BALANCE $500.00) Tj T*
+(PAYMENTS AND CREDITS -$1,525.00) Tj T*
+(NEW CHARGES $1,486.00) Tj T*
+(NEW BALANCE $461.00) Tj T*
+(PAYMENTS AND CREDITS) Tj T*
+(JUN 04 PAYMENT RECEIVED - THANK YOU $1,500.00) Tj T*
+(JUN 06 SYNTHETIC RETURN $25.00) Tj T*
+(CONTINUED ON NEXT PAGE) Tj T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Length 525 >>
+stream
+BT /F1 9 Tf 50 750 Td 13 TL
+(AMERICAN EXPRESS) Tj T*
+(PAGE 2 OF 2) Tj T*
+(NEW CHARGES) Tj T*
+(JUN 02 SYNTHETIC MARKET 1,234.56) Tj T*
+(JUN 08 SYNTHETIC CLOUD $13.45) Tj T*
+(DESCRIPTION CONTINUED: MONTHLY SERVICE) Tj T*
+(FOREIGN CURRENCY USD $10.00 AT 1.34500000) Tj T*
+(JUN 10 ANNUAL MEMBERSHIP FEE $25.65) Tj T*
+(JUN 12 INTEREST CHARGED $12.34) Tj T*
+(JUN 14 SYNTHETIC CAFE $100.00) Tj T*
+(JUN 14 SYNTHETIC CAFE $100.00) Tj T*
+(MEMBERSHIP REWARDS SUMMARY) Tj T*
+(IMPORTANT INFORMATION ABOUT THIS SYNTHETIC DOCUMENT) Tj T*
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000029 00000 n 
+0000000078 00000 n 
+0000000141 00000 n 
+0000000267 00000 n 
+0000000393 00000 n 
+0000000923 00000 n 
+0000001499 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1569
+%%EOF

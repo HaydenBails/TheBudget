@@ -17,7 +17,7 @@ from app.importing.errors import (
     ImportingError,
     UnsupportedDocumentError,
 )
-from app.parsers import TdCreditCardParser
+from app.parsers import resolve_parser
 from app.schemas import (
     ImportCancelResponse,
     ImportCommitRequest,
@@ -87,7 +87,7 @@ async def post_import_preview(
     limits: LimitsDependency,
     fingerprint_key: FingerprintKeyDependency,
 ):
-    """Safely stage one TD PDF and persist its structured preview."""
+    """Safely stage one credit-card PDF (issuer auto-detected) and persist its preview."""
 
     statement = statements[0]
     temp_root = settings.import_temp_root
@@ -108,7 +108,7 @@ async def post_import_preview(
                 profile_id,
                 account_id,
                 document,
-                TdCreditCardParser(),
+                resolve_parser(document),
                 fingerprint_key=fingerprint_key,
                 logger=logger,
             )

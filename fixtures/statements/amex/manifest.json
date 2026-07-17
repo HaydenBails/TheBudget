@@ -1,0 +1,49 @@
+{
+  "policy": "synthetic-only",
+  "generator": "generate_fixtures.py",
+  "fixtures": [
+    {
+      "file": "amex_full_matrix.pdf",
+      "expected": "amex_full_matrix.expected.json",
+      "issuer": "AMEX",
+      "layout_version": "synthetic-amex-v1",
+      "page_count": 2,
+      "statement_period_shape": "full-month-name range with year",
+      "synthetic": true,
+      "edge_cases": [
+        "section-aware payments-and-credits vs new-charges",
+        "single transaction date per row",
+        "repeated page headers",
+        "page-break section continuation",
+        "account summary totals",
+        "comma amount",
+        "payment received credit",
+        "refund credit",
+        "annual membership fee",
+        "interest charge",
+        "multi-line description continuation",
+        "combined foreign-currency continuation",
+        "repeated legitimate row",
+        "section reconciliation"
+      ]
+    },
+    {
+      "file": "amex_unsupported_layout.pdf",
+      "issuer": "AMEX",
+      "layout_version": "synthetic-unknown-layout",
+      "page_count": 1,
+      "statement_period_shape": "full-month-name range with year",
+      "synthetic": true,
+      "edge_cases": ["issuer marker without a supported section layout"]
+    },
+    {
+      "file": "amex_scanned_placeholder.pdf",
+      "issuer": "AMEX",
+      "layout_version": "synthetic-scanned-placeholder",
+      "page_count": 1,
+      "statement_period_shape": "none",
+      "synthetic": true,
+      "edge_cases": ["image-only PDF with no extractable text"]
+    }
+  ]
+}
