@@ -19,16 +19,31 @@ import './app.css';
 
 type IconName = 'dashboard' | 'transactions' | 'profiles' | 'accounts' | 'categories' | 'budgets' | 'recurring' | 'income' | 'settings' | 'import' | 'sun' | 'moon';
 
-const NAV: { to: string; label: string; icon: IconName }[] = [
-  { to: '/app/dashboard', label: 'Dashboard', icon: 'dashboard' },
-  { to: '/app/transactions', label: 'Transactions', icon: 'transactions' },
-  { to: '/app/budgets', label: 'Budgets', icon: 'budgets' },
-  { to: '/app/recurring', label: 'Recurring', icon: 'recurring' },
-  { to: '/app/income', label: 'Income', icon: 'income' },
-  { to: '/app/profiles', label: 'Profiles', icon: 'profiles' },
-  { to: '/app/accounts', label: 'Accounts', icon: 'accounts' },
-  { to: '/app/categories', label: 'Categories', icon: 'categories' },
-  { to: '/app/settings', label: 'Settings', icon: 'settings' },
+const NAV_GROUPS: { heading: string; items: { to: string; label: string; icon: IconName }[] }[] = [
+  {
+    heading: 'Money',
+    items: [
+      { to: '/app/dashboard', label: 'Dashboard', icon: 'dashboard' },
+      { to: '/app/transactions', label: 'Transactions', icon: 'transactions' },
+    ],
+  },
+  {
+    heading: 'Plan',
+    items: [
+      { to: '/app/budgets', label: 'Budgets', icon: 'budgets' },
+      { to: '/app/recurring', label: 'Recurring', icon: 'recurring' },
+      { to: '/app/income', label: 'Income', icon: 'income' },
+    ],
+  },
+  {
+    heading: 'Manage',
+    items: [
+      { to: '/app/profiles', label: 'Profiles', icon: 'profiles' },
+      { to: '/app/accounts', label: 'Accounts', icon: 'accounts' },
+      { to: '/app/categories', label: 'Categories', icon: 'categories' },
+      { to: '/app/settings', label: 'Settings', icon: 'settings' },
+    ],
+  },
 ];
 
 function Icon({ name }: { name: IconName }) {
@@ -49,32 +64,41 @@ function Icon({ name }: { name: IconName }) {
   return <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
 }
 
-function TopNav() {
+function Sidebar() {
   const { theme, toggle } = useTheme();
   return (
-    <header className="app-nav">
+    <aside className="app-sidebar" aria-label="Primary">
       <NavLink to="/app/dashboard" className="app-brand" aria-label="Meridian dashboard">
         <span className="app-logo" aria-hidden="true" />
         <span>MERIDIAN</span>
       </NavLink>
-      <nav className="app-tabs" aria-label="Primary">
-        {NAV.map((item) => (
-          <NavLink key={item.to} to={item.to} className={({ isActive }) => `app-tab ${isActive ? 'active' : ''}`}>
-            <Icon name={item.icon} />
-            <span>{item.label}</span>
-          </NavLink>
+      <NavLink to="/app/imports" className={({ isActive }) => `app-import-action ${isActive ? 'active' : ''}`}>
+        <Icon name="import" /><span>Import statement</span>
+      </NavLink>
+      <nav className="app-side-nav" aria-label="Sections">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.heading} className="app-nav-group">
+            <span className="app-nav-heading">{group.heading}</span>
+            {group.items.map((item) => (
+              <NavLink key={item.to} to={item.to} className={({ isActive }) => `app-tab ${isActive ? 'active' : ''}`}>
+                <Icon name={item.icon} />
+                <span>{item.label}</span>
+              </NavLink>
+            ))}
+          </div>
         ))}
       </nav>
-      <div className="app-nav-right">
+      <div className="app-side-foot">
         <ApiStatus />
-        <NavLink to="/app/imports" className={({ isActive }) => `app-import-action ${isActive ? 'active' : ''}`} aria-label="Import statement"><Icon name="import" /><span>Import</span></NavLink>
-        <button type="button" className="app-iconbtn" onClick={toggle} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
-          <Icon name={theme === 'light' ? 'moon' : 'sun'} />
-          <span className="app-theme-label">{theme === 'light' ? 'Dark' : 'Light'}</span>
-        </button>
-        <ProfileSwitcher />
+        <div className="app-side-foot-row">
+          <button type="button" className="app-iconbtn" onClick={toggle} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
+            <Icon name={theme === 'light' ? 'moon' : 'sun'} />
+            <span className="app-theme-label">{theme === 'light' ? 'Dark' : 'Light'}</span>
+          </button>
+          <ProfileSwitcher />
+        </div>
       </div>
-    </header>
+    </aside>
   );
 }
 
@@ -89,9 +113,9 @@ export function AppShell() {
   return (
     <QueryClientProvider client={queryClient}>
       <ProfileProvider>
-        <div className="app mrd">
+        <div className="app mrd app-has-sidebar">
           <a className="app-skip" href="#main-content">Skip to content</a>
-          <TopNav />
+          <Sidebar />
           <main className="app-body" id="main-content" tabIndex={-1}>
             <Routes>
               <Route index element={<Navigate to="dashboard" replace />} />

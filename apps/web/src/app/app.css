@@ -71,6 +71,7 @@
   font: var(--lg-font-size-md)/1.5 var(--lg-font-sans);
   -webkit-font-smoothing: antialiased;
 }
+.app-has-sidebar { display: flex; align-items: flex-start; }
 
 :root[data-theme='dark'] .app {
   --mrd-bg: #0d1017;
@@ -134,7 +135,7 @@
   align-items: center;
   gap: 9px;
   min-height: 48px;
-  padding-right: 20px;
+  padding: 0 6px 4px;
   color: var(--lg-nav-text);
   font-size: 13px;
   font-weight: 800;
@@ -142,19 +143,17 @@
   text-decoration: none;
 }
 .app-logo { width: 30px; height: 30px; border-radius: 10px; background: linear-gradient(135deg, var(--mrd-accent), var(--mrd-accent-2)); box-shadow: 0 8px 20px color-mix(in srgb, var(--mrd-accent) 26%, transparent); }
-.app-tabs { display: flex; align-items: stretch; min-width: 0; overflow-x: auto; scrollbar-width: none; }
-.app-tabs::-webkit-scrollbar { display: none; }
 .app-tab {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  min-height: 44px;
-  margin: 2px;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
   padding: 0 12px;
   color: var(--lg-nav-muted);
   border: 1px solid transparent;
   border-radius: var(--lg-radius-md);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: var(--lg-font-weight-semibold);
   letter-spacing: .01em;
   text-decoration: none;
@@ -163,8 +162,33 @@
 }
 .app-tab:hover { color: var(--lg-nav-text); background: color-mix(in srgb, var(--lg-accent) 8%, transparent); }
 .app-tab.active { color: var(--lg-accent-2); background: color-mix(in srgb, var(--lg-accent) 11%, transparent); border-color: color-mix(in srgb, var(--lg-accent) 22%, transparent); }
-.app-icon { width: 17px; height: 17px; flex: 0 0 auto; }
-.app-nav-right { display: flex; align-items: center; gap: 8px; margin-left: auto; padding-left: 12px; }
+.app-icon { width: 18px; height: 18px; flex: 0 0 auto; }
+
+/* Sidebar navigation (scales to any number of sections, unlike a top row). */
+.app-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  z-index: 20;
+  flex: 0 0 232px;
+  width: 232px;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 14px;
+  background: linear-gradient(180deg, var(--lg-nav-2), var(--lg-nav));
+  border-right: 1px solid var(--lg-nav-border);
+  backdrop-filter: blur(18px);
+  overflow-y: auto;
+}
+.app-side-nav { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+.app-nav-group { display: flex; flex-direction: column; gap: 2px; }
+.app-nav-heading { padding: 0 8px 4px; color: var(--lg-faint); font-size: 10.5px; font-weight: var(--lg-font-weight-bold); letter-spacing: .09em; text-transform: uppercase; }
+.app-side-foot { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 12px; border-top: 1px solid var(--lg-nav-border); }
+.app-side-foot-row { display: flex; align-items: center; gap: 8px; }
+.app-side-foot-row > * { flex: 1; }
 .app-status {
   display: inline-flex;
   align-items: center;
@@ -206,7 +230,36 @@
 }
 .app-profile-pill small { color: var(--lg-nav-muted); }
 
-.app-body { width: min(100%, 1240px); margin: 0 auto; padding: 30px 24px 80px; }
+.app-body { flex: 1 1 auto; min-width: 0; width: 100%; max-width: 1200px; margin: 0 auto; padding: 30px 32px 80px; }
+
+/* Below tablet width the sidebar becomes a scrollable top strip. */
+@media (max-width: 900px) {
+  .app-has-sidebar { flex-direction: column; align-items: stretch; }
+  .app-sidebar {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-right: 0;
+    border-bottom: 1px solid var(--lg-nav-border);
+    overflow-x: auto;
+  }
+  .app-brand { padding: 0 8px 0 0; flex: 0 0 auto; }
+  .app-brand span:last-child { display: none; }
+  .app-sidebar > .app-import-action { flex: 0 0 auto; }
+  .app-sidebar > .app-import-action span { display: none; }
+  .app-side-nav { flex-direction: row; gap: 6px; margin-top: 0; flex: 0 0 auto; }
+  .app-nav-group { flex-direction: row; gap: 4px; flex: 0 0 auto; }
+  .app-nav-heading { display: none; }
+  .app-tab { width: auto; flex: 0 0 auto; }
+  .app-side-foot { margin-top: 0; margin-left: auto; flex-direction: row; align-items: center; gap: 8px; padding-top: 0; border-top: 0; flex: 0 0 auto; }
+  .app-side-foot-row > * { flex: 0 0 auto; }
+  .app-status { display: none; }
+  .app-body { padding: 22px 18px 64px; }
+}
 .app-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
 .app-head h1 { margin: 0; font-size: clamp(22px, 3vw, 27px); line-height: 1.2; letter-spacing: -.02em; }
 .app-head p { margin: 4px 0 0; color: var(--lg-muted); font-size: 13px; }
