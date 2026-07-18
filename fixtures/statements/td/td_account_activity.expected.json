@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "issuer": "TD",
+    "account_last4": null,
+    "period_start": "2026-07-01",
+    "period_end": "2026-07-20",
+    "currency": "CAD",
+    "expected_activity_cents": -115689,
+    "expected_debits_cents": null,
+    "expected_credits_cents": null
+  },
+  "transactions": [
+    {
+      "source_index": 0,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-01",
+      "posted_date": null,
+      "raw_description": "PAYROLL DEPOSIT PAY",
+      "amount_cents": -200000,
+      "txn_type": "income",
+      "direction": "credit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 1,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-02",
+      "posted_date": null,
+      "raw_description": "MONTHLY PLAN FEE",
+      "amount_cents": 1095,
+      "txn_type": "fee",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 2,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-03",
+      "posted_date": null,
+      "raw_description": "TIM HORTONS",
+      "amount_cents": 465,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 3,
+      "occurrence_index": 1,
+      "transaction_date": "2026-07-03",
+      "posted_date": null,
+      "raw_description": "TIM HORTONS",
+      "amount_cents": 465,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 4,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-05",
+      "posted_date": null,
+      "raw_description": "HYDRO ONE BILL PAYMENT",
+      "amount_cents": 14230,
+      "txn_type": "payment",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 5,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-08",
+      "posted_date": null,
+      "raw_description": "LOBLAWS",
+      "amount_cents": 8642,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 6,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-10",
+      "posted_date": null,
+      "raw_description": "SEND E-TFR",
+      "amount_cents": 50000,
+      "txn_type": "transfer",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 7,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-12",
+      "posted_date": null,
+      "raw_description": "AMAZON",
+      "amount_cents": 3999,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 8,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-15",
+      "posted_date": null,
+      "raw_description": "INTEREST",
+      "amount_cents": -105,
+      "txn_type": "interest",
+      "direction": "credit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    },
+    {
+      "source_index": 9,
+      "occurrence_index": 0,
+      "transaction_date": "2026-07-20",
+      "posted_date": null,
+      "raw_description": "SHELL",
+      "amount_cents": 5520,
+      "txn_type": "purchase",
+      "direction": "debit",
+      "original_currency": null,
+      "original_amount_cents": null,
+      "exchange_rate": null
+    }
+  ],
+  "reconciliation": {
+    "status": "reconciled",
+    "expected_cents": -115689,
+    "parsed_cents": -115689,
+    "delta_cents": 0,
+    "tolerance_cents": 1,
+    "transaction_count": 10
+  }
+}

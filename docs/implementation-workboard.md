@@ -291,6 +291,39 @@ dashboard Net Worth card. No cross-profile surface; integer cents only.
 | BE-NETWORTH-01 | Account kind + current balance columns and schema. | BE-03, BE-04 | `apps/api/app/models/account.py`, `apps/api/app/schemas/account.py`, `apps/api/app/services/accounts.py`, `alembic/versions/0012_account_balances.py`, backend tests | Account gains `kind` (`asset`\|`liability`, default `liability`, model+Pydantic checked) and nullable `current_balance_cents` (BigInteger, bounded to safe-int cents). Create/Update/Read carry both; `kind` is a required-non-null update field. Migration uses native ADD/DROP COLUMN so existing `accounts` rows (and their `transactions`) are preserved. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 | FE-NETWORTH-01 | Accounts balance UI + dashboard Net Worth card. | BE-NETWORTH-01, FE-07 | `apps/web/src/features/accounts/{types.ts,netWorth.ts,AccountsPage.tsx,accounts.css}`, `apps/web/src/app/{pages.tsx,dashboard.css}`, `apps/web/dist/` | The account form sets asset/liability and an optional balance (blank→null, zero allowed, no float math); the list shows each balance with an OWED/BALANCE label. A pure `netWorth.ts` computes net = assets − liabilities and reconstructs month-end net worth by undoing the ledger from current balances. The dashboard shows a Net Worth card (net + 6-month change, assets/liabilities, trend area chart) when any balance is set. Keyboard/focus, light + dark, responsive checks pass; typecheck/build pass and `dist` refreshed. | `DONE` | Claude Opus 4.8 |
 
+### 2026-07-18 — BE-TDCSV-01 / FE-MERCHANT-DRILL-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/api/app/importing/csv_statement.py` (new stager), `app/parsers/td_csv.py`
+  (new parser), importing/parser exports, `app/routers/imports.py` (route .csv →
+  TD CSV parser), `fixtures/statements/td/{td_account_activity.csv,.expected.json,
+  generate_csv_fixtures.py,manifest.json}`, `apps/api/tests/{test_td_csv_parser.py,
+  test_import_csv_api.py}`, `tests/test_td_parser.py` (manifest set); frontend
+  `apps/web/src/features/{merchants/MerchantsPage.tsx,merchants/merchants.css}`,
+  `apps/web/src/app/{pages.tsx,dashboard.css}`, `apps/web/src/features/imports/ImportPage.tsx`,
+  `apps/web/dist/`. Product owner: "click through to a filtered transaction list"
+  and "TD CSV importer".
+- Work (merchant drill-through): merchant names in the Merchants view and the
+  dashboard's Top merchants card now link to `/app/transactions?q=<merchant>`,
+  which the Transactions page already reads into its search filter — one click
+  goes from a merchant to just its charges.
+- Work (TD CSV import): added a bounded, privacy-safe `.csv` stager (extension +
+  text/MIME validation, NUL-byte binary rejection, capped rows/cols, bytes written
+  to a server-owned temp file and deleted on exit) and a `TdCsvParser` for TD's
+  headerless five-column account-activity export (MM/DD/YYYY, description, charge,
+  credit, running balance). Charges map to positive debits, credits to negative
+  money-in; a bank-account type classifier tags payroll→income, plan/service
+  charges→fee, interest→interest, e-transfers/withdrawals→transfer, bill
+  payments→payment, else purchase. Reconciliation validates the running-balance
+  chain row-by-row and declines (needs_review) if any step is inconsistent. The
+  preview route auto-routes `.csv` to this parser (PDF/xlsx unchanged); the Import
+  page accepts `.csv`.
+- Verification: full backend suite **286 passed** (7 parser + 3 import-API +
+  fixtures); Ruff clean; the synthetic fixture reconciles to $0.00. Frontend
+  typecheck + 36 tests + build pass; `dist` refreshed. Verified end-to-end in the
+  app: clicking "Loblaws" filters Transactions to its 4 rows; uploading the TD CSV
+  previews as TD, reconciles to $0.00, and classifies each row correctly.
+
 ### 2026-07-18 — FE-MERCHANTS-01 — Claude Opus 4.8
 
 - Status: `DONE`

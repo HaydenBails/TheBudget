@@ -489,7 +489,7 @@ function TopMerchantsCard({
             return (
               <li key={m.name} className="dash-merchant">
                 <div className="dash-merchant-top">
-                  <span className="dash-merchant-name" title={m.name}>{m.name}</span>
+                  <Link className="dash-merchant-name" to={`/app/transactions?q=${encodeURIComponent(m.name)}`} title={`View ${m.name} transactions`}>{m.name}</Link>
                   <b className="dash-merchant-amt">{formatDollars(m.cents)}</b>
                 </div>
                 <div className="dash-merchant-bar">

@@ -11,13 +11,18 @@ from sqlalchemy.orm import Session
 
 from app.config import load_or_create_import_fingerprint_key, settings
 from app.db import get_session
-from app.importing import DocumentLimits, stage_pdf_async, stage_spreadsheet_async
+from app.importing import (
+    DocumentLimits,
+    stage_csv_async,
+    stage_pdf_async,
+    stage_spreadsheet_async,
+)
 from app.importing.errors import (
     DocumentTooLargeError,
     ImportingError,
     UnsupportedDocumentError,
 )
-from app.parsers import AmexExcelParser, resolve_parser
+from app.parsers import AmexExcelParser, TdCsvParser, resolve_parser
 from app.schemas import (
     ImportCancelResponse,
     ImportCommitRequest,
@@ -42,11 +47,19 @@ logger = logging.getLogger("spending_tracker.imports")
 
 
 def _looks_like_spreadsheet(filename: str, content_type: str) -> bool:
-    """Route .xlsx uploads to the Excel path; everything else stays PDF."""
+    """Route .xlsx uploads to the Excel path; everything else stays PDF/CSV."""
 
     if filename.casefold().endswith(".xlsx"):
         return True
     return "spreadsheetml" in content_type.casefold()
+
+
+def _looks_like_csv(filename: str, content_type: str) -> bool:
+    """Route .csv uploads to the TD account-activity CSV path."""
+
+    if filename.casefold().endswith(".csv"):
+        return True
+    return content_type.partition(";")[0].strip().casefold() in {"text/csv", "application/csv"}
 
 
 def get_import_document_limits() -> DocumentLimits:
@@ -95,7 +108,7 @@ async def post_import_preview(
     limits: LimitsDependency,
     fingerprint_key: FingerprintKeyDependency,
 ):
-    """Stage one credit-card statement (PDF or Amex .xlsx) and persist its preview."""
+    """Stage one statement (PDF, Amex .xlsx, or TD .csv) and persist its preview."""
 
     statement = statements[0]
     filename = statement.filename or "statement.pdf"
@@ -105,7 +118,25 @@ async def post_import_preview(
         temp_root = temp_root.expanduser().resolve()
         temp_root.mkdir(parents=True, exist_ok=True)
     try:
-        if _looks_like_spreadsheet(filename, content_type):
+        if _looks_like_csv(filename, content_type):
+            async with stage_csv_async(
+                statement,
+                filename=filename,
+                content_type=content_type,
+                limits=limits,
+                temp_root=temp_root,
+                logger=logger,
+            ) as document:
+                result = preview_import(
+                    session,
+                    profile_id,
+                    account_id,
+                    document,
+                    TdCsvParser(),
+                    fingerprint_key=fingerprint_key,
+                    logger=logger,
+                )
+        elif _looks_like_spreadsheet(filename, content_type):
             async with stage_spreadsheet_async(
                 statement,
                 filename=filename,

@@ -45,6 +45,27 @@
       "statement_period_shape": "none",
       "synthetic": true,
       "edge_cases": ["no extractable text"]
+    },
+    {
+      "file": "td_account_activity.csv",
+      "expected": "td_account_activity.expected.json",
+      "generator": "generate_csv_fixtures.py",
+      "issuer": "TD",
+      "layout_version": "synthetic-td-account-activity-csv-v1",
+      "statement_period_shape": "headerless five-column account activity export",
+      "synthetic": true,
+      "edge_cases": [
+        "MM/DD/YYYY dates",
+        "charge column is money out",
+        "credit column is money in",
+        "running-balance reconciliation",
+        "same-day repeated row",
+        "payroll income",
+        "monthly plan fee",
+        "bill payment",
+        "e-transfer",
+        "interest credit"
+      ]
     }
   ]
 }

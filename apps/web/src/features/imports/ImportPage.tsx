@@ -11,11 +11,13 @@ import './imports.css';
 type BusyAction = 'preview' | 'commit' | 'cancel' | null;
 
 const XLSX_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+const CSV_TYPES = new Set(['text/csv', 'application/csv', 'application/vnd.ms-excel', 'application/octet-stream', 'text/plain']);
 
 function isSupportedStatement(file: File) {
   const name = file.name.toLowerCase();
   if (name.endsWith('.pdf')) return !file.type || file.type === 'application/pdf';
   if (name.endsWith('.xlsx')) return !file.type || file.type === XLSX_TYPE || file.type === 'application/octet-stream';
+  if (name.endsWith('.csv')) return !file.type || CSV_TYPES.has(file.type);
   return false;
 }
 
@@ -84,7 +86,7 @@ export function ImportPage() {
     if (next && !isSupportedStatement(next)) {
       setFile(null);
       if (fileInput.current) fileInput.current.value = '';
-      setError('Choose one PDF or Amex Excel (.xlsx) statement. Scans and image files are not supported.');
+      setError('Choose one PDF, Amex Excel (.xlsx), or TD CSV (.csv) statement. Scans and image files are not supported.');
       return;
     }
     setFile(next);
@@ -163,7 +165,7 @@ export function ImportPage() {
   const suggested = accounts.find((item) => item.id === preview?.suggested_account_id);
 
   return <section className="im-page" aria-labelledby="im-title">
-    <div className="app-head"><div><p className="im-eyebrow">Local statement import</p><h1 id="im-title">Import statement</h1><p>{profile.currentProfile.name} · TD/Amex PDF or Amex Excel (.xlsx) · one file at a time</p></div></div>
+    <div className="app-head"><div><p className="im-eyebrow">Local statement import</p><h1 id="im-title">Import statement</h1><p>{profile.currentProfile.name} · TD/Amex PDF, Amex Excel (.xlsx), or TD CSV (.csv) · one file at a time</p></div></div>
 
     {error && <div className="im-alert" role="alert" tabIndex={-1} ref={errorBox}><strong>Import needs attention</strong><span>{error}</span></div>}
 
@@ -171,10 +173,10 @@ export function ImportPage() {
       <div className="app-card im-upload-card">
         <div className="im-step"><span>1</span><div><h2>Select a statement</h2><p>The file stays in temporary browser memory and is never saved by Meridian.</p></div></div>
         <label className={`im-drop ${dragging ? 'dragging' : ''}`} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); chooseFile(event.dataTransfer.files[0] ?? null); }}>
-          <input ref={fileInput} type="file" accept="application/pdf,.pdf,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onChange={(event) => chooseFile(event.target.files?.[0] ?? null)} />
+          <input ref={fileInput} type="file" accept="application/pdf,.pdf,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv,text/csv" onChange={(event) => chooseFile(event.target.files?.[0] ?? null)} />
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v5h14v-5" /></svg>
           <strong>{file ? file.name : 'Choose or drop a statement'}</strong>
-          <span>{file ? `${Math.max(1, Math.ceil(file.size / 1024)).toLocaleString()} KB selected` : 'Text-based PDF or Amex Excel (.xlsx) · one file per import'}</span>
+          <span>{file ? `${Math.max(1, Math.ceil(file.size / 1024)).toLocaleString()} KB selected` : 'Text-based PDF, Amex Excel (.xlsx), or TD CSV (.csv) · one file per import'}</span>
         </label>
         {file && <button className="im-text-button" type="button" onClick={() => chooseFile(null)}>Remove selected file</button>}
       </div>

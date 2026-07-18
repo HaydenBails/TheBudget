@@ -48,7 +48,13 @@
 .mch-table td.muted { color: var(--lg-muted); }
 
 .mch-merch { display: flex; flex-direction: column; gap: 4px; min-width: 180px; max-width: 340px; }
-.mch-merch b { font-weight: var(--lg-font-weight-semibold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mch-merch-link {
+  font-weight: var(--lg-font-weight-semibold);
+  color: var(--lg-text); text-decoration: none;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mch-merch-link:hover { color: var(--lg-accent); text-decoration: underline; }
+.mch-merch-link:focus-visible { outline: 2px solid var(--lg-accent); outline-offset: 2px; border-radius: 4px; }
 .mch-merch small { color: var(--lg-faint); font-size: 11px; }
 .mch-bar { height: 5px; border-radius: var(--lg-radius-pill); background: var(--lg-panel-3); overflow: hidden; }
 .mch-bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--mrd-accent), var(--mrd-accent-2)); }

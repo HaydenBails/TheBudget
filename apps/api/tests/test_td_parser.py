@@ -382,6 +382,7 @@ def test_fixture_manifest_and_corpus_are_synthetic_and_privacy_safe() -> None:
         "td_full_matrix.pdf",
         "td_unsupported_layout.pdf",
         "td_scanned_placeholder.pdf",
+        "td_account_activity.csv",
     }
 
     extracted_text: list[str] = []

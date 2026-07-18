@@ -214,7 +214,13 @@ export function MerchantsPage() {
                         <td className="mch-rank muted">{search ? '' : i + 1}</td>
                         <td>
                           <div className="mch-merch">
-                            <b>{r.name}</b>
+                            <Link
+                              className="mch-merch-link"
+                              to={`/app/transactions?q=${encodeURIComponent(r.name)}`}
+                              title={`View ${r.name} transactions`}
+                            >
+                              {r.name}
+                            </Link>
                             <div className="mch-bar" aria-hidden>
                               <span style={{ width: `${maxCents > 0 ? (r.cents / maxCents) * 100 : 0}%` }} />
                             </div>
