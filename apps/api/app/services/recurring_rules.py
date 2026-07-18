@@ -14,7 +14,7 @@ from __future__ import annotations
 import re
 import statistics
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date, timedelta
 from typing import Literal
 
@@ -32,9 +32,18 @@ _CADENCES: tuple[tuple[Cadence, int, int], ...] = (
 _CADENCE_TARGET: dict[Cadence, int] = {name: target for name, target, _ in _CADENCES}
 _CADENCE_TARGET_TOL: dict[Cadence, int] = {name: tol for name, _, tol in _CADENCES}
 
-# Amounts within the larger of these tolerances are treated as "the same" charge.
-_AMOUNT_ABS_TOLERANCE_CENTS = 500
-_AMOUNT_PCT_TOLERANCE = 0.15
+# Amounts within the larger of these tolerances are treated as "the same" charge
+# for the purpose of a *high-confidence* series. Recurring charges are generally
+# close in amount, so this is deliberately tight.
+_AMOUNT_ABS_TOLERANCE_CENTS = 150
+_AMOUNT_PCT_TOLERANCE = 0.10
+
+# Splitting a merchant's charges into amount clusters separates genuinely distinct
+# recurring prices (e.g. two subscriptions billed by the same processor) while the
+# percentage term keeps naturally-variable bills (utilities) in one cluster. A
+# cluster break happens only when an amount jumps more than the larger tolerance.
+_AMOUNT_SPLIT_ABS_CENTS = 300
+_AMOUNT_SPLIT_PCT = 0.35
 
 _MIN_INTERVAL_DAYS = 5  # more frequent than weekly is not a subscription cadence
 
@@ -111,7 +120,65 @@ def _amounts_are_stable(amounts: list[int]) -> bool:
     return all(abs(amount - median) <= tolerance for amount in amounts)
 
 
-def _detect_group(observations: list[RecurringObservation]) -> DetectedSeries | None:
+def _split_by_amount(
+    observations: list[RecurringObservation],
+) -> list[list[RecurringObservation]]:
+    """Partition a merchant's charges into clusters of similar amount.
+
+    Charges are sorted by amount and a new cluster starts wherever the jump from
+    the previous amount exceeds the larger of the absolute/percentage tolerance.
+    Naturally-variable bills stay in one cluster; two distinct fixed prices split.
+    """
+
+    ordered = sorted(observations, key=lambda o: (o.amount_cents, o.transaction_id))
+    clusters: list[list[RecurringObservation]] = [[ordered[0]]]
+    for previous, current in zip(ordered, ordered[1:], strict=False):
+        threshold = max(
+            _AMOUNT_SPLIT_ABS_CENTS,
+            int(abs(previous.amount_cents) * _AMOUNT_SPLIT_PCT),
+        )
+        if abs(current.amount_cents - previous.amount_cents) > threshold:
+            clusters.append([current])
+        else:
+            clusters[-1].append(current)
+    return clusters
+
+
+def _detect_group(observations: list[RecurringObservation]) -> list[DetectedSeries]:
+    """Detect recurring series within one merchant group.
+
+    Distinct amount clusters are each considered a candidate series; if none
+    qualify, the whole group is retried so variable-amount bills (utilities) whose
+    amounts scatter across clusters are still detected as a single series.
+    """
+
+    clusters = _split_by_amount(observations)
+    if len(clusters) > 1:
+        # A split cluster must be well-attested (>= 3 charges): splitting can make a
+        # clean cadence appear in two noisy charges by chance, so a mere pair from a
+        # split is not enough to call it recurring.
+        detected = [
+            series
+            for cluster in clusters
+            if (series := _detect_cluster(cluster)) is not None
+            and series.occurrence_count >= 3
+        ]
+        if len(detected) == 1:
+            return detected  # keep the plain merchant key for stable matching
+        if detected:
+            # Several priced series at one merchant: suffix each key with its amount
+            # so the profile/merchant-key unique constraint holds and re-runs match.
+            return [
+                replace(s, merchant_key=f"{s.merchant_key}#{s.amount_cents}")
+                for s in detected
+            ]
+    # Single amount cluster, or a split that found no well-attested series: detect
+    # over the whole group so variable-amount bills (utilities) are still caught.
+    whole = _detect_cluster(observations)
+    return [whole] if whole is not None else []
+
+
+def _detect_cluster(observations: list[RecurringObservation]) -> DetectedSeries | None:
     ordered = sorted(observations, key=lambda o: (o.txn_date, o.transaction_id))
     if len(ordered) < 2:
         return None
@@ -194,8 +261,6 @@ def detect_recurring_series(
 
     detected: list[DetectedSeries] = []
     for group in groups.values():
-        series = _detect_group(group)
-        if series is not None:
-            detected.append(series)
+        detected.extend(_detect_group(group))
     detected.sort(key=lambda s: (s.next_expected_date, s.merchant_key))
     return detected

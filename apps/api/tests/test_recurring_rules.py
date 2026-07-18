@@ -96,6 +96,32 @@ def test_variable_utility_is_recurring_but_medium_confidence() -> None:
     assert s.amount_max_cents == 12000
 
 
+def test_two_distinct_prices_at_one_merchant_split_into_two_series() -> None:
+    # Same processor billing two subscriptions at clearly different prices.
+    obs = _monthly("APPLE COM BILL", 129, 4, date(2026, 1, 3), first_id=1)
+    obs += _monthly("APPLE COM BILL", 1299, 4, date(2026, 1, 3), first_id=100)
+    series = detect_recurring_series(obs)
+    assert len(series) == 2
+    amounts = sorted(s.amount_cents for s in series)
+    assert amounts == [129, 1299]
+    # Keys are disambiguated so the profile/merchant-key constraint holds.
+    assert len({s.merchant_key for s in series}) == 2
+    assert all(s.cadence == "monthly" for s in series)
+
+
+def test_close_amounts_at_one_merchant_stay_one_series() -> None:
+    # A subscription that nudges its price a little must not fragment.
+    obs = [
+        _obs(1, date(2026, 1, 10), "SPOTIFY", 1099),
+        _obs(2, date(2026, 2, 10), "SPOTIFY", 1099),
+        _obs(3, date(2026, 3, 10), "SPOTIFY", 1199),
+        _obs(4, date(2026, 4, 10), "SPOTIFY", 1199),
+    ]
+    series = detect_recurring_series(obs)
+    assert len(series) == 1
+    assert series[0].merchant_key == "SPOTIFY"
+
+
 def test_results_are_sorted_by_next_expected_date() -> None:
     obs = _monthly("NETFLIX", 2099, 3, date(2026, 1, 5), first_id=1)
     obs += _monthly("SPOTIFY", 1099, 3, date(2026, 1, 20), first_id=100)

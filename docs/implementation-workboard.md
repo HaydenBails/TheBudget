@@ -291,6 +291,32 @@ dashboard Net Worth card. No cross-profile surface; integer cents only.
 | BE-NETWORTH-01 | Account kind + current balance columns and schema. | BE-03, BE-04 | `apps/api/app/models/account.py`, `apps/api/app/schemas/account.py`, `apps/api/app/services/accounts.py`, `alembic/versions/0012_account_balances.py`, backend tests | Account gains `kind` (`asset`\|`liability`, default `liability`, model+Pydantic checked) and nullable `current_balance_cents` (BigInteger, bounded to safe-int cents). Create/Update/Read carry both; `kind` is a required-non-null update field. Migration uses native ADD/DROP COLUMN so existing `accounts` rows (and their `transactions`) are preserved. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 | FE-NETWORTH-01 | Accounts balance UI + dashboard Net Worth card. | BE-NETWORTH-01, FE-07 | `apps/web/src/features/accounts/{types.ts,netWorth.ts,AccountsPage.tsx,accounts.css}`, `apps/web/src/app/{pages.tsx,dashboard.css}`, `apps/web/dist/` | The account form sets asset/liability and an optional balance (blank→null, zero allowed, no float math); the list shows each balance with an OWED/BALANCE label. A pure `netWorth.ts` computes net = assets − liabilities and reconstructs month-end net worth by undoing the ledger from current balances. The dashboard shows a Net Worth card (net + 6-month change, assets/liabilities, trend area chart) when any balance is set. Keyboard/focus, light + dark, responsive checks pass; typecheck/build pass and `dist` refreshed. | `DONE` | Claude Opus 4.8 |
 
+### 2026-07-18 — FE-DASH-INSIGHTS-01 / BE-RECUR-TIGHTEN-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/src/app/{pages.tsx,dashboard.css}`, `apps/web/dist/`;
+  `apps/api/app/services/recurring_rules.py`, `apps/api/tests/test_recurring_rules.py`.
+- Work (dashboard, product owner: "make sure the dashboard has everything you'd
+  need to understand where your money is going"): added, all from already-loaded
+  transactions (no backend change) — a **Top merchants** card (per-merchant spend,
+  count, share, ranked bars), a **Spending by account** card (per-account share
+  bars in the account colour), **category change pills** in the By-category legend
+  (▲/▼ % vs the comparison period), and a **month-pace projection** on the hero
+  ("On pace for ~$X by month-end") for the current month.
+- Work (recurring, product owner: "tighten up the recurring transactions,
+  generally they are close in amount"): tightened the high-confidence amount
+  tolerance to max($1.50, 10%), and added amount-clustering within a merchant so
+  two distinct fixed prices at one processor split into separate series (keys
+  suffixed with the amount to satisfy the profile/merchant-key unique constraint),
+  while a percentage-based split threshold + whole-group fallback keep
+  variable-amount utilities as one series. Split-out clusters must have ≥3 charges
+  so noisy dining pairs cannot masquerade as recurring.
+- Verification: full backend suite **276 passed** (2 new recurring tests: distinct
+  prices split; close amounts stay one); Ruff clean. Frontend typecheck + build
+  pass; `dist` refreshed. Dashboard verified end-to-end against a seeded profile in
+  light + dark — pace pill, category deltas (Transport ▲125%), top-merchant and
+  by-account bars all render.
+
 ### 2026-07-18 — BE-NETWORTH-01 / FE-NETWORTH-01 — Claude Opus 4.8
 
 - Status: `DONE`

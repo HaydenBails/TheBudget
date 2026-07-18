@@ -204,7 +204,41 @@ export function DashboardPage() {
       if (!t.included_in_spending || !inSel(t) || t.category_id == null) continue;
       catMap.set(t.category_id, (catMap.get(t.category_id) ?? 0) + outflow(t));
     }
+    // Category spend in the comparison period, to show what moved up or down.
+    const prevCatMap = new Map<number, number>();
+    if (range.cmpFromISO) {
+      for (const t of allTx) {
+        if (!t.included_in_spending || t.category_id == null) continue;
+        if (!inRange(t, range.cmpFromISO, range.cmpToISO as string)) continue;
+        prevCatMap.set(t.category_id, (prevCatMap.get(t.category_id) ?? 0) + outflow(t));
+      }
+    }
     const byCategory = [...catMap.entries()]
+      .map(([id, cents]) => ({ id, cents, prev: prevCatMap.get(id) ?? 0 }))
+      .filter((x) => x.cents > 0)
+      .sort((a, b) => b.cents - a.cents);
+
+    // Where the money actually goes: merchant- and account-level spend.
+    const merchMap = new Map<string, { cents: number; count: number }>();
+    for (const t of allTx) {
+      if (!t.included_in_spending || !inSel(t) || outflow(t) <= 0) continue;
+      const name = (t.merchant || t.raw_description || 'Unknown').trim() || 'Unknown';
+      const cur = merchMap.get(name) ?? { cents: 0, count: 0 };
+      cur.cents += outflow(t);
+      cur.count += 1;
+      merchMap.set(name, cur);
+    }
+    const byMerchant = [...merchMap.entries()]
+      .map(([name, v]) => ({ name, cents: v.cents, count: v.count }))
+      .sort((a, b) => b.cents - a.cents)
+      .slice(0, 6);
+
+    const acctMap = new Map<number, number>();
+    for (const t of allTx) {
+      if (!t.included_in_spending || !inSel(t)) continue;
+      acctMap.set(t.account_id, (acctMap.get(t.account_id) ?? 0) + outflow(t));
+    }
+    const byAccount = [...acctMap.entries()]
       .map(([id, cents]) => ({ id, cents }))
       .filter((x) => x.cents > 0)
       .sort((a, b) => b.cents - a.cents);
@@ -229,7 +263,7 @@ export function DashboardPage() {
       .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id))
       .slice(0, 6);
 
-    return { spent, mom, income, excluded, byCategory, trend, largest, recent, prevSpent };
+    return { spent, mom, income, excluded, byCategory, byMerchant, byAccount, trend, largest, recent, prevSpent };
   }, [allTx, range]);
 
   const allAccounts = useMemo(() => accounts.data ?? [], [accounts.data]);
@@ -266,6 +300,12 @@ export function DashboardPage() {
     : model.income - model.spent;
   const availableIsEstimate = isCurrentMonth && (expectedRemainingIncome > 0 || recurringDue > 0);
   const uncategorizedCount = allTx.filter((t) => t.category_id == null && t.deleted_at == null).length;
+
+  // Current-month pacing: extrapolate today's spend to a projected month-end total.
+  const dayOfMonth = now.getDate();
+  const daysInMonth = monthEnd.getDate();
+  const projectedSpend =
+    isCurrentMonth && dayOfMonth > 0 ? Math.round((model.spent / dayOfMonth) * daysInMonth) : 0;
 
   if (!hasProfile) {
     return (
@@ -357,6 +397,11 @@ export function DashboardPage() {
                 {range.cmpFromISO && model.prevSpent > 0 ? `vs ${formatDollars(model.prevSpent)} (${range.cmpLabel}) · ` : ''}
                 {formatDollars(model.income)} income
               </span>
+              {isCurrentMonth && model.spent > 0 && dayOfMonth < daysInMonth && (
+                <span className="dash-hero-pace">
+                  On pace for ~{formatDollars(projectedSpend)} by month-end
+                </span>
+              )}
             </div>
             <StatCard
               icon="↑"
@@ -415,10 +460,16 @@ export function DashboardPage() {
                 <ul className="dash-legend">
                   {model.byCategory.slice(0, 5).map((c) => {
                     const cat = catById.get(c.id);
+                    const delta = range.cmpFromISO && c.prev > 0 ? (c.cents - c.prev) / c.prev : null;
                     return (
                       <li key={c.id}>
                         <span className="dash-dot" style={{ background: cat?.color ?? '#8a90a6' }} />
-                        {cat?.name ?? 'Uncategorised'}
+                        <span className="dash-legend-name">{cat?.name ?? 'Uncategorised'}</span>
+                        {delta != null && Math.abs(delta) >= 0.01 && (
+                          <span className={`dash-legend-delta ${delta > 0 ? 'up' : 'down'}`}>
+                            {delta > 0 ? '▲' : '▼'}{Math.abs(delta * 100).toFixed(0)}%
+                          </span>
+                        )}
                         <b>{formatDollars(c.cents)}</b>
                       </li>
                     );
@@ -426,6 +477,12 @@ export function DashboardPage() {
                 </ul>
               </div>
             </Card>
+          </section>
+
+          {/* where the money goes: merchants + accounts */}
+          <section className="dash-grid-2">
+            <TopMerchantsCard merchants={model.byMerchant} total={model.spent} />
+            <ByAccountCard accounts={model.byAccount} total={model.spent} acctById={acctById} />
           </section>
 
           {/* budgets (real) + recurring (placeholder) + largest (real) */}
@@ -477,6 +534,82 @@ export function DashboardPage() {
         </>
       )}
     </>
+  );
+}
+
+function TopMerchantsCard({
+  merchants,
+  total,
+}: {
+  merchants: { name: string; cents: number; count: number }[];
+  total: number;
+}) {
+  const max = merchants.length > 0 ? merchants[0].cents : 0;
+  return (
+    <Card title="Top merchants" meta={merchants.length > 0 ? 'Where it goes' : undefined}>
+      {merchants.length === 0 ? (
+        <p className="dash-empty">No spending in this period.</p>
+      ) : (
+        <ul className="dash-merchants">
+          {merchants.map((m) => {
+            const share = total > 0 ? Math.round((m.cents / total) * 100) : 0;
+            return (
+              <li key={m.name} className="dash-merchant">
+                <div className="dash-merchant-top">
+                  <span className="dash-merchant-name" title={m.name}>{m.name}</span>
+                  <b className="dash-merchant-amt">{formatDollars(m.cents)}</b>
+                </div>
+                <div className="dash-merchant-bar">
+                  <span style={{ width: `${max > 0 ? (m.cents / max) * 100 : 0}%` }} />
+                </div>
+                <span className="dash-merchant-sub">{m.count} transaction{m.count === 1 ? '' : 's'} · {share}% of spend</span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </Card>
+  );
+}
+
+function ByAccountCard({
+  accounts,
+  total,
+  acctById,
+}: {
+  accounts: { id: number; cents: number }[];
+  total: number;
+  acctById: Map<number, Account>;
+}) {
+  return (
+    <Card title="Spending by account" meta={accounts.length > 0 ? `${accounts.length} account${accounts.length === 1 ? '' : 's'}` : undefined}>
+      {accounts.length === 0 ? (
+        <p className="dash-empty">No spending in this period.</p>
+      ) : (
+        <ul className="dash-accounts">
+          {accounts.map((a) => {
+            const acct = acctById.get(a.id);
+            const color = acct?.color ?? '#8a90a6';
+            const share = total > 0 ? Math.round((a.cents / total) * 100) : 0;
+            return (
+              <li key={a.id} className="dash-account">
+                <div className="dash-account-top">
+                  <span className="dash-account-name">
+                    <span className="dash-acct-dot" style={{ background: color }} />
+                    {acct?.display_name ?? 'Unknown account'}
+                  </span>
+                  <b className="dash-account-amt">{formatDollars(a.cents)}</b>
+                </div>
+                <div className="dash-account-bar">
+                  <span style={{ width: `${total > 0 ? (a.cents / total) * 100 : 0}%`, background: color }} />
+                </div>
+                <span className="dash-account-sub">{share}% of spend</span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </Card>
   );
 }
 

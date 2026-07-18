@@ -157,6 +157,47 @@ a.dash-chip:hover { color: var(--lg-accent-2); border-color: var(--lg-accent); }
   .dash-nw-chart { display: none; }
 }
 
+/* ---- hero pace ----------------------------------------------------------- */
+.dash-hero-pace {
+  font-size: 11.5px;
+  font-weight: var(--lg-font-weight-semibold);
+  opacity: .82;
+  padding: 3px 8px;
+  border-radius: var(--lg-radius-pill);
+  background: rgba(255, 255, 255, .16);
+  align-self: flex-start;
+}
+
+/* ---- category legend deltas ---------------------------------------------- */
+.dash-legend-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-legend-delta {
+  font-size: 10.5px; font-weight: var(--lg-font-weight-bold);
+  padding: 1px 5px; border-radius: var(--lg-radius-pill); flex: 0 0 auto;
+}
+.dash-legend-delta.up { color: var(--lg-negative); background: color-mix(in srgb, var(--lg-negative) 13%, transparent); }
+.dash-legend-delta.down { color: var(--lg-positive); background: color-mix(in srgb, var(--lg-positive) 13%, transparent); }
+
+/* ---- top merchants ------------------------------------------------------- */
+.dash-merchants, .dash-accounts { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.dash-merchant-top, .dash-account-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.dash-merchant-name {
+  font-weight: var(--lg-font-weight-semibold); font-size: 13.5px;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dash-merchant-amt, .dash-account-amt { font-size: 13.5px; font-variant-numeric: tabular-nums; flex: 0 0 auto; }
+.dash-merchant-bar, .dash-account-bar {
+  height: 6px; border-radius: var(--lg-radius-pill);
+  background: var(--lg-panel-3); overflow: hidden; margin: 5px 0 3px;
+}
+.dash-merchant-bar > span {
+  display: block; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, var(--mrd-accent), var(--mrd-accent-2));
+}
+.dash-account-bar > span { display: block; height: 100%; border-radius: inherit; }
+.dash-merchant-sub, .dash-account-sub { font-size: 11.5px; color: var(--lg-faint); }
+.dash-account-name { display: inline-flex; align-items: center; gap: 7px; font-weight: var(--lg-font-weight-semibold); font-size: 13.5px; min-width: 0; }
+.dash-account-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 /* ---- card grids ---------------------------------------------------------- */
 .dash-grid-2 {
   display: grid;
