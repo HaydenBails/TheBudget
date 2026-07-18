@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     CheckConstraint,
     ForeignKey,
@@ -36,6 +37,7 @@ class Account(TimestampMixin, Base):
             "(length(last4) IN (4, 5) AND last4 NOT GLOB '*[^0-9]*')",
             name="last4_masked_digits",
         ),
+        CheckConstraint("kind IN ('asset', 'liability')", name="kind_valid"),
         Index("ix_accounts_profile_id_is_archived", "profile_id", "is_archived"),
         Index("ux_accounts_profile_id_id", "profile_id", "id", unique=True),
     )
@@ -51,6 +53,10 @@ class Account(TimestampMixin, Base):
     last4: Mapped[str | None] = mapped_column(String(5), nullable=True)
     currency: Mapped[str] = mapped_column(String(3), default="CAD", nullable=False)
     account_fingerprint: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    # 'liability' = a card/loan (positive balance = owed); 'asset' = cash/bank.
+    kind: Mapped[str] = mapped_column(String(9), default="liability", nullable=False)
+    # Current balance in the account's natural terms; None = not tracked.
+    current_balance_cents: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
     is_archived: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     profile: Mapped[Profile] = relationship(back_populates="accounts")

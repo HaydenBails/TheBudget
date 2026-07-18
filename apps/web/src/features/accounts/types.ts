@@ -2,6 +2,8 @@
 
 export type IssuerCode = 'TD' | 'AMEX' | 'CIBC' | 'OTHER';
 
+export type AccountKind = 'asset' | 'liability';
+
 export interface Account {
   id: number;
   profile_id: number;
@@ -11,6 +13,8 @@ export interface Account {
   last4: string | null;
   currency: 'CAD';
   account_fingerprint: string | null;
+  kind: AccountKind;
+  current_balance_cents: number | null;
   is_archived: boolean;
   created_at: string;
   updated_at: string;
@@ -22,6 +26,8 @@ export interface AccountCreate {
   color: string;
   last4?: string | null;
   currency?: 'CAD';
+  kind?: AccountKind;
+  current_balance_cents?: number | null;
 }
 
 export interface AccountUpdate {
@@ -29,6 +35,8 @@ export interface AccountUpdate {
   display_name?: string;
   color?: string;
   last4?: string | null;
+  kind?: AccountKind;
+  current_balance_cents?: number | null;
   is_archived?: boolean;
 }
 

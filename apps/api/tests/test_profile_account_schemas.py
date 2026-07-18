@@ -72,6 +72,8 @@ def test_read_schemas_serialize_orm_ids_enums_and_utc_timestamps() -> None:
         last4="9876",
         currency="CAD",
         account_fingerprint=None,
+        kind="liability",
+        current_balance_cents=None,
         is_archived=False,
         created_at=created_at.replace(tzinfo=None),
         updated_at=created_at.replace(tzinfo=None),

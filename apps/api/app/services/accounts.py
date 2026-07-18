@@ -11,7 +11,7 @@ from app.services.errors import InvalidUpdateError, ResourceNotFoundError
 from app.services.profiles import require_profile
 
 _REQUIRED_UPDATE_FIELDS = frozenset(
-    {"issuer", "display_name", "color", "is_archived"}
+    {"issuer", "display_name", "color", "kind", "is_archived"}
 )
 
 

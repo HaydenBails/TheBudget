@@ -33,6 +33,29 @@
   margin-top: 2px;
   font-variant-numeric: tabular-nums;
 }
+.ac-balance {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  flex: 0 0 auto;
+}
+.ac-balance-v {
+  font-weight: var(--lg-font-weight-bold);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.ac-balance-k {
+  color: var(--lg-faint);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+/* Balance already claims the free space; actions sit next to it via the row gap. */
+.ac-row .ac-balance + .pf-actions {
+  margin-left: 0;
+}
 
 /* form */
 .ac-form {
@@ -43,6 +66,9 @@
   grid-template-columns: minmax(140px, 1fr) 2fr minmax(120px, 1fr);
   gap: var(--lg-space-4);
   margin-bottom: var(--lg-space-4);
+}
+.ac-grid-2 {
+  grid-template-columns: 1fr 1fr;
 }
 .ac-field {
   min-width: 0;
@@ -79,6 +105,41 @@ select.pf-input {
   display: flex;
   gap: 10px;
   margin-top: var(--lg-space-4);
+}
+.ac-kind {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ac-kind-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 12px;
+  border-radius: 9px;
+  border: 1.5px solid var(--lg-border);
+  background: var(--lg-panel);
+  color: var(--lg-text);
+  cursor: pointer;
+  text-align: left;
+}
+.ac-kind-btn small {
+  color: var(--lg-faint);
+  font-size: 11.5px;
+}
+.ac-kind-btn.selected {
+  border-color: var(--lg-accent);
+  box-shadow: inset 0 0 0 1px var(--lg-accent);
+}
+.ac-kind-btn:focus-visible {
+  outline: 2px solid var(--lg-accent);
+  outline-offset: 2px;
+}
+.ac-hint {
+  color: var(--lg-faint);
+  font-size: 12px;
+  margin-top: 4px;
 }
 
 @media (max-width: 720px) {

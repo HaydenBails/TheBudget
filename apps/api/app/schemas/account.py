@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, StringConstraints
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
 from app.schemas.common import TimestampedRead
 
@@ -30,6 +30,10 @@ class IssuerCode(StrEnum):
     OTHER = "OTHER"
 
 
+AccountKind = Literal["asset", "liability"]
+BalanceCents = Annotated[int, Field(ge=-(1 << 53) + 1, le=(1 << 53) - 1)]
+
+
 class AccountCreate(BaseModel):
     """Fields accepted when creating an account under a scoped profile."""
 
@@ -41,6 +45,8 @@ class AccountCreate(BaseModel):
     last4: LastDigits | None = None
     currency: Literal["CAD"] = "CAD"
     account_fingerprint: AccountFingerprint | None = None
+    kind: AccountKind = "liability"
+    current_balance_cents: BalanceCents | None = None
 
 
 class AccountUpdate(BaseModel):
@@ -53,6 +59,8 @@ class AccountUpdate(BaseModel):
     color: CardColor | None = None
     last4: LastDigits | None = None
     account_fingerprint: AccountFingerprint | None = None
+    kind: AccountKind | None = None
+    current_balance_cents: BalanceCents | None = None
     is_archived: bool | None = None
 
 
@@ -66,4 +74,6 @@ class AccountRead(TimestampedRead):
     last4: str | None
     currency: Literal["CAD"]
     account_fingerprint: str | None
+    kind: AccountKind
+    current_balance_cents: int | None
     is_archived: bool

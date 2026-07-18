@@ -9,7 +9,8 @@ import {
   useRestoreAccount,
   useUpdateAccount,
 } from './api';
-import { CARD_COLORS, ISSUERS, type Account, type AccountCreate, type IssuerCode } from './types';
+import { centsToInput, formatCad } from '../transactions/money';
+import { CARD_COLORS, ISSUERS, type Account, type AccountCreate, type AccountKind, type IssuerCode } from './types';
 import './accounts.css';
 
 interface FormValues {
@@ -17,6 +18,23 @@ interface FormValues {
   display_name: string;
   color: string;
   last4: string;
+  kind: AccountKind;
+  balance: string;
+}
+
+/** Parse a plain CAD decimal to integer cents, allowing zero and blank (→ null). */
+function parseBalance(value: string): { cents: number | null; invalid: boolean } {
+  const trimmed = value.trim();
+  if (trimmed === '') return { cents: null, invalid: false };
+  const match = /^(-?)(\d+)(?:\.(\d{1,2}))?$/.exec(trimmed);
+  if (!match) return { cents: null, invalid: true };
+  const [, sign, whole, fraction = ''] = match;
+  const cents = BigInt(whole) * 100n + BigInt(fraction.padEnd(2, '0'));
+  const signed = sign === '-' ? -cents : cents;
+  if (signed > BigInt(Number.MAX_SAFE_INTEGER) || signed < BigInt(Number.MIN_SAFE_INTEGER)) {
+    return { cents: null, invalid: true };
+  }
+  return { cents: Number(signed), invalid: false };
 }
 
 function AccountForm({
@@ -39,21 +57,27 @@ function AccountForm({
     display_name: initial?.display_name ?? '',
     color: initial?.color ?? CARD_COLORS[0],
     last4: initial?.last4 ?? '',
+    kind: initial?.kind ?? 'liability',
+    balance: initial?.current_balance_cents != null ? centsToInput(initial.current_balance_cents) : '',
   });
   const [touched, setTouched] = useState(false);
 
   const last4Invalid = v.last4.length > 0 && !/^\d{4,5}$/.test(v.last4);
   const nameInvalid = v.display_name.trim().length === 0;
+  const balanceParsed = parseBalance(v.balance);
+  const isAsset = v.kind === 'asset';
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
     setTouched(true);
-    if (nameInvalid || last4Invalid) return;
+    if (nameInvalid || last4Invalid || balanceParsed.invalid) return;
     onSubmit({
       issuer: v.issuer,
       display_name: v.display_name.trim(),
       color: v.color,
       last4: v.last4 ? v.last4 : null,
+      kind: v.kind,
+      current_balance_cents: balanceParsed.cents,
     });
   }
 
@@ -96,6 +120,53 @@ function AccountForm({
             placeholder="4821"
           />
           {touched && last4Invalid && <p className="pf-error" role="alert">Enter 4 or 5 digits, or leave blank.</p>}
+        </div>
+      </div>
+
+      <div className="ac-form-grid ac-grid-2">
+        <div className="ac-field">
+          <span className="pf-label" id="ac-kind-label">Account type</span>
+          <div className="ac-kind" role="radiogroup" aria-labelledby="ac-kind-label">
+            <button
+              type="button"
+              role="radio"
+              aria-checked={v.kind === 'liability'}
+              className={`ac-kind-btn ${v.kind === 'liability' ? 'selected' : ''}`}
+              onClick={() => setV({ ...v, kind: 'liability' })}
+            >
+              <b>Liability</b>
+              <small>Credit card, loan</small>
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={v.kind === 'asset'}
+              className={`ac-kind-btn ${v.kind === 'asset' ? 'selected' : ''}`}
+              onClick={() => setV({ ...v, kind: 'asset' })}
+            >
+              <b>Asset</b>
+              <small>Chequing, savings</small>
+            </button>
+          </div>
+        </div>
+        <div className="ac-field">
+          <label htmlFor="ac-balance" className="pf-label">
+            {isAsset ? 'Current balance' : 'Amount owed'} <span className="ac-optional">(optional)</span>
+          </label>
+          <input
+            id="ac-balance"
+            className="pf-input"
+            value={v.balance}
+            inputMode="decimal"
+            onChange={(e) => setV({ ...v, balance: e.target.value })}
+            placeholder="0.00"
+          />
+          <p className="ac-hint">
+            {isAsset
+              ? 'What this account is worth today. Counts toward net worth.'
+              : 'What you currently owe. Subtracts from net worth.'}
+          </p>
+          {touched && balanceParsed.invalid && <p className="pf-error" role="alert">Enter an amount like 1250.00, or leave blank.</p>}
         </div>
       </div>
 
@@ -153,6 +224,12 @@ function AccountRow({
           {account.last4 ? ` · ····${account.last4}` : ''}
         </div>
       </div>
+      {account.current_balance_cents != null && (
+        <div className="ac-balance">
+          <span className="ac-balance-v">{formatCad(account.current_balance_cents)}</span>
+          <span className="ac-balance-k">{account.kind === 'asset' ? 'balance' : 'owed'}</span>
+        </div>
+      )}
       {!confirm ? (
         <div className="pf-actions">
           <button type="button" className="app-btn" onClick={onEdit}>Edit</button>

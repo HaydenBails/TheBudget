@@ -13,6 +13,8 @@ import {
 } from 'recharts';
 import { useCurrentProfile } from '../features/profiles/ProfileContext';
 import { useAccounts } from '../features/accounts/api';
+import { netWorthNow, netWorthTrend, trackedAccounts } from '../features/accounts/netWorth';
+import type { NetWorthPoint, NetWorthSummary } from '../features/accounts/netWorth';
 import { useCategories } from '../features/categories/api';
 import { CategoryIcon } from '../features/categories/CategoryIcon';
 import { useTransactions } from '../features/transactions/api';
@@ -230,6 +232,15 @@ export function DashboardPage() {
     return { spent, mom, income, excluded, byCategory, trend, largest, recent, prevSpent };
   }, [allTx, range]);
 
+  const allAccounts = useMemo(() => accounts.data ?? [], [accounts.data]);
+  const netWorth = useMemo(() => netWorthNow(allAccounts), [allAccounts]);
+  const nwTrend = useMemo(
+    () => netWorthTrend(allAccounts, allTx, 6, now),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [allAccounts, allTx],
+  );
+  const hasNetWorth = trackedAccounts(allAccounts).length > 0;
+
   const hasProfile = currentProfileId != null;
   const isEmpty = !txnsQuery.isLoading && !txnsQuery.isError && allTx.length === 0;
   const catTotal = model.byCategory.reduce((s, c) => s + c.cents, 0);
@@ -365,6 +376,8 @@ export function DashboardPage() {
             <StatCard icon="⊘" label="Excluded activity" value={formatDollars(model.excluded)} foot="Payments · fees · transfers" />
           </section>
 
+          {hasNetWorth && <NetWorthCard summary={netWorth} trend={nwTrend} />}
+
           {/* trend + category */}
           <section className="dash-grid-2">
             <Card title="Spending over time" meta={`${model.trend[0].label} – ${model.trend[model.trend.length - 1].label}`}>
@@ -464,6 +477,58 @@ export function DashboardPage() {
         </>
       )}
     </>
+  );
+}
+
+function NetWorthCard({ summary, trend }: { summary: NetWorthSummary; trend: NetWorthPoint[] }) {
+  const first = trend.length > 0 ? trend[0].cents : summary.net;
+  const change = summary.net - first;
+  const changePct = first !== 0 ? (change / Math.abs(first)) * 100 : 0;
+  const showChange = trend.length > 1 && first !== summary.net;
+  return (
+    <section className="app-card dash-networth" aria-label="Net worth">
+      <div className="dash-nw-left">
+        <span className="dash-card-meta">Net worth</span>
+        <div className="dash-nw-main">
+          <span className={`dash-nw-v ${summary.net < 0 ? 'neg' : ''}`}>{formatDollars(summary.net)}</span>
+          {showChange && (
+            <span className={`dash-nw-delta ${change >= 0 ? 'pos' : 'neg'}`}>
+              {change >= 0 ? '▲' : '▼'} {formatDollars(Math.abs(change))}
+              {first !== 0 ? ` (${Math.abs(changePct).toFixed(1)}%)` : ''}
+            </span>
+          )}
+        </div>
+        <div className="dash-nw-breakdown">
+          <span className="dash-nw-chip asset">
+            <small>Assets</small>
+            <b>{formatDollars(summary.assets)}</b>
+          </span>
+          <span className="dash-nw-chip liab">
+            <small>Liabilities</small>
+            <b>{formatDollars(summary.liabilities)}</b>
+          </span>
+          <Link className="dash-card-link dash-nw-manage" to="/app/accounts">Update balances →</Link>
+        </div>
+      </div>
+      {trend.length > 1 && (
+        <div className="dash-nw-chart">
+          <ResponsiveContainer width="100%" height={96}>
+            <AreaChart data={trend} margin={{ top: 6, right: 4, left: 4, bottom: 0 }}>
+              <defs>
+                <linearGradient id="dash-nw-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--mrd-accent)" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="var(--mrd-accent)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: 'var(--lg-faint)' }} />
+              <YAxis hide domain={['auto', 'auto']} />
+              <Tooltip formatter={(v: number) => [formatDollars(v), 'Net worth']} contentStyle={tooltipStyle} cursor={{ stroke: 'var(--mrd-accent)', strokeDasharray: '4 4' }} />
+              <Area type="monotone" dataKey="cents" stroke="var(--mrd-accent)" strokeWidth={2.5} fill="url(#dash-nw-grad)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+    </section>
   );
 }
 

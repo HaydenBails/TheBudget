@@ -276,6 +276,45 @@ dashboard available-to-save wiring.
 | BE-INCOME-01 | Income-schedule domain + forecast occurrences + typed API. | BE-11 | `apps/api/app/services/income_rules.py`, `apps/api/app/models/income_schedule.py`, `apps/api/app/schemas/income.py`, `apps/api/app/services/income.py`, exports, `apps/api/app/routers/income.py`, `app/main.py`, `alembic/versions/0009_income_schedules.py`, backend tests | Profile-scoped income schedule (name, net amount cents, weekly/biweekly/monthly frequency, start/optional-end date, active/paused, notes). A pure, unit-tested generator produces forecast occurrences for a date range without persisting infinite records. `GET .../income/occurrences?date_from=&date_to=` returns forecast occurrences; CRUD scoped to profile; cross-profile not-found. Migration applies/reverses from 0008. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 | FE-INCOME-01 | Income UI + dashboard available-to-save wiring. | BE-INCOME-01, FE-07 | `apps/web/src/features/income/`, `apps/web/src/app/{AppShell.tsx,pages.tsx,dashboard.css}`, `apps/web/dist/` | An Income page manages schedules (create/edit/pause/delete) showing per-month forecast, monthly-equivalent, and expected-vs-recorded income. The dashboard available-to-save uses recorded + expected-remaining income minus spending minus confirmed upcoming recurring, labelled an estimate. Keyboard/focus, light/dark, responsive checks pass; typecheck/build pass and `dist` refreshed. | `DONE` | Claude Opus 4.8 |
 
+### Net worth / account balances slice (audit roadmap #1)
+
+Claimed 2026-07-18 at the product owner's direct request ("start with the first
+one and work your way down the list") — the first item on the post-audit
+roadmap. Adds an account `kind` (asset/liability) + optional `current_balance_cents`
+so the dashboard can show net worth and a reconstructed trend. Additive/disjoint:
+two nullable/defaulted columns via migration `0010`→`0012` native ADD COLUMN (no
+table recreation), the accounts form/list, a pure `netWorth.ts` helper, and a
+dashboard Net Worth card. No cross-profile surface; integer cents only.
+
+| ID | Task | Depends on | Primary scope | Acceptance and verification | Status | Owner |
+| --- | --- | --- | --- | --- | --- | --- |
+| BE-NETWORTH-01 | Account kind + current balance columns and schema. | BE-03, BE-04 | `apps/api/app/models/account.py`, `apps/api/app/schemas/account.py`, `apps/api/app/services/accounts.py`, `alembic/versions/0012_account_balances.py`, backend tests | Account gains `kind` (`asset`\|`liability`, default `liability`, model+Pydantic checked) and nullable `current_balance_cents` (BigInteger, bounded to safe-int cents). Create/Update/Read carry both; `kind` is a required-non-null update field. Migration uses native ADD/DROP COLUMN so existing `accounts` rows (and their `transactions`) are preserved. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
+| FE-NETWORTH-01 | Accounts balance UI + dashboard Net Worth card. | BE-NETWORTH-01, FE-07 | `apps/web/src/features/accounts/{types.ts,netWorth.ts,AccountsPage.tsx,accounts.css}`, `apps/web/src/app/{pages.tsx,dashboard.css}`, `apps/web/dist/` | The account form sets asset/liability and an optional balance (blank→null, zero allowed, no float math); the list shows each balance with an OWED/BALANCE label. A pure `netWorth.ts` computes net = assets − liabilities and reconstructs month-end net worth by undoing the ledger from current balances. The dashboard shows a Net Worth card (net + 6-month change, assets/liabilities, trend area chart) when any balance is set. Keyboard/focus, light + dark, responsive checks pass; typecheck/build pass and `dist` refreshed. | `DONE` | Claude Opus 4.8 |
+
+### 2026-07-18 — BE-NETWORTH-01 / FE-NETWORTH-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: as in the slice table above.
+- Work: Added net-worth tracking. Accounts now carry a `kind` (asset/liability)
+  and an optional `current_balance_cents`; migration `0012` adds both with native
+  `ADD COLUMN` (an earlier `batch_alter_table` attempt recreated `accounts` and,
+  under SQLite FK enforcement, cascade-deleted `transactions` — switched to native
+  ops). The accounts form gained an asset/liability toggle and a balance input
+  (blank→null, zero allowed, integer-cents parse), and the list shows each balance
+  with an OWED/BALANCE label. A pure `netWorth.ts` computes current net worth and
+  reconstructs the last six month-ends by undoing the ledger from today's
+  balances (liability: `owed_past = current − Σafter`; asset: `bal_past =
+  current + Σafter`). The dashboard shows a Net Worth card — net figure, 6-month
+  change pill, assets/liabilities breakdown, and a trend area chart — only when at
+  least one account has a balance.
+- Verification: full backend suite **274 passed**; Ruff clean; migration cycle
+  reversible. Frontend typecheck + `vite build` pass; `dist` refreshed. Verified
+  end-to-end against a seeded profile (4 accounts w/ balances, 57 transactions):
+  net worth $29,163 = assets $32,623 − liabilities $3,461, with a rising 6-month
+  trend; light + dark + the add-account form screenshotted.
+- Follow-up: audit roadmap #2 (shared global period + account filter across
+  pages) is next; Plaid / Canadian bank-sync research to be written up.
+
 ### 2026-07-17 — BE-INCOME-01 / FE-INCOME-01 — Claude Opus 4.8
 
 - Status: `DONE`

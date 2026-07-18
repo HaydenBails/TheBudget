@@ -124,6 +124,39 @@ a.dash-chip:hover { color: var(--lg-accent-2); border-color: var(--lg-accent); }
 .dash-stat-v.neg { color: var(--lg-negative); }
 .dash-stat-foot { font-size: 11.5px; color: var(--lg-faint); }
 
+/* ---- net worth ----------------------------------------------------------- */
+.dash-networth {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: var(--lg-space-4);
+  padding: var(--lg-space-4) var(--lg-space-5);
+  margin-bottom: var(--lg-space-4);
+}
+.dash-nw-left { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.dash-nw-main { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.dash-nw-v { font-size: 30px; font-weight: var(--lg-font-weight-bold); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.dash-nw-v.neg { color: var(--lg-negative); }
+.dash-nw-delta {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 8px; border-radius: var(--lg-radius-pill);
+  font-size: 11.5px; font-weight: var(--lg-font-weight-bold);
+}
+.dash-nw-delta.pos { color: var(--lg-positive); background: color-mix(in srgb, var(--lg-positive) 14%, transparent); }
+.dash-nw-delta.neg { color: var(--lg-negative); background: color-mix(in srgb, var(--lg-negative) 14%, transparent); }
+.dash-nw-breakdown { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.dash-nw-chip { display: flex; flex-direction: column; gap: 1px; }
+.dash-nw-chip small { font-size: 11px; color: var(--lg-faint); text-transform: uppercase; letter-spacing: .04em; }
+.dash-nw-chip b { font-size: 15px; font-variant-numeric: tabular-nums; }
+.dash-nw-chip.asset b { color: var(--lg-positive); }
+.dash-nw-chip.liab b { color: var(--lg-negative); }
+.dash-nw-manage { margin-left: auto; }
+.dash-nw-chart { min-width: 0; }
+@media (max-width: 720px) {
+  .dash-networth { grid-template-columns: 1fr; }
+  .dash-nw-chart { display: none; }
+}
+
 /* ---- card grids ---------------------------------------------------------- */
 .dash-grid-2 {
   display: grid;
