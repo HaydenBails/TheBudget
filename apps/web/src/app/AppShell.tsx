@@ -14,11 +14,12 @@ import { RecurringPage } from '../features/recurring/RecurringPage';
 import { IncomePage } from '../features/income/IncomePage';
 import { ReviewPage } from '../features/review/ReviewPage';
 import { TransactionsPage } from '../features/transactions/TransactionsPage';
+import { MerchantsPage } from '../features/merchants/MerchantsPage';
 import { ImportPage } from '../features/imports/ImportPage';
 import { DashboardPage, SettingsPage } from './pages';
 import './app.css';
 
-type IconName = 'dashboard' | 'transactions' | 'review' | 'profiles' | 'accounts' | 'categories' | 'budgets' | 'recurring' | 'income' | 'settings' | 'import' | 'sun' | 'moon';
+type IconName = 'dashboard' | 'transactions' | 'merchants' | 'review' | 'profiles' | 'accounts' | 'categories' | 'budgets' | 'recurring' | 'income' | 'settings' | 'import' | 'sun' | 'moon';
 
 const NAV_GROUPS: { heading: string; items: { to: string; label: string; icon: IconName }[] }[] = [
   {
@@ -26,6 +27,7 @@ const NAV_GROUPS: { heading: string; items: { to: string; label: string; icon: I
     items: [
       { to: '/app/dashboard', label: 'Dashboard', icon: 'dashboard' },
       { to: '/app/transactions', label: 'Transactions', icon: 'transactions' },
+      { to: '/app/merchants', label: 'Merchants', icon: 'merchants' },
       { to: '/app/review', label: 'Review', icon: 'review' },
     ],
   },
@@ -52,6 +54,7 @@ function Icon({ name }: { name: IconName }) {
   const paths: Record<IconName, ReactNode> = {
     dashboard: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
     transactions: <><path d="M4 5h16M4 12h16M4 19h16" /><circle cx="7" cy="5" r="1" /><circle cx="17" cy="12" r="1" /><circle cx="10" cy="19" r="1" /></>,
+    merchants: <><path d="M3 9h18l-1.5 11a1 1 0 0 1-1 .9H5.5a1 1 0 0 1-1-.9L3 9Z" /><path d="M8 9V6a4 4 0 0 1 8 0v3" /></>,
     review: <><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></>,
     profiles: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" /></>,
     accounts: <><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20M6 15h4" /></>,
@@ -124,6 +127,7 @@ export function AppShell() {
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="transactions" element={<TransactionsPage />} />
+              <Route path="merchants" element={<MerchantsPage />} />
               <Route path="review" element={<ReviewPage />} />
               <Route path="imports" element={<ImportPage />} />
               <Route path="profiles" element={<ProfilesPage />} />

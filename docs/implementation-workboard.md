@@ -291,6 +291,25 @@ dashboard Net Worth card. No cross-profile surface; integer cents only.
 | BE-NETWORTH-01 | Account kind + current balance columns and schema. | BE-03, BE-04 | `apps/api/app/models/account.py`, `apps/api/app/schemas/account.py`, `apps/api/app/services/accounts.py`, `alembic/versions/0012_account_balances.py`, backend tests | Account gains `kind` (`asset`\|`liability`, default `liability`, model+Pydantic checked) and nullable `current_balance_cents` (BigInteger, bounded to safe-int cents). Create/Update/Read carry both; `kind` is a required-non-null update field. Migration uses native ADD/DROP COLUMN so existing `accounts` rows (and their `transactions`) are preserved. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 | FE-NETWORTH-01 | Accounts balance UI + dashboard Net Worth card. | BE-NETWORTH-01, FE-07 | `apps/web/src/features/accounts/{types.ts,netWorth.ts,AccountsPage.tsx,accounts.css}`, `apps/web/src/app/{pages.tsx,dashboard.css}`, `apps/web/dist/` | The account form sets asset/liability and an optional balance (blank→null, zero allowed, no float math); the list shows each balance with an OWED/BALANCE label. A pure `netWorth.ts` computes net = assets − liabilities and reconstructs month-end net worth by undoing the ledger from current balances. The dashboard shows a Net Worth card (net + 6-month change, assets/liabilities, trend area chart) when any balance is set. Keyboard/focus, light + dark, responsive checks pass; typecheck/build pass and `dist` refreshed. | `DONE` | Claude Opus 4.8 |
 
+### 2026-07-18 — FE-MERCHANTS-01 — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/web/src/features/merchants/{MerchantsPage.tsx,merchants.css}` (new),
+  `apps/web/src/app/period.ts` (new, extracted), `apps/web/src/app/{pages.tsx,AppShell.tsx}`,
+  `apps/web/dist/`. Product owner: "add a top merchants view on dashboard based on
+  money spent."
+- Work: Added a dedicated **Merchants** view (route + sidebar nav) listing every
+  merchant ranked by money spent for the selected period, with the same period
+  selector as the dashboard, a name filter, summary cards (total spent, merchant
+  count, top merchant), and per-row proportional bar, most-common category pill,
+  transaction count, average, share, and total. The dashboard's Top merchants card
+  now links to it ("View all"). Shared period/format helpers were extracted into
+  `app/period.ts` so the dashboard and this view use one implementation (no logic
+  change to the dashboard).
+- Verification: frontend typecheck + `vite build` pass; `dist` refreshed. Verified
+  end-to-end against a seeded profile in light + dark — ranking, bars, category
+  pills, share %, and the period selector all render; nav + dashboard link work.
+
 ### 2026-07-18 — FE-DASH-INSIGHTS-01 / BE-RECUR-TIGHTEN-01 — Claude Opus 4.8
 
 - Status: `DONE`
