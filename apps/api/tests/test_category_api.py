@@ -44,9 +44,10 @@ def test_new_profile_exposes_seeded_default_categories(api_client: TestClient) -
     response = api_client.get(f"/profiles/{pid}/categories")
     assert response.status_code == 200
     cats = response.json()
-    assert len(cats) == 13
+    assert len(cats) == 15
     assert all(c["is_default"] for c in cats)
     assert cats[0]["slug"] == "housing"
+    assert cats[-1]["slug"] == "uncategorized"
 
 
 def test_create_custom_category(api_client: TestClient) -> None:

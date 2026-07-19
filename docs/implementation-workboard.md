@@ -291,6 +291,40 @@ dashboard Net Worth card. No cross-profile surface; integer cents only.
 | BE-NETWORTH-01 | Account kind + current balance columns and schema. | BE-03, BE-04 | `apps/api/app/models/account.py`, `apps/api/app/schemas/account.py`, `apps/api/app/services/accounts.py`, `alembic/versions/0012_account_balances.py`, backend tests | Account gains `kind` (`asset`\|`liability`, default `liability`, model+Pydantic checked) and nullable `current_balance_cents` (BigInteger, bounded to safe-int cents). Create/Update/Read carry both; `kind` is a required-non-null update field. Migration uses native ADD/DROP COLUMN so existing `accounts` rows (and their `transactions`) are preserved. Pytest + Ruff pass. | `DONE` | Claude Opus 4.8 |
 | FE-NETWORTH-01 | Accounts balance UI + dashboard Net Worth card. | BE-NETWORTH-01, FE-07 | `apps/web/src/features/accounts/{types.ts,netWorth.ts,AccountsPage.tsx,accounts.css}`, `apps/web/src/app/{pages.tsx,dashboard.css}`, `apps/web/dist/` | The account form sets asset/liability and an optional balance (blank→null, zero allowed, no float math); the list shows each balance with an OWED/BALANCE label. A pure `netWorth.ts` computes net = assets − liabilities and reconstructs month-end net worth by undoing the ledger from current balances. The dashboard shows a Net Worth card (net + 6-month change, assets/liabilities, trend area chart) when any balance is set. Keyboard/focus, light + dark, responsive checks pass; typecheck/build pass and `dist` refreshed. | `DONE` | Claude Opus 4.8 |
 
+### 2026-07-19 — FE-DASH-DRILL / BE-CATEGORY-EXTRAS / FE-INCOME-VIEW — Claude Opus 4.8
+
+- Status: `DONE`
+- Scope: `apps/api/app/services/{category_defaults.py,categories.py}`,
+  `apps/api/tests/{test_category_services.py,test_category_api.py}`; frontend
+  `apps/web/src/app/{pages.tsx,dashboard.css,period.ts,AppShell.tsx,app.css}`,
+  `apps/web/src/features/{categories/CategoryIcon.tsx,categories/types.ts,
+  income/IncomePage.tsx,income/income.css,merchants/MerchantsPage.tsx}`,
+  `apps/web/dist/`. Product owner: batch of dashboard/income/category requests.
+- Work:
+  - **Category graph drill-through**: the dashboard By-category donut slices and
+    legend rows link to `/app/transactions?category=<id>` (Transactions reads the
+    param), so clicking a category shows its transactions.
+  - **New categories**: seeded "Going Out" and "Relationship" defaults (new
+    `heart` + `nightlife` icons added to the icon set/picker); default count 13→15.
+  - **Uncategorized last**: category listing now orders slug `uncategorized` last
+    regardless of sort_order, so user-created categories never fall beneath it.
+  - **Live Review counter**: a badge on the Review sidebar item shows the
+    uncategorized count and updates as categorize mutations invalidate the query.
+  - **Income fix + chart line**: the Income figure falls back to expected income
+    from schedules when no income transactions are recorded (labelled "expected"),
+    and the "Spending over time" chart gains an Income series (recorded per month,
+    or a dashed expected line from schedules).
+  - **Income tab balances**: current Chequing and Savings & investments totals from
+    tracked asset accounts.
+  - **Persisted period**: the dashboard/Merchants period selection is stored in
+    localStorage (shared `usePersistedPeriod`) so it survives tab switches/reloads.
+- Verification: backend **287 passed**, Ruff clean; frontend typecheck + 36 tests +
+  build pass; `dist` refreshed. Verified end-to-end against seeded data: legend and
+  donut both navigate to `?category=<id>`; Review badge 17→16 after categorizing;
+  Income shows $4,200 with a chart income line; Income tab shows Chequing $8,523.40
+  and Savings & investments $24,100.00; categories total 15 with Uncategorized last
+  and Going Out/Relationship present; the period selection persists across tabs.
+
 ### 2026-07-18 — BE-TDCSV-01 / FE-MERCHANT-DRILL-01 — Claude Opus 4.8
 
 - Status: `DONE`

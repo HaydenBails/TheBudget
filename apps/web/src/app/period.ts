@@ -1,6 +1,29 @@
 // Shared dashboard/analytics period logic and money-format helpers. Used by the
 // dashboard and the Merchants view so the period selector behaves identically.
+import { useCallback, useState } from 'react';
 import type { Transaction } from '../features/transactions/types';
+
+const PERIOD_STORAGE_KEY = 'meridian.analytics.period';
+
+/** Period selection persisted in localStorage so it survives tab switches/reloads. */
+export function usePersistedPeriod(): [string, (next: string) => void] {
+  const [period, setPeriodState] = useState<string>(() => {
+    try {
+      return localStorage.getItem(PERIOD_STORAGE_KEY) || 'this';
+    } catch {
+      return 'this';
+    }
+  });
+  const setPeriod = useCallback((next: string) => {
+    setPeriodState(next);
+    try {
+      localStorage.setItem(PERIOD_STORAGE_KEY, next);
+    } catch {
+      /* storage unavailable (private mode) — in-memory only */
+    }
+  }, []);
+  return [period, setPeriod];
+}
 
 export const pad = (n: number) => String(n).padStart(2, '0');
 export const ymOf = (iso: string) => iso.slice(0, 7);

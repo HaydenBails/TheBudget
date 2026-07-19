@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Area,
   AreaChart,
   Cell,
+  Legend,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -23,7 +24,8 @@ import { useBudgets } from '../features/budgets/api';
 import { budgetLevel, type BudgetLevel } from '../features/budgets/budgetMath';
 import { useRecurringSeries } from '../features/recurring/api';
 import { monthlyCostCents, CADENCE_LABEL, type RecurringSeries } from '../features/recurring/types';
-import { useIncomeOccurrences } from '../features/income/api';
+import { useIncomeOccurrences, useIncomeSchedules } from '../features/income/api';
+import { monthlyEquivalentCents } from '../features/income/types';
 import type { Transaction, TransactionFilters } from '../features/transactions/types';
 import type { Category } from '../features/categories/types';
 import type { Account } from '../features/accounts/types';
@@ -40,6 +42,7 @@ import {
   outflow,
   pad,
   shortMonth,
+  usePersistedPeriod,
   ymOf,
 } from './period';
 import './dashboard.css';
@@ -60,12 +63,14 @@ const tooltipStyle = {
 
 export function DashboardPage() {
   const { currentProfileId } = useCurrentProfile();
+  const navigate = useNavigate();
   const accounts = useAccounts(currentProfileId, false);
   const categories = useCategories(currentProfileId, false);
+  const incomeSchedulesQuery = useIncomeSchedules(currentProfileId);
 
   const now = new Date();
   const curYM = monthKey(now);
-  const [period, setPeriod] = useState('this');
+  const [period, setPeriod] = usePersistedPeriod();
 
   // Pull all transactions so any period (YTD, all time, a specific month) works.
   const filters = useMemo<TransactionFilters>(() => ({
@@ -176,15 +181,24 @@ export function DashboardPage() {
       .filter((x) => x.cents > 0)
       .sort((a, b) => b.cents - a.cents);
 
+    const incomeIn = (from: string, to: string) =>
+      allTx
+        .filter((t) => t.type === 'income' && inRange(t, from, to))
+        .reduce((s, t) => s + Math.abs(t.amount_cents), 0);
+
     // trend: six months ending at the selected period's end month.
     const endD = new Date(`${range.toISO}T00:00:00`);
     const months: string[] = [];
     for (let i = 5; i >= 0; i--) months.push(monthKey(new Date(endD.getFullYear(), endD.getMonth() - i, 1)));
-    const trend = months.map((ym) => ({
-      ym,
-      label: shortMonth(ym),
-      cents: Math.max(0, spentIn(`${ym}-01`, isoEnd(new Date(`${ym}-01T00:00:00`)))),
-    }));
+    const trend = months.map((ym) => {
+      const monthEndISO = isoEnd(new Date(`${ym}-01T00:00:00`));
+      return {
+        ym,
+        label: shortMonth(ym),
+        cents: Math.max(0, spentIn(`${ym}-01`, monthEndISO)),
+        income: incomeIn(`${ym}-01`, monthEndISO),
+      };
+    });
 
     const largest = allTx
       .filter((t) => t.included_in_spending && inSel(t) && t.direction === 'debit')
@@ -239,6 +253,29 @@ export function DashboardPage() {
   const daysInMonth = monthEnd.getDate();
   const projectedSpend =
     isCurrentMonth && dayOfMonth > 0 ? Math.round((model.spent / dayOfMonth) * daysInMonth) : 0;
+
+  // Income shown on the dashboard: recorded income transactions if any, otherwise
+  // fall back to the expected income from the user's income schedules, so the
+  // figure isn't $0 for people who set up their pay in the Income tab.
+  const scheduledMonthlyIncome = (incomeSchedulesQuery.data ?? [])
+    .filter((s) => s.is_active)
+    .reduce((sum, s) => sum + monthlyEquivalentCents(s), 0);
+  const monthsInRange = Math.max(
+    1,
+    (Number(range.toISO.slice(0, 4)) - Number(range.fromISO.slice(0, 4))) * 12 +
+      (Number(range.toISO.slice(5, 7)) - Number(range.fromISO.slice(5, 7))) + 1,
+  );
+  const incomeIsExpected = model.income === 0 && scheduledMonthlyIncome > 0;
+  const displayIncome = incomeIsExpected ? scheduledMonthlyIncome * monthsInRange : model.income;
+
+  // Income line on the trend chart: recorded per month, or the expected monthly
+  // amount as a flat line when nothing has been recorded yet.
+  const hasRecordedIncome = model.trend.some((p) => p.income > 0);
+  const trendData = model.trend.map((p) => ({
+    ...p,
+    income: hasRecordedIncome ? p.income : scheduledMonthlyIncome,
+  }));
+  const showIncomeLine = trendData.some((p) => p.income > 0);
 
   if (!hasProfile) {
     return (
@@ -328,7 +365,7 @@ export function DashboardPage() {
               </div>
               <span className="dash-hero-foot">
                 {range.cmpFromISO && model.prevSpent > 0 ? `vs ${formatDollars(model.prevSpent)} (${range.cmpLabel}) · ` : ''}
-                {formatDollars(model.income)} income
+                {formatDollars(displayIncome)} income{incomeIsExpected ? ' (expected)' : ''}
               </span>
               {isCurrentMonth && model.spent > 0 && dayOfMonth < daysInMonth && (
                 <span className="dash-hero-pace">
@@ -343,7 +380,12 @@ export function DashboardPage() {
               foot={availableIsEstimate ? 'Income + due − spend − recurring' : 'Income − spending'}
               tone={availableToSave < 0 ? 'neg' : 'accent'}
             />
-            <StatCard icon="◈" label="Income" value={formatDollars(model.income)} foot={isCurrentMonth ? 'This month' : range.label} />
+            <StatCard
+              icon="◈"
+              label="Income"
+              value={formatDollars(displayIncome)}
+              foot={incomeIsExpected ? 'Expected · set in Income' : isCurrentMonth ? 'This month' : range.label}
+            />
             <StatCard
               icon="↻"
               label="Recurring / mo"
@@ -358,19 +400,27 @@ export function DashboardPage() {
 
           {/* trend + category */}
           <section className="dash-grid-2">
-            <Card title="Spending over time" meta={`${model.trend[0].label} – ${model.trend[model.trend.length - 1].label}`}>
+            <Card title="Spending over time" meta={showIncomeLine ? 'Spending vs income' : `${model.trend[0].label} – ${model.trend[model.trend.length - 1].label}`}>
               <ResponsiveContainer width="100%" height={230}>
-                <AreaChart data={model.trend} margin={{ top: 8, right: 6, left: 6, bottom: 0 }}>
+                <AreaChart data={trendData} margin={{ top: 8, right: 6, left: 6, bottom: 0 }}>
                   <defs>
                     <linearGradient id="dash-grad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="var(--mrd-accent)" stopOpacity={0.34} />
                       <stop offset="100%" stopColor="var(--mrd-accent)" stopOpacity={0} />
                     </linearGradient>
+                    <linearGradient id="dash-grad-income" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--lg-positive)" stopOpacity={0.22} />
+                      <stop offset="100%" stopColor="var(--lg-positive)" stopOpacity={0} />
+                    </linearGradient>
                   </defs>
                   <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: 'var(--lg-faint)' }} />
                   <YAxis hide />
-                  <Tooltip formatter={(v: number) => [formatDollars(v), 'Spent']} contentStyle={tooltipStyle} cursor={{ stroke: 'var(--mrd-accent)', strokeDasharray: '4 4' }} />
-                  <Area type="monotone" dataKey="cents" stroke="var(--mrd-accent)" strokeWidth={3} fill="url(#dash-grad)" />
+                  <Tooltip formatter={(v: number, name) => [formatDollars(v), name]} contentStyle={tooltipStyle} cursor={{ stroke: 'var(--mrd-accent)', strokeDasharray: '4 4' }} />
+                  {showIncomeLine && <Legend wrapperStyle={{ fontSize: 12, fontWeight: 600 }} iconType="plainline" />}
+                  <Area name="Spent" type="monotone" dataKey="cents" stroke="var(--mrd-accent)" strokeWidth={3} fill="url(#dash-grad)" />
+                  {showIncomeLine && (
+                    <Area name="Income" type="monotone" dataKey="income" stroke="var(--lg-positive)" strokeWidth={2.5} strokeDasharray={hasRecordedIncome ? undefined : '5 4'} fill="url(#dash-grad-income)" />
+                  )}
                 </AreaChart>
               </ResponsiveContainer>
             </Card>
@@ -380,9 +430,19 @@ export function DashboardPage() {
                 <div className="dash-donut">
                   <ResponsiveContainer width="100%" height={168}>
                     <PieChart>
-                      <Pie data={model.byCategory} dataKey="cents" nameKey="id" innerRadius={56} outerRadius={80} paddingAngle={2} strokeWidth={0}>
+                      <Pie
+                        data={model.byCategory}
+                        dataKey="cents"
+                        nameKey="id"
+                        innerRadius={56}
+                        outerRadius={80}
+                        paddingAngle={2}
+                        strokeWidth={0}
+                        onClick={(slice) => { const id = Number(slice?.payload?.id); if (id) navigate(`/app/transactions?category=${id}`); }}
+                        className="dash-donut-pie"
+                      >
                         {model.byCategory.map((c) => (
-                          <Cell key={c.id} fill={catById.get(c.id)?.color ?? '#8a90a6'} />
+                          <Cell key={c.id} fill={catById.get(c.id)?.color ?? '#8a90a6'} cursor="pointer" />
                         ))}
                       </Pie>
                       <Tooltip formatter={(v: number, _n, p) => [formatDollars(v), catById.get(Number(p?.payload?.id))?.name ?? 'Category']} contentStyle={tooltipStyle} />
@@ -397,7 +457,7 @@ export function DashboardPage() {
                     return (
                       <li key={c.id}>
                         <span className="dash-dot" style={{ background: cat?.color ?? '#8a90a6' }} />
-                        <span className="dash-legend-name">{cat?.name ?? 'Uncategorised'}</span>
+                        <Link className="dash-legend-name dash-legend-link" to={`/app/transactions?category=${c.id}`} title={`View ${cat?.name ?? 'category'} transactions`}>{cat?.name ?? 'Uncategorised'}</Link>
                         {delta != null && Math.abs(delta) >= 0.01 && (
                           <span className={`dash-legend-delta ${delta > 0 ? 'up' : 'down'}`}>
                             {delta > 0 ? '▲' : '▼'}{Math.abs(delta * 100).toFixed(0)}%

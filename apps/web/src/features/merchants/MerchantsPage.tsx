@@ -7,6 +7,7 @@ import {
   formatDollars,
   monthLabel,
   outflow,
+  usePersistedPeriod,
   ymOf,
 } from '../../app/period';
 import { formatCad } from '../transactions/money';
@@ -32,7 +33,7 @@ export function MerchantsPage() {
   const categories = useCategories(currentProfileId, false);
 
   const now = new Date();
-  const [period, setPeriod] = useState('this');
+  const [period, setPeriod] = usePersistedPeriod();
   const [search, setSearch] = useState('');
 
   const filters = useMemo<TransactionFilters>(() => ({

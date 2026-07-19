@@ -92,7 +92,14 @@ def list_categories(
     statement = (
         select(Category)
         .where(Category.profile_id == profile_id)
-        .order_by(Category.sort_order, func.lower(Category.name), Category.id)
+        # "Uncategorized" always sorts last, regardless of its sort_order, so
+        # user-created categories never appear beneath it.
+        .order_by(
+            (Category.slug == "uncategorized"),
+            Category.sort_order,
+            func.lower(Category.name),
+            Category.id,
+        )
     )
     if not include_archived:
         statement = statement.where(Category.is_archived.is_(False))

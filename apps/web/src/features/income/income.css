@@ -1,5 +1,29 @@
 /* Income schedules — Meridian token system. */
 
+.inc-balances {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--lg-space-4);
+  margin-bottom: var(--lg-space-4);
+}
+.inc-balance-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  background: var(--lg-panel);
+  border: 1px solid var(--lg-border);
+  border-radius: var(--lg-radius-lg);
+  box-shadow: var(--lg-shadow-control);
+  min-width: 0;
+}
+.inc-balance-k { font-size: 12.5px; color: var(--lg-muted); font-weight: var(--lg-font-weight-medium); }
+.inc-balance-v { font-size: 26px; font-weight: var(--lg-font-weight-bold); font-variant-numeric: tabular-nums; letter-spacing: -.02em; color: var(--lg-positive); }
+.inc-balance-foot { font-size: 11.5px; color: var(--lg-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.inc-balance-cta { grid-column: 1 / -1; color: var(--lg-accent); font-weight: var(--lg-font-weight-semibold); font-size: 13px; text-decoration: none; }
+.inc-balance-cta:hover { text-decoration: underline; }
+@media (max-width: 620px) { .inc-balances { grid-template-columns: 1fr; } }
+
 .inc-summary { display: flex; gap: var(--lg-space-6); padding: 14px 18px; margin-bottom: var(--lg-space-4); flex-wrap: wrap; }
 .inc-summary > div { display: flex; flex-direction: column; gap: 2px; }
 .inc-summary-k { font-size: 11.5px; color: var(--lg-muted); font-weight: var(--lg-font-weight-medium); }

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApiError } from '../../api/client';
 import { useCurrentProfile } from '../profiles/ProfileContext';
+import { useAccounts } from '../accounts/api';
 import { formatCad, parseCadToCents, centsToInput } from '../transactions/money';
 import {
   useCreateIncome,
@@ -128,6 +129,26 @@ export function IncomePage() {
   const { data, isLoading, isError, error, refetch } = useIncomeSchedules(currentProfileId);
   const month = useMemo(() => monthBounds(new Date()), []);
   const occurrences = useIncomeOccurrences(currentProfileId, month.from, month.to);
+  const accountsQuery = useAccounts(currentProfileId, false);
+
+  // Current balances from tracked asset accounts, split into chequing (cash) and
+  // savings/investments so the income view shows what's actually on hand.
+  const balances = useMemo(() => {
+    const assets = (accountsQuery.data ?? []).filter(
+      (a) => a.kind === 'asset' && !a.is_archived && a.current_balance_cents != null,
+    );
+    const isChequing = (name: string) => /chequ|check/i.test(name);
+    const chequing = assets.filter((a) => isChequing(a.display_name));
+    const savings = assets.filter((a) => !isChequing(a.display_name));
+    const sum = (list: typeof assets) => list.reduce((s, a) => s + (a.current_balance_cents ?? 0), 0);
+    return {
+      hasAny: assets.length > 0,
+      chequingCents: sum(chequing),
+      savingsCents: sum(savings),
+      chequing,
+      savings,
+    };
+  }, [accountsQuery.data]);
 
   const create = useCreateIncome(currentProfileId ?? 0);
   const update = useUpdateIncome(currentProfileId ?? 0);
@@ -168,6 +189,30 @@ export function IncomePage() {
           <button type="button" className="app-btn primary" onClick={() => { setCreating(true); create.reset(); }}>+ Add income</button>
         )}
       </div>
+
+      <section className="inc-balances" aria-label="Current balances">
+        <div className="inc-balance-card">
+          <span className="inc-balance-k">Chequing</span>
+          <span className="inc-balance-v">{balances.hasAny ? formatCad(balances.chequingCents) : '—'}</span>
+          <span className="inc-balance-foot">
+            {balances.chequing.length > 0
+              ? balances.chequing.map((a) => a.display_name).join(' · ')
+              : 'No chequing account balance set'}
+          </span>
+        </div>
+        <div className="inc-balance-card">
+          <span className="inc-balance-k">Savings &amp; investments</span>
+          <span className="inc-balance-v">{balances.hasAny ? formatCad(balances.savingsCents) : '—'}</span>
+          <span className="inc-balance-foot">
+            {balances.savings.length > 0
+              ? balances.savings.map((a) => a.display_name).join(' · ')
+              : 'No savings/investment balance set'}
+          </span>
+        </div>
+        {!balances.hasAny && (
+          <Link className="inc-balance-cta" to="/app/accounts">Set account balances →</Link>
+        )}
+      </section>
 
       {schedules.length > 0 && (
         <div className="inc-summary app-card">

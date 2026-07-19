@@ -18,6 +18,8 @@ const PATHS: Record<CategoryIconName, ReactNode> = {
   travel: <path d="m22 2-7 20-4-9-9-4 20-7Z" />,
   phone: <><rect x="6" y="2" width="12" height="20" rx="2" /><path d="M10 18h4" /></>,
   pet: <><circle cx="6" cy="7" r="2" /><circle cx="18" cy="7" r="2" /><circle cx="9" cy="4" r="2" /><circle cx="15" cy="4" r="2" /><path d="M8 15c0-3 2-5 4-5s4 2 4 5c0 3-2 5-4 5s-4-2-4-5Z" /></>,
+  heart: <path d="M12 21s-7.5-4.6-10-9A5 5 0 0 1 12 6a5 5 0 0 1 10 6c-2.5 4.4-10 9-10 9Z" />,
+  nightlife: <><path d="M5 4h14l-7 8-7-8Z" /><path d="M12 12v6M8 21h8" /></>,
   category: <><path d="M20.6 13.6 11 4H4v7l9.6 9.6a2 2 0 0 0 2.8 0l4.2-4.2a2 2 0 0 0 0-2.8Z" /><circle cx="7.5" cy="7.5" r=".5" /></>,
 };
 

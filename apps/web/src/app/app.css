@@ -160,6 +160,22 @@
   white-space: nowrap;
   transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
 }
+.app-tab-badge {
+  margin-left: auto;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--lg-radius-pill);
+  background: linear-gradient(135deg, var(--mrd-accent), var(--mrd-accent-2));
+  color: var(--lg-on-accent);
+  font-size: 11px;
+  font-weight: var(--lg-font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
 .app-tab:hover { color: var(--lg-nav-text); background: color-mix(in srgb, var(--lg-accent) 8%, transparent); }
 .app-tab.active { color: var(--lg-accent-2); background: color-mix(in srgb, var(--lg-accent) 11%, transparent); border-color: color-mix(in srgb, var(--lg-accent) 22%, transparent); }
 .app-icon { width: 18px; height: 18px; flex: 0 0 auto; }

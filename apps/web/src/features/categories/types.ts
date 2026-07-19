@@ -49,7 +49,7 @@ export const CATEGORY_COLORS = [
 export type CategoryIconName =
   | 'home' | 'groceries' | 'dining' | 'transport' | 'health' | 'personal'
   | 'shopping' | 'entertainment' | 'income' | 'card' | 'bank' | 'package'
-  | 'gift' | 'travel' | 'phone' | 'pet' | 'category';
+  | 'gift' | 'travel' | 'phone' | 'pet' | 'heart' | 'nightlife' | 'category';
 
 export const CATEGORY_ICON_CHOICES: ReadonlyArray<{ value: CategoryIconName; label: string }> = [
   { value: 'home', label: 'Home' },
@@ -68,4 +68,6 @@ export const CATEGORY_ICON_CHOICES: ReadonlyArray<{ value: CategoryIconName; lab
   { value: 'travel', label: 'Travel' },
   { value: 'phone', label: 'Phone' },
   { value: 'pet', label: 'Pet' },
+  { value: 'heart', label: 'Relationship' },
+  { value: 'nightlife', label: 'Going out' },
 ];

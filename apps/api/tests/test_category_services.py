@@ -42,7 +42,7 @@ def session(tmp_path: Path) -> Iterator[Session]:
 def test_create_profile_seeds_default_categories(session: Session) -> None:
     profile = create_profile(session, ProfileCreate(name="Personal"))
     cats = list_categories(session, profile.id)
-    assert len(cats) == len(DEFAULT_CATEGORIES) == 13
+    assert len(cats) == len(DEFAULT_CATEGORIES) == 15
     assert all(c.is_default for c in cats)
     assert [c.slug for c in cats] == [d.slug for d in DEFAULT_CATEGORIES]
     # excluded flags carried through
@@ -54,7 +54,7 @@ def test_seeding_is_idempotent(session: Session) -> None:
     profile = create_profile(session, ProfileCreate(name="Personal"))
     created_again = seed_default_categories(session, profile.id)
     assert created_again == []  # nothing new on a second pass
-    assert len(list_categories(session, profile.id)) == 13
+    assert len(list_categories(session, profile.id)) == 15
 
 
 def test_create_category_derives_unique_slug_and_appends(session: Session) -> None:
@@ -70,6 +70,17 @@ def test_create_category_derives_unique_slug_and_appends(session: Session) -> No
     assert first.is_default is False
     # new categories sort after the seeded defaults
     assert second.sort_order > max(d for d in range(len(DEFAULT_CATEGORIES)))
+    # ...but never after Uncategorized, which always sorts last.
+    assert list_categories(session, profile.id)[-1].slug == "uncategorized"
+
+
+def test_uncategorized_is_always_listed_last(session: Session) -> None:
+    profile = create_profile(session, ProfileCreate(name="Personal"))
+    create_category(session, profile.id, CategoryCreate(name="Zephyr", color="#4f6bff"))
+    create_category(session, profile.id, CategoryCreate(name="Aardvark", color="#4f6bff"))
+    slugs = [c.slug for c in list_categories(session, profile.id)]
+    assert slugs[-1] == "uncategorized"
+    assert slugs.count("uncategorized") == 1
 
 
 def test_profile_isolation(session: Session) -> None:

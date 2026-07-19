@@ -4,8 +4,10 @@ import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useTheme } from '../theme';
 import { queryClient } from '../api/queryClient';
 import { useHealth } from '../api/health';
-import { ProfileProvider } from '../features/profiles/ProfileContext';
+import { ProfileProvider, useCurrentProfile } from '../features/profiles/ProfileContext';
 import { ProfileSwitcher } from '../features/profiles/ProfileSwitcher';
+import { useTransactions } from '../features/transactions/api';
+import type { TransactionFilters } from '../features/transactions/types';
 import { ProfilesPage } from '../features/profiles/ProfilesPage';
 import { AccountsPage } from '../features/accounts/AccountsPage';
 import { CategoriesPage } from '../features/categories/CategoriesPage';
@@ -70,8 +72,21 @@ function Icon({ name }: { name: IconName }) {
   return <svg className="app-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
 }
 
+const REVIEW_COUNT_FILTERS: TransactionFilters = {
+  accountId: null, categoryId: null, type: null, dateFrom: '', dateTo: '',
+  includedInSpending: null, search: '', includeDeleted: false,
+};
+
+/** Live count of uncategorized transactions; updates as categorize mutations invalidate the query. */
+function useUncategorizedCount() {
+  const { currentProfileId } = useCurrentProfile();
+  const txns = useTransactions(currentProfileId, REVIEW_COUNT_FILTERS);
+  return (txns.data ?? []).filter((t) => t.category_id == null && t.deleted_at == null).length;
+}
+
 function Sidebar() {
   const { theme, toggle } = useTheme();
+  const reviewCount = useUncategorizedCount();
   return (
     <aside className="app-sidebar" aria-label="Primary">
       <NavLink to="/app/dashboard" className="app-brand" aria-label="Meridian dashboard">
@@ -89,6 +104,9 @@ function Sidebar() {
               <NavLink key={item.to} to={item.to} className={({ isActive }) => `app-tab ${isActive ? 'active' : ''}`}>
                 <Icon name={item.icon} />
                 <span>{item.label}</span>
+                {item.to === '/app/review' && reviewCount > 0 && (
+                  <span className="app-tab-badge" aria-label={`${reviewCount} to review`}>{reviewCount}</span>
+                )}
               </NavLink>
             ))}
           </div>

@@ -26,6 +26,8 @@ DEFAULT_CATEGORIES: tuple[DefaultCategory, ...] = (
     DefaultCategory("personal", "Personal Care", "#a855f7", "✂️", False),
     DefaultCategory("shopping", "Shopping", "#eab308", "🛍️", False),
     DefaultCategory("entertainment", "Entertainment", "#14b8a6", "🎬", False),
+    DefaultCategory("going-out", "Going Out", "#f43f5e", "nightlife", False),
+    DefaultCategory("relationship", "Relationship", "#e11d48", "heart", False),
     DefaultCategory("savings", "Savings", "#64748b", "💰", True),
     DefaultCategory("debt", "Debt Repayment", "#78716c", "💳", True),
     DefaultCategory("fees", "Fees & Interest", "#94a3b8", "🏦", True),
