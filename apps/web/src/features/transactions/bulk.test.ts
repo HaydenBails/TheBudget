@@ -7,9 +7,12 @@ function transaction(type: Transaction['type']): Transaction {
 }
 
 describe('transaction bulk policy', () => {
-  it('allows inclusion only for purchases and cash advances', () => {
+  it('allows inclusion for purchases, cash advances, and refunds', () => {
     expect(canBulkInclude([transaction('purchase'), transaction('cash_advance')])).toBe(true);
-    expect(canBulkInclude([transaction('purchase'), transaction('refund')])).toBe(false);
+    // Refunds are included so they reduce net spend (they carry a negative amount).
+    expect(canBulkInclude([transaction('purchase'), transaction('refund')])).toBe(true);
+    // Non-spending types still cannot be force-included.
+    expect(canBulkInclude([transaction('purchase'), transaction('payment')])).toBe(false);
   });
 
   it('builds the discriminated BE-11 payloads', () => {

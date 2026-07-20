@@ -3,7 +3,7 @@ import type { Transaction, TransactionBulkAction } from './types';
 export type BulkActionChoice = 'categorize' | 'include' | 'exclude';
 
 export function canBulkInclude(transactions: Transaction[]): boolean {
-  return transactions.length > 0 && transactions.every((transaction) => transaction.type === 'purchase' || transaction.type === 'cash_advance');
+  return transactions.length > 0 && transactions.every((transaction) => transaction.type === 'purchase' || transaction.type === 'cash_advance' || transaction.type === 'refund');
 }
 
 export function buildBulkAction(choice: BulkActionChoice, transactionIds: number[], categoryId: string, reason: string): TransactionBulkAction {

@@ -31,7 +31,7 @@ export function TransactionFormDialog({ accounts, categories, initial, onClose, 
   const [exclusionReason, setExclusionReason] = useState(initial?.exclusion_reason ?? '');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const canInclude = type === 'purchase' || type === 'cash_advance';
+  const canInclude = type === 'purchase' || type === 'cash_advance' || type === 'refund';
 
   useDialogFocus(dialogRef, onClose);
 
